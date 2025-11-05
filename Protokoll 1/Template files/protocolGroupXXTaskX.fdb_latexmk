@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1762344371.97951 "/Users/justinbuhl/Repository/KRT Praktikum/Protokoll 1/Template files/protocolGroupXXTaskX.tex" "protocolGroupXXTaskX.pdf" "protocolGroupXXTaskX" 1762344373.0627 0
-  "/Users/justinbuhl/Repository/KRT Praktikum/Protokoll 1/Template files/protocolGroupXXTaskX.tex" 1762344370.64422 14652 ad67a73725491d1410f0bc21c738f979 ""
+["pdflatex"] 1762366960.54147 "/Users/justinbuhl/Repository/KRT Praktikum/Protokoll 1/Template files/protocolGroupXXTaskX.tex" "protocolGroupXXTaskX.pdf" "protocolGroupXXTaskX" 1762366961.62959 0
+  "/Users/justinbuhl/Repository/KRT Praktikum/Protokoll 1/Template files/protocolGroupXXTaskX.tex" 1762366959.03696 18581 c50b3996032a76cf5667debd71fb02bf ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1136768653 1328 c834bbb027764024c09d3d2bf908b5f0 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
@@ -28,8 +28,11 @@
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb" 1248133631 32166 b0c356b15f19587482a9217ce1d8fa67 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1248133631 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb" 1248133631 36741 fa121aac0049305630cf160b86157ee4 ""
+  "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb" 1248133631 37166 8ab3487cbe3ab49ebce74c29ea2418db ""
+  "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb" 1248133631 36281 c355509802a035cadc5f15869451dcee ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb" 1248133631 35469 70d41d2b9ea31d5d813066df7c99281c ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
+  "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb" 1248133631 32734 69e00a6b65cedb993666e42eedb3d48f ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1248133631 32762 224316ccc9ad3ca0423a14971cfa7fc1 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1248133631 32726 0a1aea6fcd6468ee2cf64d891f5c43c8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
@@ -184,8 +187,8 @@
   "Helikopter.pdf" 1762344066.17314 454367 f347dc66df908c011bcbb4d608bcb183 ""
   "ifacconf.cls" 1659699610 65466 6c03c44a1da48052d5e0e068cc8cd8a0 ""
   "natbib.sty" 1659699610 31361 aec704f53c3cf81f1524f18738dfeb64 ""
-  "protocolGroupXXTaskX.aux" 1762344372.98707 2147 e1d189d9c98280407f8054754af9f3e8 "pdflatex"
-  "protocolGroupXXTaskX.tex" 1762344370.64422 14652 ad67a73725491d1410f0bc21c738f979 ""
+  "protocolGroupXXTaskX.aux" 1762366961.52115 2369 e09d63a81ae42831e46dde4b1fa7bfcd "pdflatex"
+  "protocolGroupXXTaskX.tex" 1762366959.03696 18581 c50b3996032a76cf5667debd71fb02bf ""
   (generated)
   "protocolGroupXXTaskX.aux"
   "protocolGroupXXTaskX.log"

@@ -84,7 +84,7 @@ Praktikum genutzt um ein Regelerentwurf durchzuführen und am Teststand zu imple
     \centering
     \includegraphics[width=0.8\columnwidth]{Helikopter.pdf} % Pfad/Dateiname anpassen
     \caption{Versuchsstand: 3DOF-Helikopter. Besteht aus Haupt- und Nebenarm, sowie Gegengewicht 
-    und am Ende des Arms befindlichen Elektromotoren.}
+    und am Ende des Arms befindlichen Helikopter.}
     \label{fig:helikopter}
 \end{figure}
 
@@ -106,9 +106,83 @@ Die Plant soll dabei durch ein Modell des Helikopters ersetzen werden können. I
 der Write Digital/Analog Block sowie der Game Controler zusammen gefasst. Im Subsystem "Data acquisition" werden die Encoderwerte ausgelesen und aufbereitet.
 
 \section{Erste Hausaufgabe (H1)}
-To serve the above stated purpose of the protocols, we demand a high quality, i.e., well structured, a comprehensible line of thought, and well selected figures. Basic rules how to write in a comprehensible style can be found in the slides of the Proseminar course, which are in German. A selection of the appropriate slides can be found in Ilias. More detailed and English guidelines appeared in \cite{WritingGuidelines}.
+Für die Modellierung des 3DOF Helikopters wurde versucht eine möglichst einfache Modellannahme zu treffen 
+um die komplexität des Modells gering zu halten und mit einem möglichst überschaubaren Zeitaufwand 
+eine möglichst gute Abbildung des Systemverhaltens zu extrahieren. Zunächst war nämlich geplant,
+den Versuchsstand in SolidWorks zu modellieren und mit anschließenden Matlab tools die Systemgleichungen 
+zu extrahieren. Dies hat jedoch zu Problemen geführt, wordurch eine erfolgreiche Extraktion 
+der Modellgleichungen leider ausblieb. Dennoch wurde das Modell genutzt um Modellparamaeter zu extrahieren. 
+Darauf wird jedoch noch im folgenden eingegangen. Für die physikalische Modellbildung wurde nun zunächst Grundannahme getroffen,
+die einzelnen Achsen des Helikopters unabhängig voneinander zu betrachten. Die 
+Dynamik der einzelnen Achsen ergibt sich dann durch das Momentengleichgewicht und 
+\begin{equation}
+M_{\mathrm{ges}} = M_{\mathrm{grav}} + M_{\mathrm{motor}}
+\label{eq:momentengleichgewicht}
+\end{equation}
+\begin{equation}
+M = I*\ddot{\Phi}
+\label{eq:rotational_dynamics}
+\end{equation}
+Dabei bezeichnet $M_{\mathrm{ges}}$ das gesamte Moment, $M_{\mathrm{grav}}$ das durch die Gravitationkraft verursachte Moment
+und $M_{\mathrm{motor}}$ das durch die Motoren erzeugte Moment. $I$ ist das Trägheitsmoment der jeweiligen Achse und $\ddot{\Phi}$ die jeweilige
+Winkelbeschleunigung um die betrachtete Achse. Die Dynamik der drei Rotationen um die jeweilige Achse ergibt sich
+letztendlich durch zweifache Integration der Winkelbeschleunigung. 
 
-As we require a high quality of the protocols, we do not limit the number of pages. As a guideline, three pages is a reasonable length. But the protocol must contain all relevant information.
+Als Grundannahme betrachten wir die einzelnen rotationen Einzeln. D.h wir betrachten für jede
+Rotationen einen gesamten Starrkörper. Das heist für den Pitch Winkel um die Pitch Achse, bewegt sich lediglich
+der Helikopter als Starrkörper. Für die Bewegung um die Elevation Achse, betrachten wir den Helikopter und
+einen gesamten Arm (d.h Hauptarm, Magnethalterung, Nebenarm und Gegengewicht wird alles als ein starrer Körper betrachtet), beides zusammen als Starrkörper mit lediglich einem Freiheitsgrad um die Elevation Achse. 
+Für die Bewegung um die Travel Achse, betrachten wir nun den Helikopter, einen Arm und einen zusätzlichen vertikalen Arm, 
+alle drei Teile als ein starrer Starrkörper mit einem Freiheitsgrad um die Travel Achse. 
+
+
+Des Weiteren wurden folgende Annahmen getroffen:
+\begin{itemize}
+    \item Reibungen sowie Luftwiderstände werden vernachlässigt.
+    \item Der Schwerpunkt des Helikopters selbst liegt im Rotationspunkt der Drehachse. Diese Symmetrie
+    hat zur Folge, dass für die Pitch Achse kein Gravitationsmoment berücksichtigt werden müssen, da sich 
+    die Gewichtskräfte gegenseitig aufheben.
+
+\end{itemize}
+
+Zur extrahierung der Massenträgheitsmomente wurde nun das Modell (Verweis!!!) aus SolidWorks genutzt. 
+Dabei wurden folgende Massenträgheiten extrahiert sowie mit folgenden längen als 
+Hebelarme des Starrkörpers festgelegt: 
+
+\begin{table}[htbp]
+\centering
+\caption{Modelparameter}
+\label{tab:modelparams}
+\begin{tabular}{|c|c|p{6cm}|}
+\hline
+Variable & Wert & Beschreibung \\ \hline
+$I_{\alpha}$ & -- & Trägheitsmoment um die Travel-Achse \\ \hline
+$I_{\beta}$  & -- & Trägheitsmoment um die Elevation-Achse \\ \hline
+$I_{\gamma}$ & -- & Trägheitsmoment um die Pitch-Achse. \\ \hline
+$l_{\gamma}$ & -- & Hebelarm für das Pitch-Differenzialmoment, also von der Rotationsachse bis zum Motor \\ \hline
+$l_{\mathrm{Heli}}$ & -- & Abstand Rotationsachse um Elevation Achse zur Rotationsachse der Pitch-Achse \\ \hline
+$l_{Massenmittelpunkt}$ & -- & Abstand Rotationsachse um Elevation Achse zum Massenmittelpunkt des Armes und des Helikopters \\ \hline
+\end{tabular}
+\end{table}
+
+Bei den jeweiligen Trägheiten $$I_{\alpha}, I_{\beta}, I_{\gamma}$$ die aus dem SolidWorks Modell extrahiert 
+worden sind, handelt es sich um die addierten Trägheitsmomente der, für die jeweilige Achsrotation relevante, angenommenen Starrkörper. 
+
+Es fehlt noch die beschreibung von Fg
+
+Letztendlich ergeben sich folgende Differentialgleichungen für die drei Achsen:
+
+\begin{equation}
+\ddot{\gamma} = \frac{(F_{\mathrm{vorne}} - F_{\mathrm{hinten}}) * l_{\gamma}}{I_{\gamma}}
+\end{equation}
+
+\begin{equation}
+\ddot{\beta} = \frac{(F_{\mathrm{vorne}} + F_{\mathrm{hinten}}) * l_{\mathrm{Heli}} * \cos(\gamma) - F_{\mathrm{g}} * l_{MMP} * \cos(\beta)}{I_{\beta}}
+\end{equation}
+
+\begin{equation}
+\ddot{\alpha} = \frac{-(F_{\mathrm{vorne}} + F_{\mathrm{hinten}}) * l_{\mathrm{Heli}} * \sin(\gamma)}{I_{\alpha}}
+\end{equation}
 
 \section{LaTeX}
 
