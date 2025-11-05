@@ -74,18 +74,23 @@ In diesem ersten Protokoll handelt es sich um eine Zusammenfassung des Vorgehens
 In diesem Protokoll werden die Ergebnisse der ersten Laboraufgabe (L1) und der ersten Hausaufgabe (H1) des 
 Praktikums "Konzepte der Regelungstechnik" am Institut für Systemtheorie und Regelungstechnik der Universität Stuttgart zusammengefasst. Ziel von L1 ist es, den Versuchsstand in Betrieb zu nehmen und die grundlegenden Funktionen zu verstehen. H1 konzentriert sich auf die Modellierung des 3DOF Helikopters, um eine Grundlage für die anschließende Modellidentifizierung in L2 zu schaffen.
 Beim zu regelnden Versuchsstand handelt es sich um einen 3DOF Helikopter, der entlang seiner Hauptachsen/Gelenkachsen (Travel angle, elevation angle, pitch angle) bewegt werden kann.
+Die Bewegung um die Achsen wird dabei durch zwei Elektromotoren ermöglicht.
 Ziel des Praktikums ist es eine vorgegebene Trajektorie innerhalb einer gewissen Zeit abzufliegen und dabei die jeweiligen 
-Beschränkungen einzuhalten.
+Beschränkungen einzuhalten. Dabei wird im folgenden die Inbetriebnahme des Versuchsstandes 
+beschrieben und die Modellierung des Helikopters durchgeführt. Dieses Modell wird im laufenden 
+Praktikum genutzt um ein Regelerentwurf durchzuführen und am Teststand zu implementieren. 
 
-Zur Steuerung stehen zwei 12V Elektromotoren zur Verfügung, über die der elevation Winkel gesteuert werden kann, wobei eine Spannungsdifferent an beiden Motoren
-zur Ansteuerung des Pitch Winkels und somit auch des travel Angels verwendet wird. Jede der Achsen verfügt dabei über 
-Encoder, über die die relativ zur Ausgangsposition Winkelinkrement gemessen werden kann. 
-Die Ansteuerung der Motoren, sowie das Auslesen der Encoder 
-erfolgt über die "Quanser Quarc" Schnittstelle, die eine Erweiterung für Matlab/Simulink darstellt.
-Diese Schnittstelle ermöglicht es, Simulink Modelle in Echtzeit auf dem PC auszuführen und die Signale über 
-jeweilige Blöcke anzusteuern und auszulesen. 
 
 \section{Purpose of protocol}
+
+
+Um den Versuchsstand in Betrieb zu nehmen wird die "Quanser Quarc" Schnittstelle, eien Erweiterung für Matlab/Simulink, verwendet.
+Diese Schnittstelle ermöglicht es, die Hardware mit Matlab Simulink zu verbinden und die Moteoren/Signale über die
+jeweilige Blöcke anzusteuern und auszulesen. Über einen "Write Analog" Block werden die zwei 12V Motoren 
+die zur verfügung stehen angesteuert. Eine Spannungsdifferenz an den Motoren ermöglicht dabei die Steuerung des
+Pitch Winkels und somit auch des travel Angels. Der "Read Encoder" Block ermöglicht 
+das Auslesen der Winkelinkremente der drei Achsen der verbauten Encoder, die relativ zur Ausgangsposition gemessen werden.
+
 
 The protocol has two main objectives: Making your approach or results repeatable and enabling your supervisor to evaluate your results.
 
