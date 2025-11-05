@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.6.24)  5 NOV 2025 11:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.6.24)  5 NOV 2025 12:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -522,12 +522,12 @@ LaTeX Font Info:    Calculating math sizes for size <14> on input line 59.
 ]
 \figurewidth=\skip63
  (./FigureTest.tikz)
-Underfull \hbox (badness 4595) in paragraph at lines 188--194
+Underfull \hbox (badness 4595) in paragraph at lines 192--198
 []\OT1/cmr/m/n/10 J^^?urgens, M. and Feuer-stack, T. (2011).  L[]T[]X-
  []
 
 
-Underfull \hbox (badness 5245) in paragraph at lines 203--209
+Underfull \hbox (badness 5245) in paragraph at lines 207--213
 \OT1/cmr/m/n/10 Amer-i-can Math-e-mat-i-cal So-ci-ety.  Avail-able on-
  []
 
@@ -538,15 +538,15 @@ L3 programming layer <2024-02-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 24431 strings out of 474116
- 632688 string characters out of 5743682
- 1953187 words of memory out of 5000000
- 46391 multiletter control sequences out of 15000+600000
+ 24432 strings out of 474116
+ 632696 string characters out of 5743682
+ 1954187 words of memory out of 5000000
+ 46392 multiletter control sequences out of 15000+600000
  564474 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,19n,93p,1039b,2249s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on protocolGroupXXTaskX.pdf (3 pages, 174695 bytes).
+Output written on protocolGroupXXTaskX.pdf (3 pages, 174878 bytes).
 PDF statistics:
  82 PDF objects out of 1000 (max. 8388607)
  50 compressed objects within 1 object stream
