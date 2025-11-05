@@ -61,18 +61,25 @@
 \thanks[footnoteinfo]{Institute for Systems Theory and Automatic Control, University of Stuttgart, Germany. \textit{http://www.ist.uni-stuttgart.de}}
 
 % include all authors, underline corresponding author
-\author{\underline{M. Löhning},} 
-\author{C. Maier} 
+\author{Kimon Beyer, Yves Gaßmann, Justin Buhl} 
 % \author{}
 
 \begin{abstract}                          % Abstract of not more than 250 words.
-This template gives instructions on how to write a protocol for the MSc laboratory course ``Praktikum Konzepte der Regelungstechnik'' at the IST. Use this document to write your protocol with \LaTeX.
+In diesem ersten Protokoll handelt es sich um eine Zusammenfassung des Vorgehens der Gruppe AWe1 des Praktikums "Konzepte der Regelungstechnik" am Institut für Systemtheorie und Regelungstechnik der Universität Stuttgart. In diesem ersten Protokoll werden die Ergebnisse von L1 und H1 dargestellt, wobei sich der erste Teil um L1 handelt und der zweite Teil um H1. Während sich L1 mit der Betriebnahme des Versuchsstandes beschäftigt, wird im anschließenden H1 Teil die Modellierung des 3DOF Helikopters durchgeführt, mit abschließender Respektive auf die in L2 zu erledigende Modellidentifizierung.
 \end{abstract}
 
 \end{frontmatter}
 
-\section{Introduction}
-This document explains how a protocol of the master laboratory course at the IST should be written. Furthermore, the corresponding tex-file serves as a template for the protocols.
+\section{Einleitung}
+In diesem Protokoll werden die Ergebnisse der ersten Laboraufgabe (L1) und der ersten Hausaufgabe (H1) des 
+Praktikums "Konzepte der Regelungstechnik" am Institut für Systemtheorie und Regelungstechnik der Universität Stuttgart zusammengefasst. Ziel von L1 ist es, den Versuchsstand in Betrieb zu nehmen und die grundlegenden Funktionen zu verstehen. H1 konzentriert sich auf die Modellierung des 3DOF Helikopters, um eine Grundlage für die anschließende Modellidentifizierung in L2 zu schaffen.
+Beim zu regelnden Versuchsstand handelt es sich um einen 3DOF Helikopter, der entlang seiner Hauptachsen (Travel angle, elevation angle, pitch angle) bewegt werden kann.
+Zur Steuerung stehen zwei 12V Elektromotoren zur Verfügung, über die der elevation Winkel gesteuert werden kann, wobei eine Spannungsdifferent an beiden Motoren
+zur Ansteuerung des Pitch Winkels und somit auch des travel Angels verwendet wird. Jede der Achsen verfügt dabei über 
+Encoder, über die die aktuelle Position absolut gemessen werden kann. 
+Ziel des Praktikums ist es eine vorgegebene Trajektorie innerhalb einer gewissen Zeit abzufliegen und dabei die jeweiligen 
+Beschränkungen einzuhalten. Die Ansteuerung der Motoren, sowie das Auslesen der Encoder 
+erfolgt über die "Quanser Quarc" 
 
 \section{Purpose of protocol}
 
