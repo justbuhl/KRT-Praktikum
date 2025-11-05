@@ -80,25 +80,32 @@ Beschränkungen einzuhalten. Dabei wird im folgenden die Inbetriebnahme des Vers
 beschrieben und die Modellierung des Helikopters durchgeführt. Dieses Modell wird im laufenden 
 Praktikum genutzt um ein Regelerentwurf durchzuführen und am Teststand zu implementieren. 
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\columnwidth]{Helikopter.pdf} % Pfad/Dateiname anpassen
+    \caption{Versuchsstand: 3DOF-Helikopter. Besteht aus Haupt- und Nebenarm, sowie Gegengewicht 
+    und am Ende des Arms befindlichen Elektromotoren.}
+    \label{fig:helikopter}
+\end{figure}
 
-\section{Purpose of protocol}
-
+\section{Erster Labortag (L1)}
 
 Um den Versuchsstand in Betrieb zu nehmen wird die "Quanser Quarc" Schnittstelle, eien Erweiterung für Matlab/Simulink, verwendet.
 Diese Schnittstelle ermöglicht es, die Hardware mit Matlab Simulink zu verbinden und die Moteoren/Signale über die
 jeweilige Blöcke anzusteuern und auszulesen. Über einen "Write Analog" Block werden die zwei 12V Motoren 
-die zur verfügung stehen angesteuert. Eine Spannungsdifferenz an den Motoren ermöglicht dabei die Steuerung des
-Pitch Winkels und somit auch des travel Angels. Der "Read Encoder" Block ermöglicht 
-das Auslesen der Winkelinkremente der drei Achsen der verbauten Encoder, die relativ zur Ausgangsposition gemessen werden.
+die zur verfügung stehen, sowie der Magnet angesteuert. Der Magnet wird benötigt um das Verfrachten einer Metallkugel
+als Teil der Praktikumsendaufgabe zu ermöglichen. Eine Spannungsdifferenz an den Motoren ermöglicht nun die Steuerung des
+Pitch Winkels und somit auch des travel Angels. An diesem Block kann auch der "Game Controler" angeschlossen werden, mittels dem 
+der Versuchsstand manuell angesteuert werden kann. Dafür muss jedoch eine möglichst intuitive Bedienung mit passender Skalierung 
+der Eingabewerte implementiert werden. Dafür könnte an dieser Stelle noch ein PID-Controler implementiert werden. 
+Der "Read Encoder" Block ermöglicht das Auslesen der Winkelinkremente der drei Achsen der verbauten Encoder, die relativ zur Ausgangsposition gemessen werden.
+Diese Winkelinkremente müssen noch umgerechent und mit richtigem Vorzeiuchen versehen werden, um die 
+nötigen Konventionen von Rechtshandsystemen und der Modellbildung zu gewährleisten. 
+Diese Blöcke werden letztendlich in 3 Simulink Subsystems unterteilt, "Input Generation", "Data acquisition" und "Plant". 
+Die Plant soll dabei durch ein Modell des Helikopters ersetzen werden können. Im Subsystem "Input generation" 
+der Write Digital/Analog Block sowie der Game Controler zusammen gefasst. Im Subsystem "Data acquisition" werden die Encoderwerte ausgelesen und aufbereitet.
 
-
-The protocol has two main objectives: Making your approach or results repeatable and enabling your supervisor to evaluate your results.
-
-First, other people need to be able to reproduce the experiment and come to the same results. Therefore, the approach has to be documented such that the results can be repeated based on the given information. This is especially required in industry, whenever other people build up on your work. For this laboratory course, imagine that based on your protocol the next year students should come up with an improved solution. Furthermore, a good documentation also enables you to recapitulate your line of action after some time - e.g. when writing the final protocol mentioned in Section~\ref{sec:finalProtocol}. The master laboratory course with one detailed project is an excellent opportunity to learn documenting your work. Thus, we encourage you to document \emph{while} working and not only afterwards. This can be achieved by commenting your Matlab-files or making all required notes while being in the laboratory.
-
-Second, the reader of the protocol wants to assess your work. This should enable your supervisor not only to check your work but moreover to give specific feedback and helpful hints.
-
-\section{Style}
+\section{Erste Hausaufgabe (H1)}
 To serve the above stated purpose of the protocols, we demand a high quality, i.e., well structured, a comprehensible line of thought, and well selected figures. Basic rules how to write in a comprehensible style can be found in the slides of the Proseminar course, which are in German. A selection of the appropriate slides can be found in Ilias. More detailed and English guidelines appeared in \cite{WritingGuidelines}.
 
 As we require a high quality of the protocols, we do not limit the number of pages. As a guideline, three pages is a reasonable length. But the protocol must contain all relevant information.
