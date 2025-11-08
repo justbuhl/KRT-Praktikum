@@ -90,28 +90,28 @@ Praktikum genutzt um ein Regelerentwurf durchzuführen und am Teststand zu imple
 
 \section{Erster Labortag (L1)}
 
-Um den Versuchsstand in Betrieb zu nehmen wird die "Quanser Quarc" Schnittstelle, eien Erweiterung für Matlab/Simulink, verwendet.
+Um den Versuchsstand in Betrieb zu nehmen wird die "Quanser Quarc" Schnittstelle, eine Erweiterung für Matlab/Simulink, verwendet.
 Diese Schnittstelle ermöglicht es, die Hardware mit Matlab Simulink zu verbinden und die Motoren/Signale über die
-jeweilige Blöcke anzusteuern und auszulesen. Über einen "Write Analog" Block werden die zwei 12V Motoren 
+jeweilige Blöcke anzusteuern und auszulesen. Über einen "Write Analog" Block werden die zwei 12V Motoren, 
 die zur verfügung stehen, sowie der Magnet angesteuert. Der Magnet wird benötigt um das Verfrachten einer Metallkugel
 als Teil der Praktikumsendaufgabe zu ermöglichen. Eine Spannungsdifferenz an den Motoren ermöglicht nun die Steuerung des
-Pitch Winkels und somit auch des travel Angels. An diesem Block kann auch der "Game Controler" angeschlossen werden, mittels dem 
+Pitch Winkels und somit auch des travel Angels. An diesem Block kann auch der "Game Controller" angeschlossen werden, mittels dem 
 der Versuchsstand manuell angesteuert werden kann. Dafür muss jedoch eine möglichst intuitive Bedienung mit passender Skalierung 
-der Eingabewerte implementiert werden. Dafür könnte an dieser Stelle noch ein PID-Controler implementiert werden. 
+der Eingabewerte implementiert werden. Dafür könnte an dieser Stelle noch ein PID-Controller implementiert werden. 
 Der "Read Encoder" Block ermöglicht das Auslesen der Winkelinkremente der drei Achsen der verbauten Encoder, die relativ zur Ausgangsposition gemessen werden.
-Diese Winkelinkremente müssen noch umgerechent und mit richtigem Vorzeiuchen versehen werden, um die 
+Diese Winkelinkremente müssen noch umgerechnet und mit richtigem Vorzeichen versehen werden, um die 
 nötigen Konventionen von Rechtshandsystemen und der Modellbildung zu gewährleisten. 
 Diese Blöcke werden letztendlich in 3 Simulink Subsystems unterteilt, "Input Generation", "Data acquisition" und "Plant". 
 Die Plant soll dabei durch ein Modell des Helikopters ersetzen werden können. Im Subsystem "Input generation" 
-der Write Digital/Analog Block sowie der Game Controler zusammen gefasst. Im Subsystem "Data acquisition" werden die Encoderwerte ausgelesen und aufbereitet.
+der Write Digital/Analog Block sowie der Game Controller zusammengefasst. Im Subsystem "Data acquisition" werden die Encoderwerte ausgelesen und aufbereitet.
 
 \section{Erste Hausaufgabe (H1)}
-Für die Modellierung des 3DOF Helikopters wurde versucht eine möglichst einfache Modellannahme zu treffen 
+Für die Modellierung des 3DOF Helikopters wurde versucht eine möglichst einfache Modellannahme zu treffen, 
 um die komplexität des Modells gering zu halten und mit einem möglichst überschaubaren Zeitaufwand 
 eine möglichst gute Abbildung des Systemverhaltens zu extrahieren. Zunächst war nämlich geplant,
 den Versuchsstand in SolidWorks zu modellieren und mit anschließenden Matlab tools die Systemgleichungen 
-zu extrahieren. Dies hat jedoch zu Problemen geführt, wordurch eine erfolgreiche Extraktion 
-der Modellgleichungen leider ausblieb. Dennoch wurde das Modell genutzt um Modellparameter zu extrahieren. 
+zu extrahieren. Dies hat jedoch zu Problemen geführt, wodurch eine erfolgreiche Extraktion 
+der Modellgleichungen leider ausblieb. Dennoch wurde das Modell genutzt, um Modellparameter zu extrahieren. 
 Darauf wird noch im Weiteren eingegangen. Für die physikalische Modellbildung wurde nun zunächst die Grundannahme getroffen,
 die einzelnen Achsen des Helikopters unabhängig voneinander zu betrachten. Die 
 Dynamik der einzelnen Achsen ergibt sich dann durch das Momentengleichgewicht und dem Drallsatz.
@@ -128,8 +128,8 @@ und $M_{\mathrm{motor}}$ das durch die Motoren erzeugte Moment. $I$ ist das Trä
 Winkelbeschleunigung um die betrachtete Achse. Die Dynamik der drei Rotationen um die jeweilige Achse ergibt sich
 letztendlich durch zweifache Integration der Winkelbeschleunigung. 
 
-Als Grundannahme betrachten wir die einzelnen rotationen Einzeln. D.h wir betrachten für jede
-Rotationen einen gesamten Starrkörper. Das heist für den Pitch Winkel um die Pitch Achse, bewegt sich lediglich
+Als Grundannahme betrachten wir die einzelnen Rotationen Einzeln. D.h wir betrachten für jede
+Rotation einen gesamten Starrkörper. Das heist für den Pitch Winkel um die Pitch Achse, bewegt sich lediglich
 der Helikopter als Starrkörper. Für die Bewegung um die Elevation Achse, betrachten wir den Helikopter und
 einen gesamten Arm (d.h Hauptarm, Magnethalterung, Nebenarm und Gegengewicht wird alles als ein starrer Körper betrachtet), beides zusammen als Starrkörper mit lediglich einem Freiheitsgrad um die Elevation Achse. 
 Für die Bewegung um die Travel Achse, betrachten wir nun den Helikopter, einen Arm und einen zusätzlichen vertikalen Arm, 
