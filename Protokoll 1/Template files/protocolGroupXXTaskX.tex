@@ -56,7 +56,7 @@
 
 \begin{frontmatter}
 
-\title{How to write a protocol for \\ the MSc laboratory course at the IST\thanksref{footnoteinfo}}
+\title{KRT Praktikum: Protokoll 1 - L1 und H1}
 
 \thanks[footnoteinfo]{Institute for Systems Theory and Automatic Control, University of Stuttgart, Germany. \textit{http://www.ist.uni-stuttgart.de}}
 
@@ -91,7 +91,7 @@ Praktikum genutzt um ein Regelerentwurf durchzuführen und am Teststand zu imple
 \section{Erster Labortag (L1)}
 
 Um den Versuchsstand in Betrieb zu nehmen wird die "Quanser Quarc" Schnittstelle, eien Erweiterung für Matlab/Simulink, verwendet.
-Diese Schnittstelle ermöglicht es, die Hardware mit Matlab Simulink zu verbinden und die Moteoren/Signale über die
+Diese Schnittstelle ermöglicht es, die Hardware mit Matlab Simulink zu verbinden und die Motoren/Signale über die
 jeweilige Blöcke anzusteuern und auszulesen. Über einen "Write Analog" Block werden die zwei 12V Motoren 
 die zur verfügung stehen, sowie der Magnet angesteuert. Der Magnet wird benötigt um das Verfrachten einer Metallkugel
 als Teil der Praktikumsendaufgabe zu ermöglichen. Eine Spannungsdifferenz an den Motoren ermöglicht nun die Steuerung des
@@ -111,10 +111,10 @@ um die komplexität des Modells gering zu halten und mit einem möglichst übers
 eine möglichst gute Abbildung des Systemverhaltens zu extrahieren. Zunächst war nämlich geplant,
 den Versuchsstand in SolidWorks zu modellieren und mit anschließenden Matlab tools die Systemgleichungen 
 zu extrahieren. Dies hat jedoch zu Problemen geführt, wordurch eine erfolgreiche Extraktion 
-der Modellgleichungen leider ausblieb. Dennoch wurde das Modell genutzt um Modellparamaeter zu extrahieren. 
-Darauf wird jedoch noch im folgenden eingegangen. Für die physikalische Modellbildung wurde nun zunächst Grundannahme getroffen,
+der Modellgleichungen leider ausblieb. Dennoch wurde das Modell genutzt um Modellparameter zu extrahieren. 
+Darauf wird noch im Weiteren eingegangen. Für die physikalische Modellbildung wurde nun zunächst die Grundannahme getroffen,
 die einzelnen Achsen des Helikopters unabhängig voneinander zu betrachten. Die 
-Dynamik der einzelnen Achsen ergibt sich dann durch das Momentengleichgewicht und 
+Dynamik der einzelnen Achsen ergibt sich dann durch das Momentengleichgewicht und dem Drallsatz.
 \begin{equation}
 M_{\mathrm{ges}} = M_{\mathrm{grav}} + M_{\mathrm{motor}}
 \label{eq:momentengleichgewicht}
@@ -135,6 +135,27 @@ einen gesamten Arm (d.h Hauptarm, Magnethalterung, Nebenarm und Gegengewicht wir
 Für die Bewegung um die Travel Achse, betrachten wir nun den Helikopter, einen Arm und einen zusätzlichen vertikalen Arm, 
 alle drei Teile als ein starrer Starrkörper mit einem Freiheitsgrad um die Travel Achse. 
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{heli.png}
+    \caption{CAD Modell des Helikopters}
+    \label{fig:bild1}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{arm_heli.png}
+    \caption{CAD Modell des Helikopters mit Arm}
+    \label{fig:bild2}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{arm_heli_staender.png}
+    \caption{CAD Modell des Helikopters mit Arm und Ständer.}
+    \label{fig:bild3}
+\end{figure}
+
 
 Des Weiteren wurden folgende Annahmen getroffen:
 \begin{itemize}
@@ -144,10 +165,10 @@ Des Weiteren wurden folgende Annahmen getroffen:
     die Gewichtskräfte gegenseitig aufheben.
 
 \end{itemize}
-
-Zur extrahierung der Massenträgheitsmomente wurde nun das Modell (Verweis!!!) aus SolidWorks genutzt. 
-Dabei wurden folgende Massenträgheiten extrahiert sowie mit folgenden längen als 
-Hebelarme des Starrkörpers festgelegt: 
+Zur Extrahierung der Massenträgheitsmomente wurden die in Abbildungen~\ref{fig:bild1},~\ref{fig:bild2} und~\ref{fig:bild3} gezeigten CAD-Modelle aus SolidWorks genutzt.
+Es ist wichtig zu erwähnen, dass die jeweiligen Massenträgheiten in den jeweiligen Koordinatensystemen der Rotationsachsen extrahiert wurden sind.
+Dabei wurden folgende Massenträgheiten extrahiert sowie mit folgenden Längen als
+Hebelarme des Starrkörpers festgelegt:
 
 \begin{table}[htbp]
 \centering
@@ -159,7 +180,7 @@ Variable & Wert & Beschreibung \\ \hline
 $I_{\alpha}$ & 1.130985 [kg/m$^2$] & Trägheitsmoment um die Travel-Achse \\ \hline
 $I_{\beta}$  & 1.125115 [kg/m$^2$] & Trägheitsmoment um die Elevation-Achse \\ \hline
 $I_{\gamma}$ & 0.040229 [kg/m$^2$] & Trägheitsmoment um die Pitch-Achse. \\ \hline
-$m_{\mathrm{mmp}}$ & 3.960 [kg] & Gesamte Masse des 3DOF Helikopters \\ \hline
+$m_{\mathrm{mmp}}$ & 3.960 [kg] & Gesamte Masse des 3DOF Helikopters mit Hauptarm \\ \hline
 \end{tabular}
 \end{table}
 
@@ -182,20 +203,20 @@ worden sind, handelt es sich um die addierten Trägheitsmomente der, für die je
 Letztendlich ergeben sich folgende Differentialgleichungen für die drei Achsen:
 
 \begin{equation}
-\ddot{\gamma} = \frac{(F_{\mathrm{vorne}} - F_{\mathrm{hinten}}) * l_{\gamma}}{I_{\gamma}}
+\ddot{\gamma} = \frac{(F_{\mathrm{vorne}} - F_{\mathrm{hinten}}) * l_{rotor}}{I_{\gamma}}
 \end{equation}
 
 \begin{equation}
-\ddot{\beta} = \frac{(F_{\mathrm{vorne}} + F_{\mathrm{hinten}}) * l_{\mathrm{Heli}} * \cos(\gamma) - F_{\mathrm{g}} * l_{MMP} * \cos(\beta)}{I_{\beta}}
+\ddot{\beta} = \frac{(F_{\mathrm{vorne}} + F_{\mathrm{hinten}}) * l_{\mathrm{heli}} * \cos(\gamma) - F_{\mathrm{g}} * l_{mmp} * \cos(\beta)}{I_{\beta}}
 \end{equation}
 
 \begin{equation}
-\ddot{\alpha} = \frac{-(F_{\mathrm{vorne}} + F_{\mathrm{hinten}}) * l_{\mathrm{Heli}} * \sin(\gamma)}{I_{\alpha}}
+\ddot{\alpha} = \frac{-(F_{\mathrm{vorne}} + F_{\mathrm{hinten}}) * l_{\mathrm{heli}} * \sin(\gamma)}{I_{\alpha}}
 \end{equation}
 
 Mit
 \begin{equation}
-F_{\mathrm{g}} = m_{\mathrm{ges}}*g
+F_{\mathrm{g}} = m_{\mathrm{mmp}}*g
 \label{eq:F_g}
 \end{equation}
 wobei $m_{\mathrm{ges}}$ die Gesamtmasse des betrachteten Starrkörpers und $g\approx 9.81\ \mathrm{m/s^2}$ die Erdbeschleunigung ist.
@@ -207,56 +228,8 @@ Dadurch müssen in der anschließenden Modellidentifizierung nur noch wenige Par
 extrahiert werden. Dies ist vor allem sehr angenehm, da die Identifizierung von Massenträgheiten sich als recht 
 schwierig und fehleranfällig erwartet wird. Dadurch müssen prinzipiell mit nächsten Labor nur noch die Motor-Kraft Kennlinien 
 bei verschiedenen Spannungsstufen ermittelt werden. Anschließend kann in L2 eventuell dann bereits mit Aufgaben der H2, also Linearisierung
-der Systemgleichungen begonnen werden.
+der Systemgleichungen begonnen werden. Des Weiteren kann noch eine Validierung des Modells durch Simulationen in Simulink erfolgen, um die Übereinstimmung mit dem realen Systemverhalten zu überprüfen.
+Diese Validierung kann noch im laufenden Prozess erfolgen.
 
 
-
-
-\section{Final protocol}
-\label{sec:finalProtocol}
-At the end of the course a protocol over the whole laboratory has to be written. This final protocol may have up to 8 pages. The final protocol may be based on your other protocols and you can reuse parts of the other protocols. But the final protocol has to be self-contained and needs to have a comprehensible line of thought. 
-
-The purpose of the final protocol is that the reader gets an idea of your whole solution. Therefore, it should contain the results of your work. To understand the results, you should also include your approaches on a more abstract level. For you, the final protocol is a chance to reflect the laboratory as a whole.
-
-
-%\bibliographystyle{alpha}        % Include this if you use bibtex 
-%\bibliography{autosam}           % and a bib file to produce the 
-%\bibliography{autosam}
-                                 % bibliography (preferred). The
-                                 % correct style is generated by
-                                 % Elsevier at the time of printing.
-
-\begin{thebibliography}{3}
-
-\bibitem[Jürgens and Feuerstack(2011)]{hagenEinfuehrung}
-Jürgens,~M. and Feuerstack,~T. (2011).
-\newblock \LaTeX - eine Einführung und ein bißchen mehr\dots .
-\newblock Fernuniversität in Hagen, A/026/0911.
-\newblock Available online from
-\verb+http://www.fernuni-hagen.de/imperia/md+
-\verb+/content/zmi_2010/a026_latex_einf.pdf+.
-
-\bibitem[Oetiker et~al.(2011)]{lshort}
-Oetiker, T., Partl, H., Hyne, I., and Schlegl, E. (2011).
-\newblock The not so Short Introduction to \LaTeXe.
-\newblock Version 5.01, April 06, 2011.
-\newblock Available online from
-\verb+http://tobi.oetiker.ch/lshort/lshort.pdf+.
-
-\bibitem[Downes(2002)]{mathGuide}
-Downes, M. (2002).
-\newblock Short Math Guide for \LaTeX.
-\newblock American Mathematical Society.
-\newblock Available online from
-\verb+ftp://ftp.ams.org/pub/tex/doc/amsmath/+
-\verb+short-math-guide.pdf+.
-
-\bibitem[IEEE Control Systems Magazine(2004)]{WritingGuidelines}
-IEEE Control Systems Magazine (2004).
-\newblock Writing Guidelines for IEEE Control Systems Magazine.
-\newblock \emph{IEEE Control Systems Magazine}, 24(1), 89--90.
-
-\end{thebibliography}
-
-%\appendix
 \end{document}
