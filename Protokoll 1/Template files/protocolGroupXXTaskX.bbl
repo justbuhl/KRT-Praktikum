@@ -1,0 +1,22 @@
+\begin{thebibliography}{2}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[IST(2025)]{IST2025}
+IST.
+\newblock \emph{Laboratory Course ``Concepts of Automatic Control'': Control of
+  a 3-DOF Helicopter -- Handbook}.
+\newblock University of Stuttgart, Stuttgart, 2025.
+\newblock Winter term 2025/26, Prof. Dr.-Ing. F. Allgöwer.
+
+\bibitem[{Quanser Inc.}(2012)]{Quanser2012}
+{Quanser Inc.}
+\newblock \emph{3 DOF HELICOPTER User Manual}.
+\newblock Quanser Inc., Markham, Ontario, Canada, 2012.
+\newblock URL \url{http://www.quanser.com}.
+\newblock Version 1.0.
+
+\end{thebibliography}
