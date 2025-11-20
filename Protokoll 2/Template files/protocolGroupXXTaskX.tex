@@ -1,0 +1,158 @@
+\documentclass{ifacconf}
+
+\usepackage{natbib}            % you should have natbib.sty
+\usepackage[utf8]{inputenc}    % Eingabe von Umlauten im Editor, dieser sollte dann auch auf utf8 Encoding eingestellt sein
+\usepackage{graphicx}          % Include this line if your 
+                               % document contains figures,
+%\usepackage[dvips]{epsfig}    % or this line, depending on which
+                               % you prefer.
+                               
+\usepackage{units}
+
+% for German
+% \usepackage{ngerman}           % neue Deutsche Rechtschreibung, Silbentrennung
+% \usepackage[T1]{fontenc}       % Trennung mit Umlauten
+
+% to include tikz pictures of figure created with matlab2tikz, see also file ``plotFigureTest.m''
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}  % use newest version of pgfplots
+\usepackage{amsmath}  % useful for math
+
+% to include the legend into the caption. The commands are
+%\mlLineLegend{red}
+%\mlLineLegendDashed{red}
+%\mlLineLegendDotted{red}
+%\mlLineLegendDashDotted{red}
+%\mlPointLegend{red}
+\newlength{\mlLegendThickness}
+\setlength{\mlLegendThickness}{0.4mm}
+\newlength{\mlLegendHeight}
+\setlength{\mlLegendHeight}{0.6ex}
+\newcommand{\mlLineLegend}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{3mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlLineLegendDashed}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlLineLegendDotted}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlLineLegendDashDotted}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlPointLegend}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-0.75mm}
+}}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{KRT Praktikum: Protokoll 2 - L2 und H2}
+
+\thanks[footnoteinfo]{Institute for Systems Theory and Automatic Control, University of Stuttgart, Germany. \textit{http://www.ist.uni-stuttgart.de}}
+
+% include all authors, underline corresponding author
+\author{Kimon Beyer, Yves Gaßmann, Justin Buhl} 
+% \author{}
+
+\begin{abstract}        
+Im folgenden Protokoll werden die Ergebnisse des zweiten Labortages sowie der zweiten Hausaufgabe im Ramen des Praktikums Konzepte der Regelungstechnik des IST behandelt. 
+Dabei erfolgte die aus dem Protokoll 1 gewonnene Identifikation der fehlenden Modellparameter zur vollständigen Beschreibung des Helikopter Modells. Des Weiteren wurde 
+nun dieses Modell simulativ validiert, sowie linearisiert.                       % Abstract of not more than 250 words.
+\end{abstract}
+
+\end{frontmatter}
+
+
+\section{Zweiter Labortag (L2)}
+Bei den folgenden Gleichungen handelt es sich um die aus dem ersten Protokoll modellierten Systemgleichungen des Helikopters: 
+
+\begin{equation}\label{eq:alpha}
+    \ddot{\alpha} = \frac{-(F_{\mathrm{vorne}} + F_{\mathrm{hinten}})  l_{\mathrm{heli}}  \sin(\gamma)}{I_{\alpha}}
+\end{equation}
+
+\begin{equation}
+    \ddot{\beta} = \frac{(F_{\mathrm{vorne}} + F_{\mathrm{hinten}})  l_{\mathrm{heli}}  \cos(\gamma) - F_{\mathrm{g}}  l_{mmp}  \cos(\beta)}{I_{\beta}}
+\end{equation}
+
+\begin{equation}\label{eq:gamma}
+\ddot{\gamma} = \frac{(F_{\mathrm{vorne}} - F_{\mathrm{hinten}})  l_{rotor}}{I_{\gamma}}
+\end{equation}
+
+Mit
+\begin{equation}
+F_{\mathrm{g}} = m_{\mathrm{mmp}}g
+\label{eq:F_g}
+\end{equation}
+
+Wie bereits in Protkoll 1 beschrieben, fehlen nun nurnoch wenige Werte zur vollständigen Systemidentifikation. Hier macht sich nun der große Vorteil der CAD Modelle zu Nutzen,
+da keinerleich Trägheitstensoren oder Gesamtmassen bestimmt werden müssen. Diese können direkt aus dem CAD Modell entnommen werden. Dies ist äußerst hilfreich, da die experimentelle 
+Bestimmung der Trägheitstensoren sowohl aufwändig als auch fehleranfällig ist. Daher wird davon ausgegangen, dass das Modell auch in seiner bereits Vereinfachten Form bereits
+eine gute Systembeschreibung des realen Systems darstellt. 
+
+Die einzigen zu bestimmenden Systemparameter sind somit die Spannung-Kraft Kennlinien $F_{vorne}$ und $F_{hinten}$ der Rotoren. 
+Dafür wurde der reale Helikopter auf \(\beta = 0\) fixiert. Die einzelnen Rotoren wurden nun einzeln geprüft, da davon auszugehen ist, dass die Rotoren unterschiedliche Kennlinien liefern könnten. 
+Die Rotor-Einheit wurde nun von unten auf eine Waage gelegt und von oben mit einem Gewicht beschwert. Nun wurden verschiedene Spannungslevel angelegt und die jeweilige Differenz der Waage abgelesen.
+Mit dieser Methode konnte demnach über die Differenz der Gewichtskraft ein Rückschluss auf die durch den Rotor erzeugte Auftriebskraft gezogen werden.
+\begin{equation}
+F = m g
+\end{equation}
+Dabei ist $g = 9.81\,\mathrm{m/s^2}$ die Gewichtskraft.
+Die so erhaltenen Messwerte wurden in Matlab ausgewertet und eine lineare Regression durchgeführt, um die Spannung-Kraft Kennlinie zu bestimmen.
+
+Hier die Spannungs-Kraft kennlinie einfügen: 
+TODO
+
+Beschreiben dass wir für beide Rotoren die gleiche Kraftlinine annehmen und der Regler dies kompensiert TODO
+
+Damit wurden sind nun alle Systemparameter bekannt und das Modell kann im folgenden auf Simulink implementiert und simulativ validiert werden.
+Darauf wird in folgenden eingegangen.
+
+
+\section{Zweite Hausaufgabe (H2)}
+
+Wie bereits in Protokoll 1 diskutiert, handelt es sich bereits um ein stark vereinfachtes Modell des Helikopters. Da die Auswirkung des Winkels $\beta$ auf die Beschleunigung $\ddot{\alpha}$ vernachlässigt wird,
+muss im stetig in Betracht gezogen werden, diese Modellrekuktion anzupassen, sobald sich diese Vernachlässigung als problematisch herausstellt. 
+
+Zunäcsht wurden nun die nichtlinearen Systemgleichungen \eqref{eq:alpha}--\eqref{eq:gamma} in Simulink implementiert und simulativ validiert.
+
+Hier nun die Simulink Diagramme einfügen: TODO
+
+Simulink Diagramme beschreiben und bewerten TODO
+
+Des Weiteren wurden nun die Gleichungen linearisiert, und direkt in Zustandsraum gebracht. 
+
+Dafür wurden die Systemgleichungen \eqref{eq:alpha}--\eqref{eq:gamma} in Matlab linearisiert. 
+
+Als Arbeitspunkt wurde .... TODO
+
+Hier nun die linearisierten Gleichungen einfügen: TODO
+
+Zustandsraum einfügen: TODO
+
+Die Darstellung in Zustandsraum ist essentiell, da sie sowohl die 
+Grundlage für den späteren linearen Regelerentwurf darstellt, als auch Systemtheoretische Eigenschaften des Systems aufzeigt.
+So liegen beispielsweise die Systempole des linearten Systems bei 
+
+Systempole ? Systempole bewerten TODO
+Beobachtbarkeit und Steuerbarkeit (können wir ja einfach sagen dass wirs geprüft haben und die Bedingungen erfüllt sind?)TODO
+
+
+\section{Kommentare und Ausblick auf L3}
+Hier nun beschreiben was im nächsten labor gemacht wird TODO
+
+\bibliography{references}
+
+
+\end{document}
+
+
