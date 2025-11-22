@@ -108,12 +108,40 @@ F = m g
 \end{equation}
 Dabei ist $g = 9.81\,\mathrm{m/s^2}$ die Gewichtskraft.
 Die so erhaltenen Messwerte wurden in Matlab ausgewertet und eine lineare Regression durchgeführt, um die Spannung-Kraft Kennlinie zu bestimmen.
+Die so erhaltene Motorkennlinie ist in Abbildung \ref{fig:Motorkennlinie} dargestellt.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Motorkennlinie_1.jpg}
+    \caption{Motorkennlinie}
+    \label{fig:Motorkennlinie}
+\end{figure}
 
-Hier die Spannungs-Kraft kennlinie einfügen: 
-TODO
+Die erhaltene Motorkennlinie wird hierbei aufgrund sehr ähnlicher Messwerte, welche in der Abbildung
+\ref{fig:Motorkennlinie} in Grün (Rotor vorne) und Rot (Rotor hinten) dargestellt sind für beide Rotoren gleich angenommen.
+Um daraus eine Kennlinie bestimmen zu können, werden hierbei die jeweiligen Mittelwerte der Messungen berechnet, was ebenfalls Messungenauigkeiten der Waage und die unterschiedliche Positionierung des Rotors auf der Waage kompensiert.
+Mit Hilfe der $polyfit$ Funktion in Matlab kann schließlich das Polynom 3. Ordnung bestimmt werden:
+\begin{equation}
+F_{\mathrm{Rotor}} = 0.000499 U^3 - 0.002815 U^2 + 0.0315 U -0.0210
+\end{equation}
 
-Es wurden für beide Rotoren die gleichen Kennlinen angenommen. Dies hat verschiedene Gründe. Zum einen sind die gemessenen Kennlinien sehr änhlich, zum anderen hat das gewählte Verfahren zur Bestimmung der Kennlinie eine starke Messungenauigkeit. Zum einen ist die genutzte Waage alt und ungenau, zum anderen ist die Positionierung des Rotors auf der Waage nicht exakt reproduzierbar, was zu weiteren Messfehlern führt. Die Ungenauigkeiten in der Kraftmessung werden jedoch durch den Regler kompensiert und führen aufgrund eines Integratoranteils im Reglerverhalten zu keinen bleibenden Regelabweichungen.
+Da im späteren Verlauf des Praktikums der Regler allerdings mit Kräften arbeitet und der Versuchsstand mit einer Spannung angesteuert wird, muss die Kennlinie invertiert werden.
+Da das invertieren eines Polynoms 3. Ordnung analytisch sehr aufwändig, bis unmöglich ist, wurde dies durch eine erneute Polynomapproximation 3. Ordnung durchgeführt.
+Die daraus gewonnene invertierte Motorkennlinie ist in Abbildung \ref{fig:Motorkennlinie_inv} dargestellt.
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Motorkennlinie_2.jpg}
+    \caption{Motorkennlinie invertiert}
+    \label{fig:Motorkennlinie_inv}
+\end{figure}
+
+und wird durch das Polynom
+\begin{equation}
+U_{\mathrm{Rotor}} = 24.047576 F^3 -45.530359 F^2 + 34.5412 F 1.0596
+\end{equation}
+beschrieben. 
+
+Die Ungenauigkeiten, welche in der Kraftmessung zu sehen sind werden jedoch im Folgenden durch den Regler kompensiert und führen aufgrund eines Integratoranteils im Reglerverhalten zu keinen bleibenden Regelabweichungen.
 Damit wurden sind nun alle Systemparameter bekannt und das Modell kann im folgenden auf Simulink implementiert und simulativ validiert werden.
 Darauf wird in folgenden eingegangen.
 
@@ -123,11 +151,21 @@ Darauf wird in folgenden eingegangen.
 Wie bereits in Protokoll 1 diskutiert, handelt es sich bereits um ein stark vereinfachtes Modell des Helikopters. Da die Auswirkung des Winkels $\beta$ auf die Beschleunigung $\ddot{\alpha}$ vernachlässigt wird,
 muss im stetig in Betracht gezogen werden, diese Modellrekuktion anzupassen, sobald sich diese Vernachlässigung als problematisch herausstellt. 
 
-Zunäcsht wurden nun die nichtlinearen Systemgleichungen \eqref{eq:alpha}--\eqref{eq:gamma} in Simulink implementiert und simulativ validiert.
+Zunächst wurden nun die nichtlinearen Systemgleichungen \eqref{eq:alpha}--\eqref{eq:gamma} wie in Abb. \ref{fig:Simulink_Bewegungsgleichungen} in Simulink implementiert.
 
-Hier nun die Simulink Diagramme einfügen: TODO
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Simulink_Bewegungsgleichungen.png}
+    \caption{Bewegungsgleichungen implementiert in Simulink}
+    \label{fig:Simulink_Bewegungsgleichungen}
+\end{figure}
 
-Simulink Diagramme beschreiben und bewerten TODO
+Die Bewegungsgleichungen wurden hierbei in einem Matlab Function Block implementiert. Dieser Block erhält dabei die beiden Eingangskräfte der Rotoren
+$F_{\mathrm{vorne}}$ und $F_{\mathrm{hinten}}$ sowie die aktuellen Winkel $\beta$ und $\gamma$ als Eingangsgrößen. Durch Doppelintegratoren, werden die berechneten Winkelbeschleunigungen in ihre jeweiligen Positionen 
+umgewandelt, welche ebenfalls teilweise zurückgeführt werden.
+
+Um das Modell zu validieren, wurden Testszenarien erstellt, in welchen die Eingangsgrößen, als auch die Anfangsbedingungen der Integratoren variiert wurden.
+Die so erhaltenen Simulationsergebnisse wurden anschließend durch anliegende Scopes an den Ausgängen Analysiert und auf ihre physikalische Korrektheit überprüft.
 
 Des Weiteren wurden nun die Gleichungen linearisiert, und direkt in Zustandsraum gebracht. Im Folgenden werden folgende Konventionen definiert:
 \begin{equation}
@@ -264,10 +302,12 @@ Systemtheoretisch ist das System sowohl vollständig steuer- als auch beobachtba
 
 
 \section{Kommentare und Ausblick auf L3}
-Hier nun beschreiben was im nächsten labor gemacht wird TODO
+Obwohl aufgrund von ungenauen Messwerkzeugen nur eine grobe Abschätzung der Motorkennlinie möglich war, konnte dennoch eine plausible Kennlinie bestimmt werden. 
 
+Im Ausblick auf den nächsten Labortag (L3) wird nun der Reglerentwurf anhand des linearisierten Modells erfolgen. Wird hierfür ein zustandsregler verwendet, so muss hierfür 
+noch ein geeigneter Zustandsbeobachter entworfen werden, da nicht alle Zustände des Systems messbar sind. Ebenfalls wird es in Betracht gezogen, die Regelstruktur durch eine Vorsteuerung zu ergänzen.
+Im Anschluss darauf werden passende Parameter für den Regler, als auch für den Beobachter gesucht.
 \bibliography{references}
-
 
 \end{document}
 
