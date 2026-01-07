@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<SimscapeMultibodyImportXML version="2.0" xmlns="urn:mathworks:SimscapeMultibody:import" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<Created by="" on="11/24/25||21:00:36" using="Simscape Multibody Link Version 7.4" from="SolidWorks 30.5.0"/>
+<ModelUnits mass="kilogram" length="millimeter"/>
+<DataUnits mass="kilogram" length="meter"/>
+<RootAssembly name="Heli_modell_ganz" uid="Heli_modell_ganz" version="180">
+<AssemblyFile name="Heli_modell_ganz.SLDASM" type="SolidWorks Assembly"/>
+<InstanceTree>
+<Instance name="Mast-1" uid="Mast-1" entityUid="Mast" rigid="true">
+<Transform>
+<Rotation>0.97434707275268184 0 0.22505062056853009 0 1 0 -0.22505062056853009 0 0.97434707275268184</Rotation>
+<Translation>-0.28100131391702687 0.3517510024046776 0.075882206873575123</Translation>
+</Transform>
+<Instance name="Plastikblock^Mast-1" uid="Plastikblock^Mast-1" entityUid="Plastikblock^Mast*:*Standard">
+<Transform>
+<Rotation>1 0 0 0 1 0 0 0 1</Rotation>
+<Translation>0 0 0</Translation>
+</Transform>
+</Instance>
+</Instance>
+<Instance name="Arm-1" uid="Arm-1" entityUid="Arm" rigid="true">
+<Transform>
+<Rotation>0.97434707275268184 -1.3054271592545479e-16 0.22505062056852884 0 0.99999999999999989 3.4348138829075388e-16 -0.22505062056852887 -3.2237246649044702e-16 0.97434707275268173</Rotation>
+<Translation>-0.94615743519102269 0.38985274858539432 -0.0067344046242086286</Translation>
+</Transform>
+<Instance name="Nebenarm^Arm-2" uid="Nebenarm^Arm-2" entityUid="Nebenarm^Arm*:*Standard">
+<Transform>
+<Rotation>0.96126169593831878 -0.27563735581699955 1.3877787807814457e-15 0.2756373558169995 0.96126169593831878 -1.7593366363334391e-15 -8.6042284408449632e-16 2.0816681711721685e-15 0.99999999999999956</Rotation>
+<Translation>0.86410401811676096 -0.0072016062481180532 0.007146015692703428</Translation>
+</Transform>
+</Instance>
+<Instance name="Hauptarm^Arm-1" uid="Hauptarm^Arm-1" grounded="true" entityUid="Hauptarm^Arm*:*Standard">
+<Transform>
+<Rotation>1 0 0 0 1 0 0 0 1</Rotation>
+<Translation>0 0 0</Translation>
+</Transform>
+</Instance>
+<Instance name="Gegengewicht^Arm-1" uid="Gegengewicht^Arm-1" entityUid="Gegengewicht^Arm*:*Standard">
+<Transform>
+<Rotation>0.96126169593831867 -0.27563735581699944 2.7838880345407731e-16 0.27563735581699944 0.96126169593831878 -2.0785129918703495e-15 3.0531133177191805e-16 2.0747292772682617e-15 0.99999999999999989</Rotation>
+<Translation>1.0686892468130105 0.042090407623052994 0</Translation>
+</Transform>
+</Instance>
+<Instance name="Gelenkblock_1^Arm-1" uid="Gelenkblock_1^Arm-1" entityUid="Gelenkblock_1^Arm*:*Standard">
+<Transform>
+<Rotation>1 -5.2735593669694936e-16 -1.494222785137315e-16 1.4942227851373153e-16 0 0.99999999999999978 -5.2735593669694936e-16 -0.99999999999999989 0</Rotation>
+<Translation>0.51678354498231283 0.018999999999999961 0.060101088945522907</Translation>
+</Transform>
+</Instance>
+<Instance name="Magnet^Arm-1" uid="Magnet^Arm-1" entityUid="Magnet^Arm*:*Standard">
+<Transform>
+<Rotation>1 0 0 0 1 0 0 0 1</Rotation>
+<Translation>0.24416662483208929 -0.1470482249767697 0</Translation>
+</Transform>
+</Instance>
+<Instance name="Gelenkblock_2^Arm-1" uid="Gelenkblock_2^Arm-1" entityUid="Gelenkblock_2^Arm*:*Standard">
+<Transform>
+<Rotation>1 0 0 0 1 0 0 0 1</Rotation>
+<Translation>0 -0.053205512040213121 -0.040234311838549808</Translation>
+</Transform>
+</Instance>
+</Instance>
+<Instance name="Heli-1" uid="Heli-1" entityUid="Heli" rigid="true">
+<Transform>
+<Rotation>0.97434707275268184 -2.3538029164660301e-16 0.2250506205685284 1.5265566588595902e-16 1 3.3306690738754696e-16 -0.22505062056852837 -2.4980018054066022e-16 0.97434707275268195</Rotation>
+<Translation>-0.81456685722527011 0.30774729096565578 0.1237046860145477</Translation>
+</Transform>
+<Instance name="Motor2^Heli-1" uid="Motor2^Heli-1" entityUid="Motor2^Heli*:*Standard">
+<Transform>
+<Rotation>1 0 -1.2414513861358506e-12 0 1 0 1.2414513861358506e-12 0 1</Rotation>
+<Translation>-0.219080859639877 0.013105457619738525 -0.025199876479735803</Translation>
+</Transform>
+</Instance>
+<Instance name="Rotor1^Heli-3" uid="Rotor1^Heli-3" entityUid="Rotor1^Heli*:*Standard">
+<Transform>
+<Rotation>1 0 0 0 1 0 0 0 1</Rotation>
+<Translation>-0.22740211380780084 0.082105457619738587 -0.37523669315516683</Translation>
+</Transform>
+</Instance>
+<Instance name="Schiene^Heli-1" uid="Schiene^Heli-1" entityUid="Schiene^Heli*:*Standard">
+<Transform>
+<Rotation>1 0 0 0 1 0 0 0 1</Rotation>
+<Translation>-0.046238096259912931 0.007105457619738631 0.0065645694109155023</Translation>
+</Transform>
+</Instance>
+<Instance name="Gelenkblock3^Heli-1" uid="Gelenkblock3^Heli-1" entityUid="Gelenkblock3^Heli*:*Standard">
+<Transform>
+<Rotation>1 0 0 0 1 0 0 0 1</Rotation>
+<Translation>-0.24735663493708171 0.013105457619738636 -0.1869583719328653</Translation>
+</Transform>
+</Instance>
+<Instance name="Motor1^Heli-1" uid="Motor1^Heli-1" entityUid="Motor1^Heli*:*Standard">
+<Transform>
+<Rotation>1 0 0 0 1 0 0 0 1</Rotation>
+<Translation>-0.21908085963993273 0.013105457619738581 -0.38019987647955428</Translation>
+</Transform>
+</Instance>
+<Instance name="Rotor2^Heli-3" uid="Rotor2^Heli-3" entityUid="Rotor2^Heli*:*Standard">
+<Transform>
+<Rotation>1 0 0 0 1 0 0 0 1</Rotation>
+<Translation>-0.22740211380780684 0.082105457619738531 -0.020236693155163091</Translation>
+</Transform>
+</Instance>
+</Instance>
+<Instance name="Standfuss-1" uid="Standfuss-1" grounded="true" entityUid="Standfuss*:*Standard">
+<Transform>
+<Rotation>1 0 0 0 1 0 0 0 1</Rotation>
+<Translation>-0.096749109620346441 -0.0031472514146055688 -0.078048277485830014</Translation>
+</Transform>
+</Instance>
+</InstanceTree>
+<Constraints>
+<Concentric name="Konzentrisch1">
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>Mast-1</Uid>
+<Uid>Plastikblock^Mast-1</Uid>
+</InstancePath>
+<Position>0.019000000000000017 -0.34989825381928319 -0.22069105144127976</Position>
+<Axis>0 1 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>Standfuss-1</Uid>
+</InstancePath>
+<Position>-0.21540626799516099 0.005000000000000001 -0.065375157385920341</Position>
+<Axis>0 1 0</Axis>
+</ConstraintGeometry>
+</Concentric>
+<Coincident name="Deckungsgleich4">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>Mast-1</Uid>
+<Uid>Plastikblock^Mast-1</Uid>
+</InstancePath>
+<Position>0.019000000000000017 -0.34989825381928319 -0.22069105144127976</Position>
+<Axis>0 -1 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>Standfuss-1</Uid>
+</InstancePath>
+<Position>-0.21540626799516099 0.005000000000000001 -0.065375157385920341</Position>
+<Axis>0 1 0</Axis>
+</ConstraintGeometry>
+</Coincident>
+<Concentric name="Konzentrisch2">
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>Mast-1</Uid>
+<Uid>Plastikblock^Mast-1</Uid>
+</InstancePath>
+<Position>0.019000000000000017 0.099101746180716821 -0.17668905144127978</Position>
+<Axis>0 0 -1.0000000000000002</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>Arm-1</Uid>
+<Uid>Gelenkblock_1^Arm-1</Uid>
+</InstancePath>
+<Position>0.13171645501768736 0.074601088945522753 0.042000000000000037</Position>
+<Axis>0 -1 0</Axis>
+</ConstraintGeometry>
+</Concentric>
+<Distance name="Abstand1">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>Arm-1</Uid>
+<Uid>Hauptarm^Arm-1</Uid>
+</InstancePath>
+<Position>0 0 0.019000000000000017</Position>
+<Axis>0 0 0.99999999999999978</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>Mast-1</Uid>
+<Uid>Plastikblock^Mast-1</Uid>
+</InstancePath>
+<Position>0.038000000000000034 0.00010174618071684405 -0.18669105144127973</Position>
+<Axis>0 0 -1.0000000000000002</Axis>
+</ConstraintGeometry>
+</Distance>
+<Concentric name="Konzentrisch3">
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>Arm-1</Uid>
+<Uid>Gelenkblock_2^Arm-1</Uid>
+</InstancePath>
+<Position>0.0050000000000000044 0.025205512040213152 0.049734311838549788</Position>
+<Axis>1 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="cylinder">
+<InstancePath>
+<Uid>Heli-1</Uid>
+<Uid>Gelenkblock3^Heli-1</Uid>
+</InstancePath>
+<Position>0.15149613878896384 0.040999999999999981 0.039750884564307365</Position>
+<Axis>0.99999999999999989 0 0</Axis>
+</ConstraintGeometry>
+</Concentric>
+<Distance name="Abstand2">
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>Heli-1</Uid>
+<Uid>Gelenkblock3^Heli-1</Uid>
+</InstancePath>
+<Position>0.15599713878896393 0.043999999999999984 0.034750884564307361</Position>
+<Axis>-0.99999999999999989 0 0</Axis>
+</ConstraintGeometry>
+<ConstraintGeometry geomType="plane">
+<InstancePath>
+<Uid>Arm-1</Uid>
+<Uid>Gelenkblock_2^Arm-1</Uid>
+</InstancePath>
+<Position>0.0050000000000000044 0.025205512040213152 0.049734311838549788</Position>
+<Axis>1 0 0</Axis>
+</ConstraintGeometry>
+</Distance>
+</Constraints>
+</RootAssembly>
+<Assemblies>
+<Assembly name="Mast" uid="Mast" version="125">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<AssemblyFile name="Mast.SLDASM" type="SolidWorks Assembly"/>
+</Assembly>
+<Assembly name="Arm" uid="Arm" version="436">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<AssemblyFile name="Arm.SLDASM" type="SolidWorks Assembly"/>
+</Assembly>
+<Assembly name="Heli" uid="Heli" version="459">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<AssemblyFile name="Heli.SLDASM" type="SolidWorks Assembly"/>
+</Assembly>
+</Assemblies>
+<Parts>
+<Part name="Gegengewicht^Arm" uid="Gegengewicht^Arm*:*Standard" version="109">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Arm.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>1.9180000000000001</Mass>
+<CenterOfMass>0.072083335733170065 0.015338806627033406 0.028499999999999998</CenterOfMass>
+<Inertia>0.0010385969999999998 0.0013024818333333332 0.0013024818333333328 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="Gegengewicht-Arm_Standard_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Diffuse r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Specular r="0.396078431372549" g="0.40980392156862744" b="0.46666666666666667" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="Gelenkblock3^Heli" uid="Gelenkblock3^Heli*:*Standard" version="124">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Heli.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.026000000000000002</Mass>
+<CenterOfMass>0.16099713878896374 0.013977593426556368 0.039750884564307372</CenterOfMass>
+<Inertia>3.9894332262055405e-06 1.7837220299337784e-06 3.5344716612268022e-06 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="Gelenkblock3-Heli_Standard_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Diffuse r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Specular r="0.396078431372549" g="0.40980392156862744" b="0.46666666666666667" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="Gelenkblock_1^Arm" uid="Gelenkblock_1^Arm*:*Standard" version="135">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Arm.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.029000000000000001</Mass>
+<CenterOfMass>0.13171645501768733 0.050601088945522767 0.010391543386700201</CenterOfMass>
+<Inertia>2.2713244794954297e-06 2.8831051326412022e-06 2.2879765222016884e-06 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="Gelenkblock_1-Arm_Standard_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Diffuse r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Specular r="0.396078431372549" g="0.40980392156862744" b="0.46666666666666667" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="Gelenkblock_2^Arm" uid="Gelenkblock_2^Arm*:*Standard" version="116">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Arm.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.106</Mass>
+<CenterOfMass>0.012499999999999997 0.036268568358369335 0.04973431183854983</CenterOfMass>
+<Inertia>2.9006503001466599e-05 1.9792448417368172e-05 2.4960477417953974e-05 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="Gelenkblock_2-Arm_Standard_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Diffuse r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Specular r="0.396078431372549" g="0.40980392156862744" b="0.46666666666666667" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="Hauptarm^Arm" uid="Hauptarm^Arm*:*Standard" version="114">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Arm.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.377</Mass>
+<CenterOfMass>0.44799999999999995 0.0094999999999999998 0.0094999999999999998</CenterOfMass>
+<Inertia>2.2682833333333326e-05 0.025233144083333322 0.025233144083333322 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="Hauptarm-Arm_Standard_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Diffuse r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Specular r="0.396078431372549" g="0.40980392156862744" b="0.46666666666666667" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="Magnet^Arm" uid="Magnet^Arm*:*Standard" version="107">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Arm.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.070000000000000007</Mass>
+<CenterOfMass>-0.10914734735610881 0.095693011973678271 0.009499999999999998</CenterOfMass>
+<Inertia>6.381954521981017e-05 2.4781400540538195e-05 8.4389279093681686e-05 0 0 -3.5022960449852616e-05</Inertia>
+</MassProperties>
+<GeometryFile name="Magnet-Arm_Standard_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Diffuse r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Specular r="0.396078431372549" g="0.40980392156862744" b="0.46666666666666667" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="Motor1^Heli" uid="Motor1^Heli*:*Standard" version="115">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Heli.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.28700000000000003</Mass>
+<CenterOfMass>0.13272136349181463 0.034500000000000003 0.055492389110996444</CenterOfMass>
+<Inertia>0.00014115018750000008 5.4565875000000099e-05 0.00014115018750000008 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="Motor1-Heli_Standard_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Diffuse r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Specular r="0.396078431372549" g="0.40980392156862744" b="0.46666666666666667" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="Motor2^Heli" uid="Motor2^Heli*:*Standard" version="115">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Heli.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.28700000000000003</Mass>
+<CenterOfMass>0.13272136349181463 0.034500000000000003 0.055492389110996444</CenterOfMass>
+<Inertia>0.00014115018750000008 5.4565875000000099e-05 0.00014115018750000008 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="Motor2-Heli_Standard_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Diffuse r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Specular r="0.396078431372549" g="0.40980392156862744" b="0.46666666666666667" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="Nebenarm^Arm" uid="Nebenarm^Arm*:*Standard" version="110">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Arm.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.13800000000000001</Mass>
+<CenterOfMass>0.15249999999999997 0.017648936170212765 -0.014497079522490698</CenterOfMass>
+<Inertia>1.6058154368492555e-05 0.0010778165771842458 0.0010778165771842458 4.7244228157537258e-06 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="Nebenarm-Arm_Standard_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Diffuse r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Specular r="0.396078431372549" g="0.40980392156862744" b="0.46666666666666667" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="Plastikblock^Mast" uid="Plastikblock^Mast*:*Standard" version="115">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Mast.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.28300000000000003</Mass>
+<CenterOfMass>0.019 5.0942611665438837e-06 -0.22069105144127971</CenterOfMass>
+<Inertia>0.0031867971777174106 0.00032525832315865075 0.0029178187334099421 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="Plastikblock-Mast_Standard_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Diffuse r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Specular r="0.396078431372549" g="0.40980392156862744" b="0.46666666666666667" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="Rotor1^Heli" uid="Rotor1^Heli*:*Standard" version="109">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Heli.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.20000000000000001</Mass>
+<CenterOfMass>0.14104261765968285 0.013500000000000003 0.05052920578660907</CenterOfMass>
+<Inertia>0.00066194999999999991 0.0012996000000000001 0.00066195000000000023 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="Rotor1-Heli_Standard_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Diffuse r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Specular r="0.396078431372549" g="0.40980392156862744" b="0.46666666666666667" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="Rotor2^Heli" uid="Rotor2^Heli*:*Standard" version="109">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Heli.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.20000000000000001</Mass>
+<CenterOfMass>0.14104261765968285 0.013500000000000003 0.05052920578660907</CenterOfMass>
+<Inertia>0.00066194999999999991 0.0012996000000000004 0.00066195000000000034 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="Rotor2-Heli_Standard_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Diffuse r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Specular r="0.396078431372549" g="0.40980392156862744" b="0.46666666666666667" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="Schiene^Heli" uid="Schiene^Heli*:*Standard" version="110">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Heli.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.32200000000000001</Mass>
+<CenterOfMass>-0.040121399888204755 0.0029999999999999996 -0.15377205677947325</CenterOfMass>
+<Inertia>0.006575803499999997 0.0066446309999999972 7.0759499999999999e-05 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="Schiene-Heli_Standard_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Diffuse r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Specular r="0.396078431372549" g="0.40980392156862744" b="0.46666666666666667" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+<Part name="Standfuss" uid="Standfuss*:*Standard" version="108">
+<ModelUnits mass="kilogram" length="millimeter"/>
+<PartFile name="Standfuss.SLDPRT" type="SolidWorks Part"/>
+<MassProperties>
+<Mass>0.050000000000000003</Mass>
+<CenterOfMass>-0.21540626799516099 0.0099851865258709892 -0.065375157385920341</CenterOfMass>
+<Inertia>4.3580830824954745e-05 8.3823412435767979e-05 4.3580830824954651e-05 0 0 0</Inertia>
+</MassProperties>
+<GeometryFile name="Standfuss_Standard_sldprt.STEP" type="STEP"/>
+<VisualProperties>
+<Ambient r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Diffuse r="0.792156862745098" g="0.81960784313725488" b="0.93333333333333335" a="1"/>
+<Specular r="0.396078431372549" g="0.40980392156862744" b="0.46666666666666667" a="1"/>
+<Emissive r="0" g="0" b="0" a="1"/>
+<Shininess>0.3125</Shininess>
+</VisualProperties>
+</Part>
+</Parts>
+</SimscapeMultibodyImportXML>

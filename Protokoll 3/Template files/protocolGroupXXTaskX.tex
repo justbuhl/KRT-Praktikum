@@ -1,0 +1,283 @@
+\documentclass{ifacconf}
+
+\usepackage{natbib}            % you should have natbib.sty
+\usepackage[utf8]{inputenc}    % Eingabe von Umlauten im Editor, dieser sollte dann auch auf utf8 Encoding eingestellt sein
+\usepackage{graphicx}          % Include this line if your 
+                               % document contains figures,
+%\usepackage[dvips]{epsfig}    % or this line, depending on which
+                               % you prefer.
+                               
+\usepackage{units}
+
+% for German
+% \usepackage{ngerman}           % neue Deutsche Rechtschreibung, Silbentrennung
+% \usepackage[T1]{fontenc}       % Trennung mit Umlauten
+
+% to include tikz pictures of figure created with matlab2tikz, see also file ``plotFigureTest.m''
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}  % use newest version of pgfplots
+\usepackage{float}
+\usepackage{amsmath}  % useful for math
+
+% to include the legend into the caption. The commands are
+%\mlLineLegend{red}
+%\mlLineLegendDashed{red}
+%\mlLineLegendDotted{red}
+%\mlLineLegendDashDotted{red}
+%\mlPointLegend{red}
+\newlength{\mlLegendThickness}
+\setlength{\mlLegendThickness}{0.4mm}
+\newlength{\mlLegendHeight}
+\setlength{\mlLegendHeight}{0.6ex}
+\newcommand{\mlLineLegend}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{3mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlLineLegendDashed}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlLineLegendDotted}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlLineLegendDashDotted}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlPointLegend}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-0.75mm}
+}}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{KRT Praktikum: Protokoll 3 - L3 und H3}
+
+\thanks[footnoteinfo]{Institute for Systems Theory and Automatic Control, University of Stuttgart, Germany. \textit{http://www.ist.uni-stuttgart.de}}
+
+% include all authors, underline corresponding author
+\author{Kimon Beyer, Yves Gaßmann, Justin Buhl} 
+% \author{}
+
+\begin{abstract}        
+Im folgenden Protokoll werden die Ergebnisse des dritten Labortages sowie der dritten Hausaufgabe im Ramen des Praktikums Konzepte der Regelungstechnik des IST behandelt. 
+Dabei behandelt das Protokoll die Ausarbeitung und Validierung eines Reglerentwurfs für das aus Protokoll 2 extrahierte Helikoptermodell 
+sowie seine simulative als auch erste praktische Validierung.                     % Abstract of not more than 250 words.
+\end{abstract}
+
+\end{frontmatter}
+
+
+\section{Dritter Labortag (L3)}
+Für den folgenden Reglerentwurf wird das aus Protokoll 2 gewonnene lineare Helikoptermodell genutzt. Wichtig ist hierbei zu beachten,
+dass der Reglerentwurf auf dem linearen Modell basiert und somit bei der Implementierung auf das nichtlineare Modell noch der 
+Arbeitspunkt bzw. Linearisierungspunkt entsprechend verrechnet werden muss. 
+Die Zustände sind zur Erinnerung wie folgt definiert:
+\begin{equation}
+    x = \begin{bmatrix} \alpha & \beta & \gamma & \dot{\alpha} & \dot{\beta} & \dot{\gamma} \end{bmatrix}^T
+\end{equation}
+\begin{equation}
+    u = \begin{bmatrix} U_{\mathrm{vorne}} & U_{\mathrm{hinten}} \end{bmatrix}^T
+\end{equation}
+\begin{equation}
+    y = \begin{bmatrix} \alpha & \beta & \gamma \end{bmatrix}^T
+\end{equation}
+
+Für den geschlossenen Regelkreis ergibt sich dann mit Regler unter Berücksichtigung des Arbeitspunktes: 
+\begin{equation}
+\Delta u = -K\,\Delta x,\qquad \Delta x = x - x_0 ,\qquad \Delta u = u - u_0
+\end{equation}
+wobei $x_0$ und $u_0$ die Arbeitspunkte sind. Die resultierenden geschlossenen Regelkreise werden in den folgenden Abschnitte noch 
+dargestellt.
+
+Zur Implementierung und Erprobung unseres Regelungsentwurf wurde nun das CAD Modell, 
+das bereits zur Modellierung verwendet worde ist, in 
+Matlab Simulink exportiert. Dies hat den Vorteil, dass das Modell möglichst nah an den realen Versuchsstand angenähert wird, wodurch
+eine realistischere Simulation des Systemverhaltens \\ ermöglicht wird. Des Weiteren ist es möglich, innerhalb des gleichen Simulink Modells zwischen
+dem Modell und der realen Anlage umzuschalten, wodurch eine schnelle Validierung des Reglerentwurfs an der realen Anlage ermöglicht wird.
+
+\begin{figure}[h!]
+    \centering
+    % Begrenze Breite und Höhe, behalte Seitenverhältnis bei, sodass das ganze Bild sichtbar und nicht zu groß ist
+    \includegraphics[width=0.5\textwidth,height=0.6\textheight,keepaspectratio]{modell_simulink.png} % Pfad und Dateiname anpassen
+    \caption{Nichtlineares CAD Modell zur Simulation in Simulink.}
+    \label{fig:helicopter_cad}
+\end{figure}
+
+\subsection{Reglerentwurf}
+
+Im Wesentlichen bestehen zwei mögliche Reglerentwurfsverfahren. Regler im Frequenzbereich und Regler im Zustandsraum. 
+Da es sich um ein MIMO-System handelt, 
+ist ein Reglerentwurf mittels Loopshaping im Frequenzbereich aufwändig und mit schwierigen Stabilitäts-/Gütenachweisen verbunden. Da das System
+außerdem schon im Zustandsraum entwickelt worden ist, gestaltet sich ein Reglerentwurf im Zustandsraum als bessere alternative. 
+Hier besteht vor allem die Möglichkeit des LQR Reglerentwurfs. Durch Matlab Funktionen und Lösen der Ricatti-Gleichungen,
+wird die optimale stabilisierende Zustandsrückführung berechnet. Zu beachten ist jedoch, dass durch die Nutzung eines Beobachters, die garantierten
+Robustheitseigenschaften des LQR nicht mehr gegeben sind. 
+
+Da für die Regelung ebenfalls die Winkelgeschwindigkeiten $\dot{\alpha}$, $\dot{\beta}$ und $\dot{\gamma}$ benötigt werden, der Winkel-Encoder 
+jedoch nur die Winkel $\alpha$, $\beta$ und $\gamma$ misst, müssen die Geschwindigkeiten geschätzt werden. 
+Dies realisieren wir durch einen Luenberger-Beobachter: 
+
+\begin{equation}
+\Delta\dot{\hat{x}} = A\,\Delta\hat{x} + B\,\Delta\hat{u} + L\big(\Delta y - \Delta\hat{y}\big),
+\end{equation}
+mit
+\begin{equation}
+\Delta\hat{y} = C\,\Delta\hat{x},
+\end{equation}
+und der Schätzfehler $\hat{e}=\Delta x-\Delta\hat{x}$ erfüllt
+\begin{equation}
+\dot{\hat{e}}=(A-LC)\,\hat{e}.
+\end{equation}
+
+Zur Stabilität und schnellen Konvergenz wählt man die Beobachterpole (Eigenwerte von $A-LC$) deutlich schneller als die Reglerpole (z.\,B. Faktor 5–10). Die Gewinnmatrix $L$ werden in MATLAB durch Polplacement bestimmt.
+
+\subsubsection{Anforderungen an den geschlossenen Kreis bzw. Regler}
+Gesucht wird selbstverständlich ein stabilisierender Regler, der die gegebenen Modellunsicherheiten möglichst gut kompensiert. 
+Die Performance muss dabei ausreichen gut sein, um die vorgegebene Zeit einzuhalten. Dennoch überwiegt die Anforderung an die Robustheit des Reglers.
+Denn durch die relativ stark vereinfachte Modellbildung und den gegeneben Beschränkungen für den finalen Flug, müssen unter den gegebenen Unsicherheiten
+die Beschränkungen in jedem Falle eingehalten werden. Damit die gegebenen Beschränkungen auch eingehalten werden, ist neben der robusten Stabilität auch keine 
+bleibende Regelabweichung als wichtigstes Entwurfsziel anzusehen. Denn eine bleibende Regelabweichung könnte schnell zum verletzten der BBeschränkungen, z.b in 
+der Einhaltung der Mindeshöhe führen. Die Stabilität ist im Zustandsraum einfach nachzuweisen, durch Berechnung der 
+Systempole des geschlossenen Regelkreises. Eine bleibende Regelabweichung kann ebenfalls durch hinzufügen eines bzw. mehreren Integratorzuständen erreicht werden. 
+Aussagen über Performance oder Robustheit gestalten sich jedoch schwierig. Analytische Nachweise über Robustheit oder Performance gestalten sich als sehr aufwändig,
+durch z.B Entwicklung einer M-Delta Struktur und Überprüfung der Systemnorm gegenüber bestimmten unstrukturierten Delta-Unsicherheiten. Dies ist jedoch
+sehr aufwändig und zunächst Fehleranfällig, wodurch nur die simulative Validierung, sowie die validierung am realen Teststand als realisierbare Möglichkeiten übrig bleiben.
+
+\subsubsection{LQR Entwurf}
+Im Verlauf des Protokoll wurde bereits vorweg genommen, dass sich für ein LQR-Reglerentwurf entschieden worden ist. 
+Der Vorteil besteht in der vergleichsweise einfachen Implementierung sowie den guten Regelungseigenschaften. Die garantierten
+Robustheitseigenschaften sind wie bereits erwähnt durch die Nutzung eines Beobachters nicht mehr gegeben. 
+
+Für den Entwurf eines LQR-Reglers müssen lediglich die Gewichtungsmatrizen $Q$ und $R$ festgelegt werden. Diese Matrizen bestimmen das Verhalten des Reglers und müssen sorgfältig ausgewählt werden, um die gewünschten Regelungsziele zu erreichen.
+Diese Matrizen müssen simulativ bzw. experimentell abgestimmt werden. Bei Erprobungsversuchen am realen Teststand hat sich jedoch 
+eine bemerkbare Regelabweichung abgezeichnet. Dadurch ist schnell ersichtlich geworden, dass eine Erweiterung zu einem LQI-Regler notwendig ist, 
+um die erforderlichen Regelungsziele zu erreichen. Daher wird im folgenden der LQI-Regler betrachtet, da dieser lediglich eine 
+Erweiterung des LQR-Reglers darstellt. 
+
+\subsubsection{LQI Entwurf}
+Wie bereits erwähnt, stellt der LQI-Regler eine Erweiterung des LQR-Reglers dar. Die Erweiterung geschiet hierbei durch 
+hinzunahme von so genannten Integratorzuständen für die jenigen Größen, für die die bleibende Regelabweichung eliminiert werden soll. Zu beachten ist jedoch,
+dass durch die Nutzung von Integratoren auf jeden Fall darauf geachtet wird, ein aufschwingen des Integrators zu beachten und gegebenenfalls einen Anti-Windup mit zu implementieren.
+Dadurch ergibt sich ein erweiterter Zustandsraum, der wie folgt aussieht:
+\begin{equation}
+    x = \begin{bmatrix} \alpha & \beta & \gamma & \dot{\alpha} & \dot{\beta} & \dot{\gamma} & \xi_1 & \xi_2 \end{bmatrix}^T
+\end{equation}
+
+wobei $\xi_1$ und $\xi_2$ die Integratorzustände für die Winkel $\alpha$ und $\beta$ darstellen und folgendermaßen im Zustandsraum gebildet werden:
+
+\begin{equation}
+    \xi_1 = \xi_{1,\mathrm{ref}} - \int (\alpha_{\mathrm{ref}} - \alpha)\,\mathrm{d}t
+\end{equation}
+\begin{equation}
+    \xi_2 = \xi_{2,\mathrm{ref}} - \int (\beta_{\mathrm{ref}} - \beta)\,\mathrm{d}t
+\end{equation}
+
+wobei $\xi_{1,\mathrm{ref}} = 0$ und $\xi_{2,\mathrm{ref}} = 0$.
+
+Für die Wahl der Gewichtungsmatrizen $Q$ und $R$ hat sich zunächst folgende Wahl, durch experimentelle Abstimmung am realen 
+Versuchsstand ergeben: 
+
+\begin{equation}
+\begin{split}
+Q = \operatorname{diag}\big(&50,\;5,\;0,001,\;0,001,\\
+&0,001,\;0,001,\;10,\;10\big)
+\end{split}
+\end{equation}
+\begin{equation}
+R = \operatorname{diag}\big(10,\;10\big)
+\end{equation}
+
+Mit der Wahl dieser Gewichtungsmatrizen ergeben sich folgende Regler und Beobachtungspole: 
+
+\begin{equation}
+\text{Reglerpole} = 
+\begin{bmatrix}
+-0.4472 + 0.0000\mathrm{i}\\
+-0.5246 + 0.8358\mathrm{i}\\
+-0.5246 - 0.8358\mathrm{i}\\
+-0.5625 + 1.3857\mathrm{i}\\
+-0.5625 - 1.3857\mathrm{i}\\
+-0.8454 + 0.0000\mathrm{i}\\
+-1.3553 + 0.5754\mathrm{i}\\
+-1.3553 - 0.5754\mathrm{i}
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+\text{Beobachterpole} =
+\begin{bmatrix}
+-60 + 0.0000\mathrm{i}\\
+-61 + 0.0000\mathrm{i}\\
+-62 + 0.0000\mathrm{i}\\
+-63 + 0.0000\mathrm{i}\\
+-64 + 0.0000\mathrm{i}\\
+-65 + 0.0000\mathrm{i}
+\end{bmatrix}
+\end{equation}
+
+Die Wahl der Pole kann sich jedoch noch Ändern, es ist bekannt, dass zu schnelle Beobachterpole ebenfalls zu Problemen führen kann.
+
+\subsubsection{Reglerimplementierung}
+Im folgenden wird nun die Implementierung des LQI-Reglers im Simulink Modell beschrieben.
+In Abbildung \ref{fig:simulink_overview} ist das Gesamtsystem dargestellt. In \ref{fig:simulink_controler} ist der Reglerblock dargestellt. Hier ist 
+ebenfalls die Implementierung des Anti-Windups zu sehen. In \ref{fig:simulink_observer} ist der Beobachterblock dargestellt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth,keepaspectratio]{simulink_overview.png}
+    \caption{Übersicht: Simulink-Implementierung des Gesamtsystems.}
+    \label{fig:simulink_overview}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth,keepaspectratio]{controler.png}
+    \caption{Übersicht: Simulink-Implementierung des Reglers.}
+    \label{fig:simulink_controler}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth,keepaspectratio]{observer.png}
+    \caption{Übersicht: Simulink-Implementierung des Beobachters.}
+    \label{fig:simulink_observer}
+\end{figure}
+
+\subsection{Simulationsergebnisse}
+
+TODO: SImulativ wurde erstmal LQR validiert. 
+TODO: Ergebnisse zeigen.
+da dies funktioniert, sind wir direkt zur realen Plant über gegangen, dort mussten wir aber die Gains für R anpassen.
+
+\subsection{Praktische Validierung}
+
+Aufgrund unseres schnellen Vorankommens war es uns möglich den Reglerentwurf direkt an der realen Anlage zu validieren. Nachdem wie bereits 
+beschrieben der LQR-Ansatz simulativ validiert wurde, wurde der LQR auch an der realen Anlage implementiert und validiert. Im Anschluss 
+folgte die Erweiterung auf den LQI-Regler, welcher ebenfalls direkt an der realen Anlage implementiert und validiert worden ist. 
+Der LQI-Regler zeichnete sich direkt durch die Eliminierung der bleibenden Regelabweichung aus. Auch erste Referenzpunktwechsel
+wurden durchgeführt, was der Regler ausgesprochen gut handhabte. Die Referenzpunktwechsel wurden durch Sprünge in den Referenzwerten 
+druchgeführt, was die denkbar schlechteste Vorgehensweise darstellt. Hier wird nun im Verlauf noch eine Referenzwertsteuerung mittels
+Trajektorie oder ähnlichen Verfahren implementiert. 
+
+\section{Dritte Hausaufgabe (H3)}
+Aus dem vorangegangenen Protokoll wird ersichtlich, dass das entwickelte Reglerentwurfsverfahren bereits ausgiebig durchdacht und 
+an der realen Anlange validiert worden ist. Daher ergab sich für die dritte Hausaufgabe keinen weiteren Aufwand, 
+da wir die Aufgaben bereits größtenteils erledigt hatten. Die Validierung an der realen Anlage stellten zur Schau, dass die 
+Definierten Regelungsziele zu unserer Zufriedenheit erfüllt worden sind. Das extrahierte Modell scheint ausreichend genau zu sein 
+und liefert mittels LQI-Regler ebenfalls soweit eine ausreichend gute Performance sowie zumindest experimentelle Robustheit.
+
+\section{Kommentare und Ausblick auf L4}
+Es existiert bereits ein gut funktionierender Regler, der nun nur noch um eine Vorsteuerung und Trajektoriengenerierung für die finale Flugaufgabe erweitert werden muss. 
+Daher haben wir für den nächsten Labortag bereits einige Ideen gesammelt, wie wir die Trajektorienplanung und -verfolgung weiter verbessern können. 
+Diese können nun in L4 umgesetzt und getestet werden. 
+
+\end{document}
+
+
