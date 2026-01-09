@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1767985145.14403 "c:/Users/kimon/Documents/Studium/2. Master/KRT Praktikum/KRT-Praktikum/Protokoll 3/Template files/protocolGroupXXTaskX.tex" "protocolGroupXXTaskX.pdf" "protocolGroupXXTaskX" 1767985148.62268 0
+["pdflatex"] 1767985377.88569 "c:/Users/kimon/Documents/Studium/2. Master/KRT Praktikum/KRT-Praktikum/Protokoll 3/Template files/protocolGroupAWE1Task3.tex" "protocolGroupAWE1Task3.pdf" "protocolGroupAWE1Task3" 1767985381.0222 0
   "C:/Users/kimon/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1767983035 80909 eab91d9745dd2edfd62a31d53cd5fe15 ""
   "C:/Users/kimon/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1767888683 13333486 08140808a07036c668ecfac888c09adc ""
   "C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmbx10.tfm" 1136765053 1328 c834bbb027764024c09d3d2bf908b5f0 ""
@@ -174,17 +174,17 @@
   "C:/Users/kimon/AppData/Local/Programs/MiKTeX/tex/latex/units/nicefrac.sty" 1469029150 4163 0462ee5ab265cf59dc15a41a3b883101 ""
   "C:/Users/kimon/AppData/Local/Programs/MiKTeX/tex/latex/units/units.sty" 1469029150 2206 65ad9fb19763b1681bea4cb389fe84f8 ""
   "C:/Users/kimon/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1729265222 55384 b454dec21c2d9f45ec0b793f0995b992 ""
-  "c:/Users/kimon/Documents/Studium/2. Master/KRT Praktikum/KRT-Praktikum/Protokoll 3/Template files/protocolGroupXXTaskX.tex" 1767985144 16802 4fb63c0b1890ac55537afc397500be98 ""
+  "c:/Users/kimon/Documents/Studium/2. Master/KRT Praktikum/KRT-Praktikum/Protokoll 3/Template files/protocolGroupAWE1Task3.tex" 1767985144 16802 4fb63c0b1890ac55537afc397500be98 ""
   "controler.png" 1767885486 121929 fe20ecdfacf414de2e5426d1db323afd ""
   "ifacconf.cls" 1767885486 67197 6c03c44a1da48052d5e0e068cc8cd8a0 ""
   "modell_simulink.png" 1767885486 83941 52de238afa8b6eb4c18051bb119029a8 ""
   "natbib.sty" 1767885486 31361 802828ea0e6a94b1aa6282674eb8adf1 ""
   "observer.png" 1767885486 51245 6ecd331405c7a894c183561861699f44 ""
-  "protocolGroupXXTaskX.aux" 1767985148 2240 2123d40dc070ce44c6aaa22ae174c5ea "pdflatex"
-  "protocolGroupXXTaskX.tex" 1767985144 16802 4fb63c0b1890ac55537afc397500be98 ""
+  "protocolGroupAWE1Task3.aux" 1767985380 2240 2123d40dc070ce44c6aaa22ae174c5ea "pdflatex"
+  "protocolGroupAWE1Task3.tex" 1767985144 16802 4fb63c0b1890ac55537afc397500be98 ""
   "simulink_overview.png" 1767885486 129249 991e46e009bd801da49f7e0a8e4d3970 ""
   (generated)
-  "protocolGroupXXTaskX.aux"
-  "protocolGroupXXTaskX.log"
-  "protocolGroupXXTaskX.pdf"
+  "protocolGroupAWE1Task3.aux"
+  "protocolGroupAWE1Task3.log"
+  "protocolGroupAWE1Task3.pdf"
   (rewritten before read)

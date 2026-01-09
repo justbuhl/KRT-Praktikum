@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.1.8)  9 JAN 2026 19:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.1.8)  9 JAN 2026 20:02
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"c:/Users/kimon/Documents/Studium/2. Master/KRT Praktikum/KRT-Praktikum/Protokoll 3/Template files/protocolGroupXXTaskX.tex"
-(c:/Users/kimon/Documents/Studium/2. Master/KRT Praktikum/KRT-Praktikum/Protokoll 3/Template files/protocolGroupXXTaskX.tex
+**"c:/Users/kimon/Documents/Studium/2. Master/KRT Praktikum/KRT-Praktikum/Protokoll 3/Template files/protocolGroupAWE1Task3.tex"
+(c:/Users/kimon/Documents/Studium/2. Master/KRT Praktikum/KRT-Praktikum/Protokoll 3/Template files/protocolGroupAWE1Task3.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
 (ifacconf.cls
@@ -459,8 +459,8 @@ LaTeX Info: Redefining \] on input line 2951.
  (C:\Users\kimon\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count345
-) (protocolGroupXXTaskX.aux)
-\openout1 = `protocolGroupXXTaskX.aux'.
+) (protocolGroupAWE1Task3.aux)
+\openout1 = `protocolGroupAWE1Task3.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 58.
 LaTeX Font Info:    ... okay on input line 58.
@@ -579,7 +579,7 @@ Overfull \hbox (3.499pt too wide) in paragraph at lines 251--254
 \OT1/cmr/m/n/10 Sim-u-la-tion zeigte, dass der Re-gler das gew^^?unschte Regelver-
  []
 
-[3 <./controler.png> <./observer.png>] (protocolGroupXXTaskX.aux)
+[3 <./controler.png> <./observer.png>] (protocolGroupAWE1Task3.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
@@ -587,14 +587,14 @@ L3 programming layer <2025-12-24>
  ) 
 Here is how much of TeX's memory you used:
  24092 strings out of 467871
- 625075 string characters out of 5418377
- 1152529 words of memory out of 5000000
+ 625101 string characters out of 5418377
+ 1152531 words of memory out of 5000000
  52571 multiletter control sequences out of 15000+600000
  633649 words of font info for 64 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 84i,19n,104p,1211b,609s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,19n,104p,1213b,609s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti8.pfb>
-Output written on protocolGroupXXTaskX.pdf (3 pages, 407074 bytes).
+Output written on protocolGroupAWE1Task3.pdf (3 pages, 407074 bytes).
 PDF statistics:
  84 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

@@ -53,6 +53,8 @@
 \protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-0.75mm}
 }}
 
+\hyphenation{Win-kel-ge-schwin-dig-kei-ten}
+
 \begin{document}
 
 \begin{frontmatter}
@@ -89,16 +91,14 @@ Die Zustände sind zur Erinnerung wie folgt definiert:
     y = \begin{bmatrix} \alpha & \beta & \gamma \end{bmatrix}^T
 \end{equation}
 
-Für den geschlossenen Regelkreis ergibt sich dann mit Regler unter Berücksichtigung des Arbeitspunktes: 
+Der geschlossene Regelkreis mit Zustandsrückführung ergibt sich unter Berücksichtigung der Linearisierung um den Arbeitspunkt $(x_0, u_0)$ zu:
 \begin{equation}
-\Delta u = -K\,\Delta x,\qquad \Delta x = x - x_0 ,\qquad \Delta u = u - u_0
+\Delta u = -K\,\Delta x,\qquad \Delta x = x - x_0,\qquad \Delta u = u - u_0.
 \end{equation}
-wobei $x_0$ und $u_0$ die Arbeitspunkte sind. Die resultierenden geschlossenen Regelkreise werden in den folgenden Abschnitte noch 
-dargestellt.
+Hierbei bezeichnet $K$ die Reglermatrix, während $x_0$ und $u_0$ den stationären Arbeitspunkt des Systems charakterisieren. Die sich daraus ergebenden Eigenschaften des geschlossenen Regelkreises werden in den folgenden Abschnitten detailliert dargestellt.
 
-Zur Implementierung und Erprobung unseres Regelungsentwurfs wurde nun das CAD-Modell, 
-das bereits zur Modellierung verwendet wurde, in 
-Matlab Simulink exportiert. Dies hat den Vorteil, dass das Modell möglichst nah an den realen Versuchsstand angenähert wird, wodurch
+Zur Implementierung und Erprobung unseres Regelungsentwurfs wurde nun das CAD-Modell, das bereits zur Modellierung verwendet wurde, in 
+Matlab Simulink als ein Simscape Modell exportiert (vgl. Abbildung \ref{fig:helicopter_cad}). Dies hat den Vorteil, dass das Modell möglichst nah an den realen Versuchsstand angenähert wird, wodurch
 eine realistischere Simulation des Systemverhaltens ermöglicht wird. Des Weiteren ist es möglich, innerhalb desselben Simulink-Modells zwischen
 dem Modell und der realen Anlage umzuschalten, wodurch eine schnelle Validierung des Reglerentwurfs an der realen Anlage ermöglicht wird.
 
@@ -106,22 +106,19 @@ dem Modell und der realen Anlage umzuschalten, wodurch eine schnelle Validierung
     \centering
     % Begrenze Breite und Höhe, behalte Seitenverhältnis bei, sodass das ganze Bild sichtbar und nicht zu groß ist
     \includegraphics[width=0.5\textwidth,height=0.6\textheight,keepaspectratio]{modell_simulink.png} % Pfad und Dateiname anpassen
-    \caption{Nichtlineares CAD Modell zur Simulation in Simulink.}
+    \caption{Nichtlineares CAD Modell zur Simulation in Simulink (Simscape).}
     \label{fig:helicopter_cad}
 \end{figure}
 
 \subsection{Reglerentwurf}
 
-Im Wesentlichen bestehen zwei mögliche Reglerentwurfsverfahren: Regler im Frequenzbereich und Regler im Zustandsraum. 
+Im Wesentlichen sind zwei mögliche Reglerentwurfsverfahren möglich: Der Reglerentwurf im Frequenzbereich sowie der Reglerentwurf im Zustandsraum. 
 Da es sich um ein MIMO-System handelt, 
-ist ein Reglerentwurf mittels Loopshaping im Frequenzbereich aufwändig und mit schwierigen Stabilitäts- und Gütenachweisen verbunden. Da das System
-außerdem bereits im Zustandsraum entwickelt worden ist, gestaltet sich ein Reglerentwurf im Zustandsraum als die bessere Alternative. 
-Hier besteht vor allem die Möglichkeit des LQR-Reglerentwurfs. Durch Matlab-Funktionen und das Lösen der Riccati-Gleichungen
-wird die optimale stabilisierende Zustandsrückführung berechnet. Zu beachten ist jedoch, dass durch die Nutzung eines Beobachters die garantierten
-Robustheitseigenschaften des LQR nicht mehr gegeben sind. 
+ist ein Reglerentwurf mittels Loopshaping im Frequenzbereich aufwändig und mit schwierigen Stabilitäts- und Gütenachweisen verbunden. Zudem ist ein Systeme bereits entwickelt worden, weshalb sich ein Reglerentwurf im Zustandsraum als die bessere Alternative anbietet. 
+Hier besteht vor allem die Möglichkeit des LQ-Reglerentwurfs. Durch Matlab-Funktionen und das Lösen der Riccati-Gleichungen
+wird die optimale stabilisierende Zustandsrückführung berechnet. 
 
-Da für die Regelung ebenfalls die Winkelgeschwindigkeiten $\dot{\alpha}$, $\dot{\beta}$ und $\dot{\gamma}$ benötigt werden, der Winkel-Encoder 
-jedoch nur die Winkel $\alpha$, $\beta$ und $\gamma$ misst, müssen die Geschwindigkeiten geschätzt werden. 
+Da es sich bei einem LQ-Regler um einen Zustandsregler handelt wird für die Regelung sowohl die Winkelgeschwindigkeiten $\dot{\alpha}$, $\dot{\beta}$ und $\dot{\gamma}$ als auch die  Winkel $\alpha$, $\beta$ und $\gamma$ benötigt. Da die Encoder nur die Winkel messen, müssen die Geschwindigkeiten geschätzt werden. 
 Dies realisieren wir durch einen Luenberger-Beobachter: 
 
 \begin{equation}
@@ -138,28 +135,25 @@ und der Schätzfehler $\hat{e}=\Delta x-\Delta\hat{x}$ erfüllt
 
 Zur Stabilität und schnellen Konvergenz wählt man die Beobachterpole (Eigenwerte von $A-LC$) deutlich schneller als die Reglerpole (z.\,B. Faktor 5–10). Die Gewinnmatrix $L$ wird in MATLAB durch Polvorgabe bestimmt.
 
+Zu beachten ist jedoch, dass durch die Nutzung eines Beobachters die garantierten Robustheitseigenschaften des LQR nicht mehr gegeben sind. 
+
 \subsubsection{Anforderungen an den geschlossenen Kreis bzw. Regler}
-Gesucht wird selbstverständlich ein stabilisierender Regler, der die gegebenen Modellunsicherheiten möglichst gut kompensiert. 
-Die Performance muss dabei ausreichend gut sein, um die vorgegebene Zeit einzuhalten. Dennoch überwiegt die Anforderung an die Robustheit des Reglers.
-Denn durch die relativ stark vereinfachte Modellbildung und die gegebenen Beschränkungen für den finalen Flug müssen unter den bestehenden Unsicherheiten
-die Beschränkungen in jedem Fall eingehalten werden. Damit die gegebenen Beschränkungen auch eingehalten werden, ist neben der robusten Stabilität die Vermeidung einer 
-bleibenden Regelabweichung als wichtigstes Entwurfsziel anzusehen. Denn eine bleibende Regelabweichung könnte schnell zum Verletzen der Beschränkungen führen, z.\,B. bei 
-der Einhaltung der Mindesthöhe. Die Stabilität ist im Zustandsraum einfach nachzuweisen durch Berechnung der 
-Systempole des geschlossenen Regelkreises. Die Eliminierung einer bleibenden Regelabweichung kann durch Hinzufügen eines bzw. mehrerer Integratorzustände erreicht werden. 
-Aussagen über Performance oder Robustheit gestalten sich jedoch schwierig. Analytische Nachweise über Robustheit oder Performance gestalten sich als sehr aufwändig,
-z.\,B. durch Entwicklung einer M-$\Delta$-Struktur und Überprüfung der Systemnorm gegenüber bestimmten unstrukturierten $\Delta$-Unsicherheiten. Dies ist jedoch
-sehr aufwändig und zunächst fehleranfällig, wodurch nur die simulative Validierung sowie die Validierung am realen Teststand als realisierbare Möglichkeiten übrig bleiben.
+Gesucht wird selbstverständlich ein stabilisierender Regler, der die gegebenen Modellunsicherheiten möglichst gut kompensiert. Die Performance muss dabei ausreichend gut sein, um die vorgegebene Zeit einzuhalten. Dennoch überwiegt die Anforderung an die Robustheit des Reglers. Denn durch die relativ stark vereinfachte Modellbildung und die gegebenen Beschränkungen für den finalen Flug müssen unter den bestehenden Unsicherheiten die Beschränkungen in jedem Fall eingehalten werden. Damit die gegebenen Beschränkungen auch eingehalten werden, ist neben der robusten Stabilität die Vermeidung einer bleibenden Regelabweichung als wichtigstes Entwurfsziel anzusehen. Denn eine bleibende Regelabweichung könnte schnell zum Verletzen der Beschränkungen führen, z.\,B. bei der Einhaltung der Mindesthöhe. Die Stabilität ist im Zustandsraum einfach nachzuweisen durch Berechnung der Systempole des geschlossenen Regelkreises. Die Eliminierung einer bleibenden Regelabweichung kann durch Hinzufügen eines bzw. mehrerer Integratorzustände erreicht werden. 
+% Aussagen über Performance oder Robustheit gestalten sich jedoch schwierig. Analytische Nachweise über Robustheit oder Performance gestalten sich als sehr aufwändig,
+% z.\,B. durch Entwicklung einer M-$\Delta$-Struktur und Überprüfung der Systemnorm gegenüber bestimmten unstrukturierten $\Delta$-Unsicherheiten. Dies ist jedoch
+% sehr aufwändig und zunächst fehleranfällig, wodurch nur die simulative Validierung sowie die Validierung am realen Teststand als realisierbare Möglichkeiten übrig bleiben.
+Die Bewertung von Performance und Robustheit stellt jedoch eine Herausforderung dar. Formale analytische Nachweise, etwa durch die Herleitung einer $M$-$\Delta$-Struktur und die Überprüfung der Systemnorm gegenüber unstrukturierten Unsicherheiten sind mit hohem Aufwand und Fehleranfälligkeit verbunden. Aus diesem Grund beschränkt sich die Validierung auf simulative Untersuchungen sowie Experimente am realen System.
 
 \subsubsection{LQR-Entwurf}
-Im Verlauf des Protokolls wurde bereits vorweggenommen, dass sich für einen LQR-Reglerentwurf entschieden worden ist. 
+Im Verlauf des Protokolls wurde bereits vorweggenommen, dass sich für einen LQ-Reglerentwurf entschieden worden ist. 
 Der Vorteil besteht in der vergleichsweise einfachen Implementierung sowie den guten Regelungseigenschaften. Die garantierten
 Robustheitseigenschaften sind, wie bereits erwähnt, durch die Nutzung eines Beobachters nicht mehr gegeben. 
 
-Für den Entwurf eines LQR-Reglers müssen lediglich die Gewichtungsmatrizen $Q$ und $R$ festgelegt werden. Diese Matrizen bestimmen das Verhalten des Reglers und müssen sorgfältig ausgewählt werden, um die gewünschten Regelungsziele zu erreichen.
+Für den Entwurf eines LQ-Reglers müssen lediglich die Gewichtungsmatrizen $Q$ und $R$ festgelegt werden. Diese Matrizen bestimmen das Verhalten des Reglers und müssen sorgfältig ausgewählt werden, um die gewünschten Regelungsziele zu erreichen.
 Die Matrizen müssen simulativ bzw. experimentell abgestimmt werden. Bei Erprobungsversuchen am realen Teststand hat sich jedoch 
 eine signifikante Regelabweichung gezeigt. Dadurch ist schnell ersichtlich geworden, dass eine Erweiterung zu einem LQI-Regler notwendig ist, 
-um die erforderlichen Regelungsziele zu erreichen. Daher wird im Folgenden der LQI-Regler betrachtet, da dieser lediglich eine 
-Erweiterung des LQR-Reglers darstellt. 
+um die erforderlichen Regelungsziele zu erreichen. Daher wird im Folgenden der LQI-Regler betrachtet, welcher eine 
+Erweiterung des LQ-Reglers darstellt. 
 
 \subsubsection{LQI-Entwurf}
 Wie bereits erwähnt, stellt der LQI-Regler eine Erweiterung des LQR-Reglers dar. Die Erweiterung geschieht hierbei durch 
@@ -180,6 +174,8 @@ wobei $\xi_1$ und $\xi_2$ die Integratorzustände für die Winkel $\alpha$ und $
 \end{equation}
 
 wobei $\xi_{1,\mathrm{ref}} = 0$ und $\xi_{2,\mathrm{ref}} = 0$.
+
+Für den Winkel $\gamma$ wird kein Integratorzustand hinzugefügt, da dieser Winkel lediglich zum Verändern des $\beta$-Winkels genutzt wird und keine genaue Regelung des $\gamma$-Winkels erforderlich ist.
 
 Für die Wahl der Gewichtungsmatrizen $Q$ und $R$ hat sich zunächst folgende Wahl, durch experimentelle Abstimmung am realen 
 Versuchsstand ergeben: 
