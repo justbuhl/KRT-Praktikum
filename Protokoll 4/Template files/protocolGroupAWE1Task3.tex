@@ -1,0 +1,98 @@
+\documentclass{ifacconf}
+
+\usepackage{natbib}            % you should have natbib.sty
+\usepackage[utf8]{inputenc}    % Eingabe von Umlauten im Editor, dieser sollte dann auch auf utf8 Encoding eingestellt sein
+\usepackage{graphicx}          % Include this line if your 
+                               % document contains figures,
+%\usepackage[dvips]{epsfig}    % or this line, depending on which
+                               % you prefer.
+                               
+\usepackage{units}
+
+% for German
+% \usepackage{ngerman}           % neue Deutsche Rechtschreibung, Silbentrennung
+% \usepackage[T1]{fontenc}       % Trennung mit Umlauten
+
+% to include tikz pictures of figure created with matlab2tikz, see also file ``plotFigureTest.m''
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}  % use newest version of pgfplots
+\usepackage{float}
+\usepackage{amsmath}  % useful for math
+
+% to include the legend into the caption. The commands are
+%\mlLineLegend{red}
+%\mlLineLegendDashed{red}
+%\mlLineLegendDotted{red}
+%\mlLineLegendDashDotted{red}
+%\mlPointLegend{red}
+\newlength{\mlLegendThickness}
+\setlength{\mlLegendThickness}{0.4mm}
+\newlength{\mlLegendHeight}
+\setlength{\mlLegendHeight}{0.6ex}
+\newcommand{\mlLineLegend}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{3mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlLineLegendDashed}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlLineLegendDotted}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlLineLegendDashDotted}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlPointLegend}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-0.75mm}
+}}
+
+\hyphenation{Win-kel-ge-schwin-dig-kei-ten}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{KRT Praktikum: Protokoll 3 - L3 und H3}
+
+\thanks[footnoteinfo]{Institute for Systems Theory and Automatic Control, University of Stuttgart, Germany. \textit{http://www.ist.uni-stuttgart.de}}
+
+% include all authors, underline corresponding author
+\author{Kimon Beyer, Yves Gaßmann, Justin Buhl} 
+% \author{}
+
+\begin{abstract}        
+Im folgenden Protokoll werden die Ergebnisse des dritten Labortages sowie der dritten Hausaufgabe im Rahmen des Praktikums Konzepte der Regelungstechnik des IST behandelt. 
+Dabei behandelt das Protokoll die Ausarbeitung und Validierung eines Reglerentwurfs für das aus Protokoll 2 extrahierte Helikoptermodell 
+sowie dessen simulative und erste praktische Validierung.                     % Abstract of not more than 250 words.
+\end{abstract}
+
+\end{frontmatter}
+
+
+\section{Vierter Labortag (L4)}
+
+Da zwischen dem letzten Protokoll und Labortag 4, eine Trajektoriengenerierung vollzogen worden ist, wurde 
+der Labortag 4 auf die Implementierung und Validierung dieser Trajektoriengenerierung fokussiert. 
+Auf die Trajektoriengenerierung soll zunächst im folgenden eingegangen werden.
+
+\subsection{Trajektoriengenerierung}
+
+TODO: Hier dann die Trajektoriengenerierung rein
+
+
+\section{Vierter Hausaufgabe (H4)}
+
+
+\section{Kommentare und Ausblick auf L5}
+
+
+\end{document}
+
+
