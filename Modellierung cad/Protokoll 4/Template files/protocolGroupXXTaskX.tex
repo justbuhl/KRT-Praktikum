@@ -1,0 +1,134 @@
+\documentclass{ifacconf}
+
+\usepackage{natbib}            % you should have natbib.sty
+\usepackage[utf8]{inputenc}    % Eingabe von Umlauten im Editor, dieser sollte dann auch auf utf8 Encoding eingestellt sein
+\usepackage{graphicx}          % Include this line if your 
+                               % document contains figures,
+%\usepackage[dvips]{epsfig}    % or this line, depending on which
+                               % you prefer.
+                               
+\usepackage{units}
+
+% for German
+% \usepackage{ngerman}           % neue Deutsche Rechtschreibung, Silbentrennung
+% \usepackage[T1]{fontenc}       % Trennung mit Umlauten
+
+% to include tikz pictures of figure created with matlab2tikz, see also file ``plotFigureTest.m''
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}  % use newest version of pgfplots
+\usepackage{amsmath}  % useful for math
+
+% to include the legend into the caption. The commands are
+%\mlLineLegend{red}
+%\mlLineLegendDashed{red}
+%\mlLineLegendDotted{red}
+%\mlLineLegendDashDotted{red}
+%\mlPointLegend{red}
+\newlength{\mlLegendThickness}
+\setlength{\mlLegendThickness}{0.4mm}
+\newlength{\mlLegendHeight}
+\setlength{\mlLegendHeight}{0.6ex}
+\newcommand{\mlLineLegend}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{3mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlLineLegendDashed}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlLineLegendDotted}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlLineLegendDashDotted}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlPointLegend}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-0.75mm}
+}}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{KRT Praktikum: Protokoll 4 - L4 und H4}
+
+\thanks[footnoteinfo]{Institute for Systems Theory and Automatic Control, University of Stuttgart, Germany. \textit{http://www.ist.uni-stuttgart.de}}
+
+% include all authors, underline corresponding author
+\author{Kimon Beyer, Yves Gaßmann, Justin Buhl} 
+% \author{}
+
+\begin{abstract}        
+Im folgenden Protokoll werden die Ergebnisse des vierten Labortages sowie der vierten Hausaufgabe im Ramen des Praktikums Konzepte der Regelungstechnik des IST behandelt. 
+Dabei behandelt das Protokoll den Entwurf und die Implementierung einer Trajektorie, welche dem in Protokoll 3 gewonnenen Reglerentwurf die Führungsgröße vorgibt.
+% Abstract of not more than 250 words.
+\end{abstract}
+
+\end{frontmatter}
+
+
+\section{Vierter Labortag (L4)}
+Im Folgenden wird die Umsetzung der Trajektorienplanung beschrieben. Ziel ist es, eine Trajektorie zu entwerfen, 
+welche die Führungsgröße für die in Protokoll 3 gewonnene Reglerstruktur vorgibt. Dabei soll die Trajektorie so gestaltet sein, dass die Bewegung des Helikopters möglichst sanft erfolgt und keine plötzlichen Sprünge in den Sollwerten auftreten.
+Dies ist wichtig, da der Regler aus Erfahrungen des dritten Labortages nur begrenzt in der Lage ist, schnelle Änderungen der Sollwerte zu verfolgen, ohne dass es zu Überschwingern oder Instabilitäten kommt.
+
+Zum erstellen der Trajektorie wird in Matlab die Funktion \texttt{interp1} verwendet. Diese Funktion ermöglicht es durch die Interpolation einer Reihe von manuell bestimmten Stützpunkten, eine Trajektorie zu generieren.
+Dabei ist es wichtig, die Stützpunkte so zu wählen, dass die resultierende Trajektorie den Anforderungen an Sanftheit und Realisierbarkeit entspricht. 
+Hierbei ist zu erwähnen, dass für die Travel und Elevation Trajektorie wie in Abbildung \ref{fig:Travel_Trajektorie} und \ref{fig:Elevation_Trajektorie} zu sehen ist \texttt{pchip} als Interpolationsmethode gewählt wurde. Diese ist eine formbewahrende kubische Interpolation, welche eine langsame Annäherung ohne Überschwingen gewährleistet.
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Travel_Trajektorie.png}
+    \caption{Travel Trajektorie}
+    \label{fig:Travel_Trajektorie}
+\end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Elevation_Trajektorie.png}
+    \caption{Elevation Trajektorie}
+    \label{fig:Elevation_Trajektorie}
+\end{figure}
+
+Es ist ebenfalls wichtig, dass die vorgegebene Trajektorie innerhalb der physikalischen Grenze des Helikopters bleibt.
+Dies fließt in die Wahl der Stützpunkte mit ein, da unter anderem der Gradient der Trajektorie während dem Landeanflug größer sein darf, als während dem Aufstieg.
+In Abbildung \ref{fig:Gradient} ist die resultierende Geschwindigkeit der Elevation- und Travel Trajektorie dargestellt, anhand welcher die Einhaltung der physikalischen Grenzen überprüft werden kann.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Gradient.png}
+    \caption{Gradient der Trajektorien}
+    \label{fig:Gradient}
+\end{figure}
+
+Daran ist zu erkennen, dass der Helikopter sich nie in einem Bereich bewegt, welcher für ihn nicht realisierbar ist.
+Es ist ebenfalls Verbesserungspotiential erkennbar, da zwischen den Manövern die Geschwindigkeit null ist und somit die Bewegung des Helikopters unnötig verlängert wird.
+Es ist auch möglich die Bewegungen in in Travel und Elevation zu überlappen, um die Gesamtdauer der Trajektorie zu verkürzen. Hierbei ist allerdings darauf zu achten, dass 
+die minimale Höhe des Helikopters nicht unterschritten wird.
+Eine Trajektorie für den pitch wurde nicht erstellt, da dieser während des gesamten Fluges auf null bleiben soll und somit durch eine Konstante dargestellt werden kann.
+
+Für die Magnet Trajektorie wurde \texttt{linear} als Interpolationsmethode gewählt, da hier nur das Ein- und Ausschalten des Magneten erfolgt.
+In Abbildung \ref{fig:Magnet_Trajektorie} ist das resultierende Verhalten des Magneten dargestellt.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{magnet_trajektorie.png}
+    \caption{Magnet Trajektorie}
+    \label{fig:Magnet_Trajektorie}
+\end{figure}
+
+Die so erstellten Trajektorien werden im Folgenden in \texttt{.mat} Dateien gespeichert und in der Reglerstruktur aus Protokoll 3 eingebunden.
+
+\section{Zweite Hausaufgabe (H4)}
+
+
+\section{Kommentare und Ausblick auf L5}
+
+
+\end{document}
