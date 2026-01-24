@@ -1,6 +1,6 @@
-PWD c:\Users\kimon\Documents\Studium\2. Master\KRT Praktikum\KRT-Praktikum\Protokoll 3\Template files
+PWD c:\Users\kimon\Documents\Uni\2. Master\KRT Praktikum\KRT-Praktikum\Protokoll 3\Template files
 INPUT C:\Users\kimon\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
-INPUT c:\Users\kimon\Documents\Studium\2. Master\KRT Praktikum\KRT-Praktikum\Protokoll 3\Template files\protocolGroupAWE1Task3.tex
+INPUT c:\Users\kimon\Documents\Uni\2. Master\KRT Praktikum\KRT-Praktikum\Protokoll 3\Template files\protocolGroupAWE1Task3.tex
 OUTPUT protocolGroupAWE1Task3.log
 INPUT .\ifacconf.cls
 INPUT ifacconf.cls
@@ -284,13 +284,13 @@ INPUT .\simulink_overview.png
 INPUT .\simulink_overview.png
 INPUT .\simulink_overview.png
 INPUT .\simulink_overview.png
-INPUT .\controler.png
-INPUT .\controler.png
-INPUT .\controler.png
-INPUT .\controler.png
-INPUT .\controler.png
-INPUT .\controler.png
-INPUT .\controler.png
+INPUT .\controler_neu.png
+INPUT .\controler_neu.png
+INPUT .\controler_neu.png
+INPUT .\controler_neu.png
+INPUT .\controler_neu.png
+INPUT .\controler_neu.png
+INPUT .\controler_neu.png
 INPUT .\observer.png
 INPUT .\observer.png
 INPUT .\observer.png
@@ -298,7 +298,17 @@ INPUT .\observer.png
 INPUT .\observer.png
 INPUT .\observer.png
 INPUT .\observer.png
+INPUT C:\Users\kimon\AppData\Local\Programs\MiKTeX\fonts\tfm\jknappen\ec\tcrm1000.tfm
+INPUT .\drehung.png
+INPUT .\drehung.png
+INPUT .\drehung.png
+INPUT .\drehung.png
+INPUT .\drehung.png
+INPUT .\drehung.png
+INPUT .\drehung.png
 INPUT protocolGroupAWE1Task3.aux
+INPUT C:\Users\kimon\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrm1000.pk
+INPUT C:\Users\kimon\AppData\Local\MiKTeX\fonts\pk\ljfour\jknappen\ec\dpi600\tcrm1000.pk
 INPUT C:\Users\kimon\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx10.pfb
 INPUT C:\Users\kimon\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx10.pfb
 INPUT C:\Users\kimon\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx12.pfb

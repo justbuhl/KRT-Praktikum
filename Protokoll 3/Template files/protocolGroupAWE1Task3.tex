@@ -133,7 +133,7 @@ und der Schätzfehler $\hat{e}=\Delta x-\Delta\hat{x}$ erfüllt
 \dot{\hat{e}}=(A-LC)\,\hat{e}.
 \end{equation}
 
-Zur Stabilität und schnellen Konvergenz wählt man die Beobachterpole (Eigenwerte von $A-LC$) deutlich schneller als die Reglerpole (z.\,B. Faktor 5–10). Die Gewinnmatrix $L$ wird in MATLAB durch Polvorgabe bestimmt.
+Zur Stabilität und schnellen Konvergenz wählt man die Beobachterpole (Eigenwerte von $A-LC$) deutlich schneller als die Reglerpole (z.\,B. Faktor 5–10). Die Beobachtermatrix $L$ wird in MATLAB durch Polvorgabe bestimmt.
 
 Zu beachten ist jedoch, dass durch die Nutzung eines Beobachters die garantierten Robustheitseigenschaften des LQR nicht mehr gegeben sind. 
 
@@ -190,6 +190,7 @@ Q = \operatorname{diag}\big(&50,\;5,\;0,001,\;0,001,\\
 R = \operatorname{diag}\big(10,\;10\big)
 \end{equation}
 
+Hierbei wurden die Gewichtungen für die Winkel $\alpha$ und $\beta$ sowie für die Integratorzustände $\xi_1$ und $\xi_2$ deutlich höher gewählt als für die Winkelgeschwindigkeiten und den Winkel $\gamma$. Dies hat den Hintergund, dass eine genaue Regelung der Winkel $\alpha$ und $\beta$ sowie die Eliminierung der bleibenden Regelabweichung für diese Winkel von hoher Wichtigkeit sind. Die Winkelgeschwindigkeiten und der Winkel $\gamma$ sind weniger wichtig für die Regelungsaufgabe, weshalb diese mit geringeren Gewichtungen versehen wurden. Zusätzlich sorgt eine gute Regelung von $\alpha$ und $\beta$ auch für eine gute Regelung von $\gamma$, da dieser Winkel nur zur Unterstützung der Regelung von $\beta$ dient.
 Mit der Wahl dieser Gewichtungsmatrizen ergeben sich folgende Regler und Beobachtungspole: 
 
 \begin{equation}
@@ -223,7 +224,7 @@ Die Wahl der Pole kann sich jedoch noch ändern. Es ist bekannt, dass zu schnell
 \subsubsection{Reglerimplementierung}
 Im Folgenden wird nun die Implementierung des LQI-Reglers im Simulink-Modell beschrieben.
 In Abbildung \ref{fig:simulink_overview} ist das Gesamtsystem dargestellt. In Abbildung~\ref{fig:simulink_controler} ist der Reglerblock dargestellt. Hier ist 
-ebenfalls die Implementierung des Anti-Windups zu sehen. In Abbildung~\ref{fig:simulink_observer} ist der Beobachterblock dargestellt.
+ebenfalls die Implementierung des Anti-Windups zu sehen. Beide Stellgrößen werden hierbei gleichermaßen berücksichtigt, was durch eine 2x2 Einheitsmatrix realisiert wurde. Das Back-Calculation Gain wurde empirisch auf 2 optimiert. Höhere Werte führen zu einem starken hochfrequentem Schwingen der Stellgröße. In Abbildung~\ref{fig:simulink_observer} ist der Beobachterblock dargestellt. Dieser beinhaltet die Implementierung des Luenberger-Beobachters zur Schätzung der Winkelgeschwindigkeiten. Hierbei wurde auf den bereits in Simulink vorhandenen Luenberger-Beobachter Block zurückgegriffen. 
 
 \begin{figure}[H]
     \centering
@@ -234,7 +235,7 @@ ebenfalls die Implementierung des Anti-Windups zu sehen. In Abbildung~\ref{fig:s
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\linewidth,keepaspectratio]{controler.png}
+    \includegraphics[width=0.85\linewidth,keepaspectratio]{controler_neu.png}
     \caption{Übersicht: Simulink-Implementierung des Reglers.}
     \label{fig:simulink_controler}
 \end{figure}
@@ -248,7 +249,21 @@ ebenfalls die Implementierung des Anti-Windups zu sehen. In Abbildung~\ref{fig:s
 
 \subsection{Simulationsergebnisse}
 
-Zunächst wurde der LQR-Regler simulativ validiert. Die Simulation zeigte, dass der Regler das gewünschte Regelverhalten aufweist und
+Zunächst wurde der LQR-Regler simulativ validiert. 
+Die Simulation zeigte, dass der Regler das gewünschte Regelverhalten aufweist und
+die geforderten Spezifikationen erfüllt. Hierzu wurde der Helikopter zunächst auf eine Flughöhe von \unit[-2]{°} gebracht und anschließend eine 90°-Drehung um die Hochachse durchgeführt.
+Das Simulationsergebnis ist in Abbildung \ref{fig:drehung} dargestellt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth,keepaspectratio]{drehung.png}
+    \caption{Simulationsergebnis Helikopter auf Flughöhe mit anschließender 90°-Drehung. Vergleich Soll- und Ist-Werte von $\alpha$ (gelb soll, pink ist) und $\beta$ (blau soll, gelb ist)}
+    \label{fig:drehung}
+\end{figure}
+
+Aufgrund der positiven Simulationsergebnisse wurde anschließend direkt zur Validierung an der realen
+Anlage übergegangen.
+Die Simulation zeigte, dass der Regler das gewünschte Regelverhalten aufweist und
 die geforderten Spezifikationen erfüllt. Aufgrund der positiven Simulationsergebnisse wurde anschließend direkt zur Validierung an der realen
 Anlage übergegangen. Dabei mussten die Gewichtungen in der Matrix $R$ angepasst werden, um ein optimales Regelverhalten zu erzielen.
 
@@ -271,7 +286,7 @@ und liefert mittels LQI-Regler eine zufriedenstellende Performance sowie zuminde
 
 \section{Kommentare und Ausblick auf L4}
 Es existiert bereits ein gut funktionierender Regler, der nun nur noch um eine Vorsteuerung und Trajektoriengenerierung für die finale Flugaufgabe erweitert werden muss. 
-Für den nächsten Labortag wurden bereits Konzepte entwickelt, wie die Trajektorienplanung und -verfolgung weiter verbessert werden können. 
+Für den nächsten Labortag wurden bereits Konzepte entwickelt, wie die Trajektorienplanung und -verfolgung weiter verbessert werden können. Zunächst soll eine Trajektorie mithilfe von sprüngen in den Referenzwerten realisiert werden. Dazu sollen die Referenzwerte für die Winkel $\alpha$ und $\beta$ schrittweise verändert werden, um eine Bewegung des Helikopters zu simulieren. Anschließend soll eine sanftere Trajektorie durch lineare Interpolation zwischen den Referenzpunkten erstellt werden, um abrupte Bewegungen zu vermeiden. 
 Diese sollen in L4 umgesetzt und getestet werden. 
 
 \end{document}
