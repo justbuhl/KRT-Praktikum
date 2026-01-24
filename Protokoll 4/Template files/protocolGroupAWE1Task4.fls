@@ -1,7 +1,7 @@
 PWD c:\Users\kimon\Documents\Uni\2. Master\KRT Praktikum\KRT-Praktikum\Protokoll 4\Template files
 INPUT C:\Users\kimon\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
-INPUT c:\Users\kimon\Documents\Uni\2. Master\KRT Praktikum\KRT-Praktikum\Protokoll 4\Template files\protocolGroupXXTaskX.tex
-OUTPUT protocolGroupXXTaskX.log
+INPUT c:\Users\kimon\Documents\Uni\2. Master\KRT Praktikum\KRT-Praktikum\Protokoll 4\Template files\protocolGroupAWE1Task4.tex
+OUTPUT protocolGroupAWE1Task4.log
 INPUT .\ifacconf.cls
 INPUT ifacconf.cls
 INPUT C:\Users\kimon\AppData\Local\Programs\MiKTeX\tex\latex\tools\theorem.sty
@@ -229,10 +229,10 @@ INPUT C:\Users\kimon\AppData\Local\Programs\MiKTeX\tex\latex\amsmath\amsbsy.sty
 INPUT C:\Users\kimon\AppData\Local\Programs\MiKTeX\tex\latex\amsmath\amsopn.sty
 INPUT C:\Users\kimon\AppData\Local\Programs\MiKTeX\tex\latex\l3backend\l3backend-pdftex.def
 INPUT C:\Users\kimon\AppData\Local\Programs\MiKTeX\tex\latex\l3backend\l3backend-pdftex.def
-INPUT .\protocolGroupXXTaskX.aux
-INPUT .\protocolGroupXXTaskX.aux
-INPUT protocolGroupXXTaskX.aux
-OUTPUT protocolGroupXXTaskX.aux
+INPUT .\protocolGroupAWE1Task4.aux
+INPUT .\protocolGroupAWE1Task4.aux
+INPUT protocolGroupAWE1Task4.aux
+OUTPUT protocolGroupAWE1Task4.aux
 INPUT C:\Users\kimon\AppData\Local\Programs\MiKTeX\tex\context\base\mkii\supp-pdf.mkii
 INPUT C:\Users\kimon\AppData\Local\Programs\MiKTeX\tex\context\base\mkii\supp-pdf.mkii
 INPUT C:\Users\kimon\AppData\Local\Programs\MiKTeX\tex\context\base\mkii\supp-pdf.mkii
@@ -271,7 +271,7 @@ INPUT .\Travel_Trajektorie.png
 INPUT .\Travel_Trajektorie.png
 INPUT .\Travel_Trajektorie.png
 INPUT .\Travel_Trajektorie.png
-OUTPUT protocolGroupXXTaskX.pdf
+OUTPUT protocolGroupAWE1Task4.pdf
 INPUT .\Travel_Trajektorie.png
 INPUT .\Travel_Trajektorie.png
 INPUT .\Travel_Trajektorie.png
@@ -304,7 +304,14 @@ INPUT .\referenzwertfolge_verzoegerung.jpg
 INPUT .\referenzwertfolge_verzoegerung.jpg
 INPUT .\referenzwertfolge_verzoegerung.jpg
 INPUT .\referenzwertfolge_verzoegerung.jpg
-INPUT protocolGroupXXTaskX.aux
+INPUT .\mit_vorsteuerung.png
+INPUT .\mit_vorsteuerung.png
+INPUT .\mit_vorsteuerung.png
+INPUT .\mit_vorsteuerung.png
+INPUT .\mit_vorsteuerung.png
+INPUT .\mit_vorsteuerung.png
+INPUT .\mit_vorsteuerung.png
+INPUT protocolGroupAWE1Task4.aux
 INPUT C:\Users\kimon\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx10.pfb
 INPUT C:\Users\kimon\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx10.pfb
 INPUT C:\Users\kimon\AppData\Local\Programs\MiKTeX\fonts\type1\public\amsfonts\cm\cmbx12.pfb

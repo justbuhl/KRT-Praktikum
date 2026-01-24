@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1769192496.47476 "c:/Users/kimon/Documents/Uni/2. Master/KRT Praktikum/KRT-Praktikum/Protokoll 4/Template files/protocolGroupXXTaskX.tex" "protocolGroupXXTaskX.pdf" "protocolGroupXXTaskX" 1769192497.88129 0
+["pdflatex"] 1769255628.12791 "c:/Users/kimon/Documents/Uni/2. Master/KRT Praktikum/KRT-Praktikum/Protokoll 4/Template files/protocolGroupAWE1Task4.tex" "protocolGroupAWE1Task4.pdf" "protocolGroupAWE1Task4" 1769255630.78946 0
   "C:/Users/kimon/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1763499153 81107 70b8516c68c2e617189c5e44bfd16b96 ""
   "C:/Users/kimon/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1738433395 24225045 cfd43af3bfc66554e3b7e5f86989b535 ""
   "C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/tfm/public/cm/cmbx10.tfm" 1136765053 1328 c834bbb027764024c09d3d2bf908b5f0 ""
@@ -178,15 +178,16 @@
   "Elevation_Trajektorie.png" 1769131869 30388 d7a45a962cc24503e25886b2a33846aa ""
   "Gradient.png" 1769131869 38078 cb27fcc78cc07418ac51c6ff08ed756a ""
   "Travel_Trajektorie.png" 1769131869 34004 b7f40929a27a79105d51d3b77faf5a46 ""
-  "c:/Users/kimon/Documents/Uni/2. Master/KRT Praktikum/KRT-Praktikum/Protokoll 4/Template files/protocolGroupXXTaskX.tex" 1769131869 10864 65f5c4dcb9b37e740416f921a59d34f9 ""
+  "c:/Users/kimon/Documents/Uni/2. Master/KRT Praktikum/KRT-Praktikum/Protokoll 4/Template files/protocolGroupAWE1Task4.tex" 1769255628 12138 312abcfed48a1e2de8b1a14c7a7e84a2 ""
   "ifacconf.cls" 1769131869 67197 6c03c44a1da48052d5e0e068cc8cd8a0 ""
   "magnet_trajektorie.png" 1769131869 26656 10d87cb2eb7dbe6477665ff8615ef29e ""
+  "mit_vorsteuerung.png" 1769255183 59682 4563ed6ec28d4655898a4419fda79fc5 ""
   "natbib.sty" 1769131869 31361 802828ea0e6a94b1aa6282674eb8adf1 ""
-  "protocolGroupXXTaskX.aux" 1769192497 1838 2fee15d205b64c6d70535b89688bdc4d "pdflatex"
-  "protocolGroupXXTaskX.tex" 1769131869 10864 65f5c4dcb9b37e740416f921a59d34f9 ""
+  "protocolGroupAWE1Task4.aux" 1769255630 2270 e855a8bf2ed6a526ac23c57ba33ffcc7 "pdflatex"
+  "protocolGroupAWE1Task4.tex" 1769255628 12138 312abcfed48a1e2de8b1a14c7a7e84a2 ""
   "referenzwertfolge_verzoegerung.jpg" 1769131869 219982 4aa75b4f975309a591f12462b8c79f77 ""
   (generated)
-  "protocolGroupXXTaskX.aux"
-  "protocolGroupXXTaskX.log"
-  "protocolGroupXXTaskX.pdf"
+  "protocolGroupAWE1Task4.aux"
+  "protocolGroupAWE1Task4.log"
+  "protocolGroupAWE1Task4.pdf"
   (rewritten before read)
