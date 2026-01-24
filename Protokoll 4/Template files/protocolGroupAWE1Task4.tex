@@ -168,7 +168,7 @@ Bei der theoretischen Überlegung des Vorgehens ist jedoch aufgefallen, dass in 
 nicht in der Zustandsrückführung berücksichtigt werden. Die grundsätzliche Implementierung ist in \ref{eq:vorsteuerung} dargestellt.
 
 \begin{equation}
-    u = k_i\,e + k_x\,x
+    u = -k_i\,e - k_x\,x
     \label{eq:vorsteuerung}
 \end{equation}
 
@@ -179,7 +179,7 @@ arbeiten Integratoren und Zustände gegeneinander. Daher müssen die Referenzen 
 Zusammenhang ergibt: 
 
 \begin{equation}
-    u = k_i\,e + k_x\,(x-x_{\mathrm{ref}})
+    u = -k_i\,e - k_x\,(x-x_{\mathrm{ref}})
     \label{eq:vorsteuerung_erweitert}
 \end{equation}
 
