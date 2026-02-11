@@ -352,12 +352,7 @@ genutzt worden sind, um die Vorsteuerung zu implementieren, indem von diesen Ref
 
 \section{Trajektoriengenerierung}
 
-\subsection{Optimalsteuerungsproblem (OSP)}
-Die zweite Methode zur Trajektoriengenerierung besteht darin, ein Optimalsteuerungsproblem (OSP) zu formulieren und zu lösen. Hierzu wird die folgende Kostenfunktion definiert:
-\begin{equation}
-    \min_{T_{\mathrm{seg}}, u} \quad J = \sum_{i=1}^{N} T_{\mathrm{seg},i} + 0.1 \sum_{k=1}^{M} u_k^2
-\end{equation}
-Diese Kostenfunktion minimiert sowohl die Gesamtzeit der Trajektorie (erste Summe) als auch die aufgewendete Steuerungsenergie (zweite Summe). Die Gewichtung von 0.1 für die Steuerungsenergie zu 1 für die Zeit stellt einen Kompromiss dar, der die Trajektorie nicht nur schnell, sondern auch mit moderaten Steuerungsaufwand realisierbar macht. ZUsätzlich wird die Steuerung durcch die Nebenbedingen eingeschränkt, was zu einer realistischeren Trajektorie führt. Als Nebenbeding wurde die maximale Kraft der Rotoren von $F_{\mathrm{max}} = 0.7$ N definiert. Dies liegt unterhalb der maximalen Kraft, was einen Regeleingriff ermöglicht, um die Trajektorie einzuhalten. Zustäzlich wurde eine Nebenbedingung für den Nickwinkel $\gamma$ definiert, um zu schnelles und damit unkonrollierbareres Verhalten zu vermeiden. Es wurde eine maximale Nickwinkel von $\gamma_{\mathrm{max}} = 0.6\mathrm{rad}$ definiert. Zur Lösung des OSP wurde casadi mit dem IPOPT-Solver verwendet. Als Diskretisierungsverfahren wurde das explizite Euler-Verfahren gewählt, um die Dynamik zu diskretisieren. Die Trajektorie wurde mit einer freien Endzeit formuliert, um die Gesamtzeit der Trajektorie zu minimieren. Hierzu wurde die Segmentzeit $T_{\mathrm{seg}}$ als Optimierungsvariable definiert, die für alle Segmente gleich ist. Die Anzahl der Segmente wurde auf $N=40$ festgelegt, was eine gute Balance zwischen Flexibilität der Trajektorie und Rechenzeit darstellt. Da die Trajektorie mit der zu überwindenden Referenzproblemstellung nur schwer in einem Schritt gelöst werden kann, wurde die Trajektorie in Segmente unterteilt und iterativ gelöst. Zwischen den Segmenten wurde eine Stoppzeit von 2s definiert, um eventuelle Fehler zu korrigieren und die Trajektorie an die aktuelle Systemantwort anzupassen.
+
 
 \subsection{Diskret}
 
@@ -398,9 +393,12 @@ Eine Trajektorie für den pitch wurde nicht erstellt, da dieser während des ges
 Die so erstellten Trajektorien werden im Folgenden in \texttt{.mat} Dateien gespeichert und als LookUp Table in Matlab Simulink eingebunden.
 
 
-\subsection{Optimalsteuerung (OSP)}
-Eine weitere Methode zur Trajektoriengenerierung ist die Optimalsteuerung, welche auf der Lösung eines Optimierungsproblems basiert. Hierbei wird eine Kostenfunktion definiert, welche die Abweichung von der gewünschten Trajektorie sowie die maximal verfügbaren Steuerungsgrößen berücksichtigt. 
-Im Folgenden wird diese mit Hilfe \texttt{CasADi} implementiert.
+\subsection{Optimalsteuerungsproblem (OSP)}
+Die zweite Methode zur Trajektoriengenerierung besteht darin, ein Optimalsteuerungsproblem (OSP) zu formulieren und zu lösen. Hierzu wird die folgende Kostenfunktion definiert:
+\begin{equation}
+    \min_{T_{\mathrm{seg}}, u} \quad J = \sum_{i=1}^{N} T_{\mathrm{seg},i} + 0.1 \sum_{k=1}^{M} u_k^2
+\end{equation}
+Diese Kostenfunktion minimiert sowohl die Gesamtzeit der Trajektorie (erste Summe) als auch die aufgewendete Steuerungsenergie (zweite Summe). Die Gewichtung von 0.1 für die Steuerungsenergie zu 1 für die Zeit stellt einen Kompromiss dar, der die Trajektorie nicht nur schnell, sondern auch mit moderaten Steuerungsaufwand realisierbar macht. ZUsätzlich wird die Steuerung durcch die Nebenbedingen eingeschränkt, was zu einer realistischeren Trajektorie führt. Als Nebenbeding wurde die maximale Kraft der Rotoren von $F_{\mathrm{max}} = 0.7$ N definiert. Dies liegt unterhalb der maximalen Kraft, was einen Regeleingriff ermöglicht, um die Trajektorie einzuhalten. Zustäzlich wurde eine Nebenbedingung für den Nickwinkel $\gamma$ definiert, um zu schnelles und damit unkonrollierbareres Verhalten zu vermeiden. Es wurde eine maximale Nickwinkel von $\gamma_{\mathrm{max}} = 0.6\mathrm{rad}$ definiert. Zur Lösung des OSP wurde casadi mit dem IPOPT-Solver verwendet. Als Diskretisierungsverfahren wurde das explizite Euler-Verfahren gewählt, um die Dynamik zu diskretisieren. Die Trajektorie wurde mit einer freien Endzeit formuliert, um die Gesamtzeit der Trajektorie zu minimieren. Hierzu wurde die Segmentzeit $T_{\mathrm{seg}}$ als Optimierungsvariable definiert, die für alle Segmente gleich ist. Die Anzahl der Segmente wurde auf $N=40$ festgelegt, was eine gute Balance zwischen Flexibilität der Trajektorie und Rechenzeit darstellt. Da die Trajektorie mit der zu überwindenden Referenzproblemstellung nur schwer in einem Schritt gelöst werden kann, wurde die Trajektorie in Segmente unterteilt und iterativ gelöst. Zwischen den Segmenten wurde eine Stoppzeit von 2s definiert, um eventuelle Fehler zu korrigieren und die Trajektorie an die aktuelle Systemantwort anzupassen.
 
 \subsection{Magnetsteuerung}
 Für die beiden vorherigen Methoden der Trajektoriengenerierung, wird die Magnetsteuerung nicht berücksichtigt. Aufgrund dessen wird hier eine weitere Methode verwendet, die durch die Verwendung eines Stateflow Diagramms in Simulink die Steuerung des Magneten ermöglicht. Hierbei ist es möglich, verschiedene Zustände wie "Magnet an" und "Magnet aus" zu definieren und die Übergänge zwischen diesen Zuständen basierend auf bestimmten Bedingungen zu steuern. 
@@ -419,24 +417,50 @@ Der Magnet wird dabei wie in Abb.\ref{fig:Magnet_Stateflow} von Anfang an aktivi
 \section{Ergebnisse}
 \label{sec:Ergebnisse}
 
-Die Validierung der Trajektorien erfolgt durch einen Vergleich der Soll- und Ist-Werte während der Simulation im Simulink. Hierbei wird überprüft, ob die Trajektorien die gewünschten Eigenschaften aufweisen und die physikalischen Grenzen des Helikopters eingehalten werden.
-Dabei hat sich ergeben, dass der Helikopter der Trajektorie folgt und dabei die aus der Aufgabenstellungen gegebenen Grenzen einhält.
-Es hat sich jedoch heraus gestellt, dass der Helikopter der Trajektorie nur träge folgt. In Abbildung \ref{fig:Referenzwertfolge} ist zu erkennen,
-dass der Helikopter die Referenzwerte der Trajektorie nur verzögert verfolgt. Daher ergab sich die Überlegung für die Entwicklung einer 
-Vorsteuerung.
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\columnwidth]{referenzwertfolge_verzoegerung.jpg}
-    \caption{Verzögerung der Referenzwertfolge}
-    \label{fig:Referenzwertfolge}
+\subsection{Regelung mittels Diskretisierung}
+Zur Erinnerung, hier wurde der LQI ohne Verwendung einer Vorsteuerung genutzt.
+Im folgenden ist zu sehen, wie eine Solltrajektorie mittels Diskretisierung abgeflogen wird. Dabei ist zu sehen, dass die 
+Beschränkungen eingehalten werden. Problematisch ist jedoch die Starke Verzögerung in der Trajektorienfolge. Es ist zu sehen, dass der Heilikopter der Referenz um bis zu 4 Sekunden hinterher hinkt. Dies hat nun dennoch zur Absolvierung der Aufgabe gereicht, ist dennoch verbesserungswürdig. Die Zeit, um die Aufgabe abzufliegen, war mit 78 Sekunden dennoch recht schnell. 
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=0.8\linewidth]{lqi_firstTrajfig_alpha.jpg}
+        \caption{Verlauf des Winkels Alpha (LQI-Regelung mit Diskretisierung)} 
+        \label{fig:lqi_alpha}
+    \end{center}
 \end{figure}
 
-Des Weiteren hat sich heraus gestellt, dass noch eine Anpassung der Gewichtungsmatrizen der LQI Reglersynthese vorgenommen werden kann, 
-um ein besseres Führungsverhalten des Helikopters zu erreichen. Nach iterativem Tuning der Gewichtungsmatrizen 
-konnte eine zufriedenstellende Performance der Regelung und Trajektorienfolge erzielt werden, wodurch der Helikopter 
-die Geforderte Aufgabe, mit Magnet, in ungefähr 70 Sekunden absolviert. Dennoch stellt das Hinterherhinken der Trajektorie
-ein Problem dar, das adressiert werden muss, um eine optimale Lösung zu erzielen. 
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=0.8\linewidth]{lqi_firstTrajfig_beta.jpg}
+        \caption{Verlauf des Winkels Beta (LQI-Regelung mit Diskretisierung)} 
+        \label{fig:lqi_beta}
+    \end{center}
+\end{figure}
+
+Um nun diese Verzögerung entgegenzuwirken, wurde die Entwicklung einer Vorsteuerung angetrieben. Diese Vorsteuerung, wie oben beschrieben, hat jedoch zu einer Verschlechterung des Führungsverhaltens geführt, bei dem es zu einem starken Überschwingen der Zustände, vor allem in $\alpha$ gekommen ist. Daher wurde diese Vorsteuerung nicht mehr weiter verfolgt.
+Dieses Problem sollte die Optimalsteuerung lösen.
+
+\subsection{Regelung mittels Optimalsteuerungsproblem}
+
+Wie hier nun zu erkennen ist, hat die Nutzung des Optimalsteuerungsproblems als Trajektoriengenerierung zu einer deutlichen Verbesserung der Trajektorienfolge geführt. Es ist zu sehen, dass die Verzögerung deutlich reduziert worden ist, wodurch die Trajektorie deutlich schneller abgeflogen werden konnte. Die Zeit, um die Aufgabe abzufliegen, war mit 58 Sekunden nochmals schneller als bei der Diskretisierung. Durch die ausbleibende Verzögerung, konnten die Beschränkungen ebenfalls konservativer eingehalten werden. Hier wurde nun die oben beschriebene Form der Vorsteuerung genutzt. 
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=0.8\linewidth]{OS_V3_completefig_alpha.jpg}
+        \caption{Verlauf des Winkels Alpha (LQI-Regelung mit OSP)} 
+        \label{fig:lqi_alpha_os}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=0.8\linewidth]{OS_V3_completefig_beta.png}
+        \caption{Verlauf des Winkels Beta (LQI-Regelung mit OSP)} 
+        \label{fig:lqi_beta_os}
+    \end{center}
+\end{figure}
 
 
 
