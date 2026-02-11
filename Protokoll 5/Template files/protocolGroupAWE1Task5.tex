@@ -417,24 +417,50 @@ Der Magnet wird dabei wie in Abb.\ref{fig:Magnet_Stateflow} von Anfang an aktivi
 \section{Ergebnisse}
 \label{sec:Ergebnisse}
 
-Die Validierung der Trajektorien erfolgt durch einen Vergleich der Soll- und Ist-Werte während der Simulation im Simulink. Hierbei wird überprüft, ob die Trajektorien die gewünschten Eigenschaften aufweisen und die physikalischen Grenzen des Helikopters eingehalten werden.
-Dabei hat sich ergeben, dass der Helikopter der Trajektorie folgt und dabei die aus der Aufgabenstellungen gegebenen Grenzen einhält.
-Es hat sich jedoch heraus gestellt, dass der Helikopter der Trajektorie nur träge folgt. In Abbildung \ref{fig:Referenzwertfolge} ist zu erkennen,
-dass der Helikopter die Referenzwerte der Trajektorie nur verzögert verfolgt. Daher ergab sich die Überlegung für die Entwicklung einer 
-Vorsteuerung.
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\columnwidth]{referenzwertfolge_verzoegerung.jpg}
-    \caption{Verzögerung der Referenzwertfolge}
-    \label{fig:Referenzwertfolge}
+\subsection{Regelung mittels Diskretisierung}
+Zur Erinnerung, hier wurde der LQI ohne Verwendung einer Vorsteuerung genutzt.
+Im folgenden ist zu sehen, wie eine Solltrajektorie mittels Diskretisierung abgeflogen wird. Dabei ist zu sehen, dass die 
+Beschränkungen eingehalten werden. Problematisch ist jedoch die Starke Verzögerung in der Trajektorienfolge. Es ist zu sehen, dass der Heilikopter der Referenz um bis zu 4 Sekunden hinterher hinkt. Dies hat nun dennoch zur Absolvierung der Aufgabe gereicht, ist dennoch verbesserungswürdig. Die Zeit, um die Aufgabe abzufliegen, war mit 78 Sekunden dennoch recht schnell. 
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=0.8\linewidth]{lqi_firstTrajfig_alpha.jpg}
+        \caption{Verlauf des Winkels Alpha (LQI-Regelung mit Diskretisierung)} 
+        \label{fig:lqi_alpha}
+    \end{center}
 \end{figure}
 
-Des Weiteren hat sich heraus gestellt, dass noch eine Anpassung der Gewichtungsmatrizen der LQI Reglersynthese vorgenommen werden kann, 
-um ein besseres Führungsverhalten des Helikopters zu erreichen. Nach iterativem Tuning der Gewichtungsmatrizen 
-konnte eine zufriedenstellende Performance der Regelung und Trajektorienfolge erzielt werden, wodurch der Helikopter 
-die Geforderte Aufgabe, mit Magnet, in ungefähr 70 Sekunden absolviert. Dennoch stellt das Hinterherhinken der Trajektorie
-ein Problem dar, das adressiert werden muss, um eine optimale Lösung zu erzielen. 
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=0.8\linewidth]{lqi_firstTrajfig_beta.jpg}
+        \caption{Verlauf des Winkels Beta (LQI-Regelung mit Diskretisierung)} 
+        \label{fig:lqi_beta}
+    \end{center}
+\end{figure}
+
+Um nun diese Verzögerung entgegenzuwirken, wurde die Entwicklung einer Vorsteuerung angetrieben. Diese Vorsteuerung, wie oben beschrieben, hat jedoch zu einer Verschlechterung des Führungsverhaltens geführt, bei dem es zu einem starken Überschwingen der Zustände, vor allem in $\alpha$ gekommen ist. Daher wurde diese Vorsteuerung nicht mehr weiter verfolgt.
+Dieses Problem sollte die Optimalsteuerung lösen.
+
+\subsection{Regelung mittels Optimalsteuerungsproblem}
+
+Wie hier nun zu erkennen ist, hat die Nutzung des Optimalsteuerungsproblems als Trajektoriengenerierung zu einer deutlichen Verbesserung der Trajektorienfolge geführt. Es ist zu sehen, dass die Verzögerung deutlich reduziert worden ist, wodurch die Trajektorie deutlich schneller abgeflogen werden konnte. Die Zeit, um die Aufgabe abzufliegen, war mit 58 Sekunden nochmals schneller als bei der Diskretisierung. Durch die ausbleibende Verzögerung, konnten die Beschränkungen ebenfalls konservativer eingehalten werden. Hier wurde nun die oben beschriebene Form der Vorsteuerung genutzt. 
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=0.8\linewidth]{OS_V3_completefig_alpha.jpg}
+        \caption{Verlauf des Winkels Alpha (LQI-Regelung mit OSP)} 
+        \label{fig:lqi_alpha_os}
+    \end{center}
+\end{figure}
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=0.8\linewidth]{OS_V3_completefig_beta.png}
+        \caption{Verlauf des Winkels Beta (LQI-Regelung mit OSP)} 
+        \label{fig:lqi_beta_os}
+    \end{center}
+\end{figure}
 
 
 
