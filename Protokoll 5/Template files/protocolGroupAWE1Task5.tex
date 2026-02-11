@@ -472,10 +472,11 @@ gebrauchsspuren, beschädigungen können genauer modelliert werden.
 techn Zeichn nicht so genau
 
 \section{Reglerentwurf}
-top, LQI sinvolle
-wir hatten probleme gewichtungen, schwenkwinkel und schwenkgeschwindigkeiten gewichtung zu niedrig, große probleme 
-plant hat tuning gebraucht, anders als zur Simulation
-mehr linearisierungspunkte für genauere Regelung
+Als Reglerentwurf hat sich der LQI als gute Entscheidung erwiesen, da er die bleibende Regelabweichung eliminiert und somit die Anforderungen an die Regelgüte erfüllt. Die Erweiterung um Integratorzustände war notwendig, um die geforderte Genauigkeit zu erreichen. Die Implementierung eines Beobachters zur Schätzung der Winkelgeschwindigkeiten hat sich als notwendig erwiesen, da diese nicht direkt gemessen werden können.
+Bei der Wahl der Gewichtungsmatrizen traten Probleme auf, da die Auswirkung des Nickwinkels $\gamma$ und der Nickwinkelgeschwindigkeit auf die Stabilität unterschätzt wurden. 
+Neben diesen Problemen war ein iteratives Vorgehen am realen Versuchsstand notwendig, da sich dieser von der Simulation unterschied. 
+Insgesamt hat der Regler eine gute Performance gezeigt, obwohl die Vorsteuerung nicht wie erwartet funktioniert hat.
+Verbesserungsvorschläge wären hier, für jeden punkt der Trajektorie die linearisierung anpassen, um die Regelung genauer an die Trajektorie anzupassen.
 
 \subsection{Trajektoriengenerierung}
 \subsubsection{Diskretisierung}
