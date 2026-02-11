@@ -1,0 +1,212 @@
+\documentclass{ifacconf}
+
+\usepackage{natbib}            % you should have natbib.sty
+\usepackage[utf8]{inputenc}    % Eingabe von Umlauten im Editor, dieser sollte dann auch auf utf8 Encoding eingestellt sein
+\usepackage{graphicx}          % Include this line if your 
+                               % document contains figures,
+%\usepackage[dvips]{epsfig}    % or this line, depending on which
+                               % you prefer.
+                               
+\usepackage{units}
+
+% for German
+% \usepackage{ngerman}           % neue Deutsche Rechtschreibung, Silbentrennung
+% \usepackage[T1]{fontenc}       % Trennung mit Umlauten
+
+% to include tikz pictures of figure created with matlab2tikz, see also file ``plotFigureTest.m''
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}  % use newest version of pgfplots
+\usepackage{amsmath}  % useful for math
+
+% to include the legend into the caption. The commands are
+%\mlLineLegend{red}
+%\mlLineLegendDashed{red}
+%\mlLineLegendDotted{red}
+%\mlLineLegendDashDotted{red}
+%\mlPointLegend{red}
+\newlength{\mlLegendThickness}
+\setlength{\mlLegendThickness}{0.4mm}
+\newlength{\mlLegendHeight}
+\setlength{\mlLegendHeight}{0.6ex}
+\newcommand{\mlLineLegend}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{3mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlLineLegendDashed}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlLineLegendDotted}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlLineLegendDashDotted}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{1.5mm}{\mlLegendThickness}\hspace*{0mm}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-1mm}
+}}
+\newcommand{\mlPointLegend}[1]{\mbox{\color{#1}
+\protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-0.75mm}
+}}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{KRT Praktikum: Protokoll 5 - Abschlussprotokoll}
+
+\thanks[footnoteinfo]{Institute for Systems Theory and Automatic Control, University of Stuttgart, Germany. \textit{http://www.ist.uni-stuttgart.de}}
+
+% include all authors, underline corresponding author
+\author{Kimon Beyer, Yves Gaßmann, Justin Buhl} 
+% \author{}
+
+\begin{abstract}        
+
+% Abstract of not more than 250 words.
+\end{abstract}
+
+\end{frontmatter}
+
+\section{Einleitung}
+In diesem Protokoll werden die Ergebnisse des Praktikums "Konzepte der Regelungstechnik" am Institut für Systemtheorie und Regelungstechnik der Universität Stuttgart zusammengefasst. Ziel des Praktikums ist es, die Konzepte der Regelungstechnik anhand eines 3DOF Helikopters zu verstehen und anzuwenden. Das Praktikum besteht aus mehreren Laboraufgaben (L1, L2, L3, L4, L5) und Hausaufgaben (H1, H2, H3, H4, H5), die sich mit der Inbetriebnahme, Modellierung, Reglerentwurf und Trajektoriengenerierung beschäftigen. Der für diese Aufgabenstellung verwendete Versuchsstand ist ein 3DOF Helikopter, der entlang seiner Hauptachsen/Gelenkachsen (Schwenkwinkel, Steigwinkel, Nickwinkel) bewegt werden kann. Die Bewegung um die Achsen wird von zwei Elektormotoren ermöglicht, welche die beiden Propeller des Helikopters antreiben (vgl. Abbildung \ref{fig:helikopter}). Diese können direkt die Steig- und Nickwinkel beeinflussen, während der Schwenkwinkel indirekt durch den Nickwinkel beeinflusst wird. Ziel des Praktikums ist es, eine vorgegebenes Szenario innerhalb einer gewissen Zeit (180s) abzufliegen und dabei die jeweiligen Beschränkungen einzuhalten. 
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\columnwidth]{Helikopter.pdf} % Pfad/Dateiname anpassen
+    \caption{Versuchsstand: 3DOF-Helikopter. Besteht aus Haupt- und Nebenarm, sowie Gegengewicht 
+    und am Ende des Arms befindlichen Helikopter.}
+    \label{fig:helikopter}
+\end{figure}
+
+
+\section{Modellierung}
+Für die Modellierung des 3DOF Helikopters wurde versucht eine möglichst einfache Modellannahme zu treffen, 
+um die Komplexität des Modells gering zu halten und mit einem möglichst überschaubaren Zeitaufwand 
+eine möglichst gute Abbildung des Systemverhaltens zu extrahieren. Zunächst wurde versucht,
+den Versuchsstand in SolidWorks zu modellieren und mit anschließenden Matlab tools die Systemgleichungen 
+zu extrahieren. Das Auslesen der Bewegungsgleichungen eine nichtlinearen Modells ist jedoch nicht möglich, wesshalb diese Idee verworfen wurde. Dennoch wurde das Modell genutzt, um Modellparameter zu extrahieren. 
+Darauf wird noch im Weiteren eingegangen. Für die physikalische Modellbildung wurde nun zunächst die Grundannahme getroffen,
+die einzelnen Achsen des Helikopters unabhängig voneinander zu betrachten. Die 
+Dynamik der einzelnen Achsen ergibt sich dann durch das Momentengleichgewicht und dem Drallsatz.
+\begin{equation}
+M_{\mathrm{ges}} = M_{\mathrm{grav}} + M_{\mathrm{motor}}
+\label{eq:momentengleichgewicht}
+\end{equation}
+\begin{equation}
+M = I \dot{\omega}
+\label{eq:rotational_dynamics}
+\end{equation}
+Dabei bezeichnet $M_{\mathrm{ges}}$ das gesamte Moment, $M_{\mathrm{grav}}$ das durch die Gravitationkraft verursachte Moment
+und $M_{\mathrm{motor}}$ das durch die Motoren erzeugte Moment. $I$ ist das Trägheitsmoment der jeweiligen Achse und $\dot{\omega}$ die jeweilige
+Winkelbeschleunigung um die betrachtete Achse. Die Dynamik der drei Rotationen um die jeweilige Achse ergibt sich
+letztendlich durch zweifache Integration der Winkelbeschleunigung. 
+
+Für jede Rotationsachse wird angenommen, dass sich ein Starrkörper um diese bewegt. Dies vereinfacht die Modellbildung, sorgt jedoch in diesem Fall für nur kleine Änderungen der Trägheitstensoren. Das heist für den Nickwinkel um die Nickachse, bewegt sich lediglich
+der Helikopter als Starrkörper (vgl. Fig. \ref{fig:bild1}). Für die Bewegung um die Steigachse, wird der Helikopter sowie der gesamte Arm (d.h Hauptarm, Magnethalterung, Nebenarm und Gegengewicht) als Starrkörper mit lediglich einem Freiheitsgrad um die Steigachse (vgl. Fig. \ref{fig:bild2}). Für die Berechnung der Trägheitsmomente wurde ein Nickwinkel von 0° angenommen.  
+Für die Bewegung um die Schwenkachse, betrachten wir nun den Helikopter, Arm und einen zusätzlichen vertikalen Arm, 
+alle drei Teile als ein starrer Starrkörper mit einem Freiheitsgrad um die Schwenkachse (vgl. Fig. \ref{fig:bild3}). 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{heli.png}
+    \caption{CAD Modell des Helikopters}
+    \label{fig:bild1}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{arm_heli.png}
+    \caption{CAD Modell des Helikopters mit Arm}
+    \label{fig:bild2}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{arm_heli_staender.png}
+    \caption{CAD Modell des Helikopters mit Arm und Ständer.}
+    \label{fig:bild3}
+\end{figure}
+
+
+Des Weiteren wurden folgende Annahmen getroffen:
+\begin{itemize}
+    \item Reibungen sowie Luftwiderstände werden vernachlässigt.
+    \item Der Schwerpunkt des Helikopters selbst liegt im Rotationspunkt der Drehachse. Diese Symmetrie
+    hat zur Folge, dass für die Pitch Achse kein Gravitationsmoment berücksichtigt werden müssen, da sich 
+    die Gewichtskräfte gegenseitig aufheben.
+
+\end{itemize}
+Zur Extrahierung der Massenträgheitsmomente wurden die in Abbildungen~\ref{fig:bild1},~\ref{fig:bild2} und~\ref{fig:bild3} gezeigten CAD-Modelle aus SolidWorks genutzt.
+Es ist wichtig zu erwähnen, dass die jeweiligen Massenträgheiten in den jeweiligen Koordinatensystemen der Rotationsachsen extrahiert wurden sind.
+Dabei wurden folgende Massenträgheiten extrahiert sowie mit folgenden Längen als
+Hebelarme des Starrkörpers festgelegt:
+
+\begin{table}[htbp]
+\centering
+\caption{Modelparameter}
+\label{tab:modelparams}
+\begin{tabular}{|c|c|p{4.5cm}|}
+\hline
+Variable & Wert & Beschreibung \\ \hline
+$I_{\alpha}$ & 1.130985 [kg/m$^2$] & Trägheitsmoment um die Travel-Achse \\ \hline
+$I_{\beta}$  & 1.125115 [kg/m$^2$] & Trägheitsmoment um die Elevation-Achse \\ \hline
+$I_{\gamma}$ & 0.040229 [kg/m$^2$] & Trägheitsmoment um die Pitch-Achse. \\ \hline
+$m_{\mathrm{mmp}}$ & 3.960 [kg] & Gesamte Masse des 3DOF Helikopters mit Hauptarm \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Gegebene Längen}
+\label{tab:modellengths}
+\begin{tabular}{|c|c|p{5cm}|}
+\hline
+Variable & Wert & Beschreibung \\ \hline
+$l_{heli}$ & 0.655 [m] & Länge vom Aufhängepunkt zur Rotorbaugruppe \\ \hline
+$l_{rotor}$  & 0.1775 [m] & Länge vom Drehpunkt der Rotorbaugruppe zum Rotor \\ \hline
+$l_{mmp}$ & 0.010029 [m] & Länge von Aufhängepunkt zum Massenmittelpunkt \\ \hline
+\end{tabular}
+\end{table}
+
+Bei den jeweiligen Trägheiten $$I_{\alpha}, I_{\beta}, I_{\gamma}$$ die aus dem SolidWorks Modell extrahiert 
+worden sind, handelt es sich um die addierten Trägheitsmomente der, für die jeweilige Achsrotation relevante, angenommenen Starrkörper. 
+
+Letztendlich ergeben sich folgende Differentialgleichungen für die drei Achsen:
+
+\begin{equation}\label{eq:alpha}
+    \ddot{\alpha} = \frac{-(F_{\mathrm{vorne}} + F_{\mathrm{hinten}})  l_{\mathrm{heli}}  \sin(\gamma)}{I_{\alpha}}
+\end{equation}
+
+\begin{equation}
+    \ddot{\beta} = \frac{(F_{\mathrm{vorne}} + F_{\mathrm{hinten}})  l_{\mathrm{heli}}  \cos(\gamma) - F_{\mathrm{g}}  l_{mmp}  \cos(\beta)}{I_{\beta}}
+\end{equation}
+
+\begin{equation}
+\ddot{\gamma} = \frac{(F_{\mathrm{vorne}} - F_{\mathrm{hinten}})  l_{rotor}}{I_{\gamma}}
+\end{equation}
+
+Mit
+\begin{equation}
+F_{\mathrm{g}} = m_{\mathrm{mmp}}g
+\label{eq:F_g}
+\end{equation}
+wobei $m_{\mathrm{ges}}$ die Gesamtmasse des betrachteten Starrkörpers und $g\approx 9.81\ \mathrm{m/s^2}$ die Erdbeschleunigung ist.
+
+In Gleichung \ref{eq:alpha} wird auf die Berücksichtigung des Steigwinkels $\beta$ verzichtet, da angenommen wird, dass dieser Winkel nur geringe Auslenkungen erfährt und somit der Einfluss auf die Travel Achse vernachlässigbar ist ($\beta$ geht im Cosinus in die Gleichung ein). Falls sich herrausstellen sollte, dass diese Annahme nicht haltbar ist, kann dies jdeoch noch angepasst werden.
+
+
+\section{Reglerentwurf}
+
+\section{Trajektoriengenerierung}
+
+\section{Ergebnisse}
+
+\section{Schlussfolgerungen und Fazit}
+
+
+\end{document}
