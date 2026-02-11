@@ -52,6 +52,10 @@
 \protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-0.75mm}
 }}
 
+\usepackage[T1]{fontenc}
+
+\hyphenation{Mas-sen-träg-heits-mo-men-te}
+
 \begin{document}
 
 \begin{frontmatter}
@@ -77,9 +81,148 @@ Diskretisierung und Lösung eines Optimalsteuerungsproblems.
 \end{frontmatter}
 
 \section{Einleitung}
+In diesem Protokoll werden die Ergebnisse des Praktikums "Konzepte der Regelungstechnik" am Institut für Systemtheorie und Regelungstechnik der Universität Stuttgart zusammengefasst. Ziel des Praktikums ist es, die Konzepte der Regelungstechnik anhand eines 3DOF Helikopters zu verstehen und anzuwenden. Das Praktikum besteht aus mehreren Laboraufgaben (L1, L2, L3, L4, L5) und Hausaufgaben (H1, H2, H3, H4, H5), die sich mit der Inbetriebnahme, Modellierung, Reglerentwurf und Trajektoriengenerierung beschäftigen. Die Implementierung der Regler und die Trajektoriengenerierung erfolgen mittels MATLAB/Simulink und dem Echtzeitsystem QUARC, welches die Implementierung am Realen System ermöglich. Der für diese Aufgabenstellung verwendete Versuchsstand ist ein 3DOF Helikopter, der entlang seiner Hauptachsen/Gelenkachsen (Schwenkwinkel $\alpha$, Steigwinkel $\beta$, Nickwinkel $\gamma$) bewegt werden kann. Die Bewegung um die Achsen wird von zwei Elektormotoren ermöglicht, welche die beiden Propeller des Helikopters antreiben (vgl. Abbildung \ref{fig:helikopter}). 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\columnwidth]{Helikopter.pdf}
+    \caption{Versuchsstand: 3DOF-Helikopter. Besteht aus Haupt- und Nebenarm, sowie Gegengewicht 
+    und am Ende des Arms befindlichen Helikopter.}
+    \label{fig:helikopter}
+\end{figure}
+
+Diese können direkt die Steig- und Nickwinkel beeinflussen, während der Schwenkwinkel indirekt durch den Nickwinkel beeinflusst wird. Ziel des Praktikums ist es, ein vorgegebenes Szenario, wie es in Abbildung \ref{fig:mainTask} zu erkennenist, innerhalb einer gewissen Zeit (180s) abzufliegen und dabei die jeweiligen Beschränkungen einzuhalten. Die Höhenbeschränkung von mindestens -7.5° bezieht sich hierbei auf den Steigwinkel, welcher während des Schwenken zwischen Positionen eingehalten werden muss. Außerdem muss während der Landung und dem Aufstieg ein Schwenkwinkel von maximal ±7.5° relativ zu der Landeposition eingehalten werden, um eine Kollision mit Hindernissen zu vermeiden.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\columnwidth]{mainTask.png}
+    \caption{Hauptaufgabe der Lehrveranstaltung: Frachttransport eines Magneten}
+    \label{fig:mainTask}
+\end{figure}
+
+
+
 
 
 \section{Modellierung}
+Das Ziel der Modellierung ist die Herleitung eines mathematischen Modells, das das Verhalten des 3DOF-Helikopters hinreichend genau beschreibt, um darauf basierend einen Reglerentwurf durchzuführen.
+
+\subsection{Mathematische Modellierung}
+Für die physikalische Modellbildung werden die drei Rotationsachsen des Helikopters zunächst entkoppelt betrachtet. Dabei bezeichnen $\alpha$ den Schwenkwinkel, $\beta$ den Steigwinkel und $\gamma$ den Nickwinkel. Die Dynamik ergibt sich aus dem Momentengleichgewicht gemäß dem Drallsatz $M = I \dot{\omega}$. Dabei sind $I$ das jeweilige Trägheitsmoment und $\dot{\omega}$ die Winkelbeschleunigung.
+
+Unter der Annahme, dass Luftwiderstand und Reibung vernachlässigbar sind und der Schwerpunkt im Drehpunkt liegt (für die Nickachse), ergeben sich die folgenden nichtlinearen Bewegungsgleichungen:
+
+\begin{equation}
+    \ddot{\alpha} = \frac{-(F_{\mathrm{vorne}} + F_{\mathrm{hinten}}) l_{\mathrm{heli}} \sin(\gamma)}{I_{\alpha}}
+    \label{eq:alpha}
+\end{equation}
+
+\begin{equation}
+    \ddot{\beta} = \frac{(F_{\mathrm{vorne}} + F_{\mathrm{hinten}}) l_{\mathrm{heli}} \cos(\gamma) - F_{\mathrm{g}} l_{mmp} \cos(\beta)}{I_{\beta}}
+    \label{eq:beta}
+\end{equation}
+
+\begin{equation}
+    \ddot{\gamma} = \frac{(F_{\mathrm{vorne}} - F_{\mathrm{hinten}}) l_{\mathrm{rotor}}}{I_{\gamma}}
+    \label{eq:gamma}
+\end{equation}
+
+Hierbei beschreiben $F_{\mathrm{vorne/hinten}}$ die Motorkräfte, $F_g$ die Gewichtskraft und $l$ die entsprechenden Hebelarme.
+
+\subsection{Modellidentifikation}
+Zur Bestimmung der Modellparameter wurde sowohl auf CAD-Daten als auch auf experimentelle Messungen zurückgegriffen:
+\begin{enumerate}
+    \item \textbf{Geometrie- und Trägheitsparameter:} Die Massenträgheitsmomente $I_{\alpha}, I_{\beta}, I_{\gamma}$ sowie die Schwerpunktslagen wurden direkt aus dem CAD-Modell (SolidWorks) gewonnen. Das CAD-Modell wurde anhand der beigelegten technischen Zeichungen enthält und mit den entsprechenden Massen versehen. Die Berechung der Trägheitsmomente erfolgte über das SolidWorks-Tool zur Massenanalyse, welches die Trägheitsmomente um die Hauptachsen liefert. Die relevanten Parameter sind in Tabelle \ref{tab:modelparams} zusammengefasst.
+    \item \textbf{Aktuatorik:} Der Zusammenhang zwischen der angelegten Spannung $U$ und der erzeugten Kraft $F$ der Rotoren wurde experimentell ermittelt. Dazu wurden Kraftmessungen bei verschiedenen Spannungsstufen durchgeführt und eine Kennlinie $U_{\mathrm{Rotor}}(F)$ mittels Polynomapproximation bestimmt (siehe Abb. \ref{fig:Motorkennlinie}). Die Kraftmessungen erfolgte mithilfe einer Küchenwaage. Das Polynom ergibt sich zu: 
+    \begin{equation}
+        \begin{split}
+            U_{\mathrm{Rotor}}(F) &= 24.047576 F^3 - 45.530359 F^2 \\
+            &\quad + 34.5412 F + 1.0596
+        \end{split}
+    \end{equation}
+\end{enumerate}
+
+\begin{table}[htbp]
+\centering
+\caption{Modellparameter aus CAD}
+\label{tab:modelparams}
+\begin{tabular}{|c|c|l|}
+\hline
+Parameter & Wert & Beschreibung \\ \hline
+$I_{\alpha}$ & 1.131 [kg/m$^2$] & Trägheit Schwenkachse \\ 
+$I_{\beta}$  & 1.125 [kg/m$^2$] & Trägheit Steigachse \\ 
+$I_{\gamma}$ & 0.040 [kg/m$^2$] & Trägheit Nickachse \\ 
+$m_{\mathrm{mmp}}$ & 3.960 [kg] & Gesamtmasse \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\columnwidth]{Motorkennlinie_2.jpg}
+    \caption{Experimentell ermittelte Motorkennlinie (Spannung zu Kraft).}
+    \label{fig:Motorkennlinie}
+\end{figure}
+
+\subsection{Linearisierung}
+Für den Entwurf linearer Regelungsverfahren (wie LQR) ist ein lineares Zustandsraummodell der Form $\Delta\dot{x} = A \Delta x + B \Delta u$ erforderlich. Die nichtlinearen Gleichungen \eqref{eq:alpha}-\eqref{eq:gamma} wurden dazu um einen Arbeitspunkt (Ruhelage) linearisiert. Der Zustandsvektor ist definiert als $x = [\alpha, \beta, \gamma, \dot{\alpha}, \dot{\beta}, \dot{\gamma}]^T$. Die Systemmatrizen $A$ und $B$ ergeben sich aus den Jacobi-Matrizen der Systemdynamik an diesem Arbeitspunkt.
+
+Damit sind alle Voraussetzungen für die Implementierung und den Reglerentwurf geschaffen.
+
+
+
+Für die Zustandsraumdarstellung werden folgende Vektoren definiert:
+\begin{equation}
+    x = \begin{bmatrix} \alpha & \beta & \gamma & \dot{\alpha} & \dot{\beta} & \dot{\gamma} \end{bmatrix}^T, \quad
+    u = \begin{bmatrix} U_{\mathrm{vorne}} & U_{\mathrm{hinten}} \end{bmatrix}^T, \quad
+    y = \begin{bmatrix} \alpha & \beta & \gamma \end{bmatrix}^T
+\end{equation}
+
+Als Arbeitspunkt wurde $x_0 = \begin{bmatrix} 0 & -11^\circ & 0 & 0 & 0 & 0 \end{bmatrix}^T$ gewählt, was dem Mittelpunkt des Arbeitsbereiches entspricht. Der zugehörige Eingangsvektor für den stationären Schwebeflug beträgt $u_0 \approx \begin{bmatrix} 0.3& 0.3 \end{bmatrix}^T$. Diese wurden über die Gleichgewichtsgleichung \ref{eq:beta} der Dynamik bestimmt, indem die Beschleunigung auf Null gesetzt und nach $F$ aufgelöst wurde. $F_\mathrm{vorne}$ und $F_\mathrm{hinten}$ wurde als gleich angenommen. 
+
+Die Linearisierung liefert das folgende lineare Systemmodell:
+\begin{equation}
+    \Delta\dot{x} = A \Delta x + B \Delta u, \quad \Delta y = C \Delta x + D \Delta u
+\end{equation}
+
+Die Systemmatrizen ergeben sich zu:
+\begin{equation}
+A = 
+\begin{bmatrix}
+0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 0 & 0 & 1 \\
+0 & 0 & -0.579 & 0 & 0 & 0 \\
+0 & -0.066 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0
+\end{bmatrix}, \quad
+B = 
+\begin{bmatrix}
+0 & 0 \\
+0 & 0 \\
+0 & 0 \\
+0 & 0 \\
+0.582 & 0.582 \\
+4.412 & -4.412
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+    C = I_{3\times 6}, \quad
+    D = 0_{3\times 2}
+\end{equation}
+
+Es ist zu beachten, dass durch die Wahl von $\gamma = 0$ im Arbeitspunkt einige Terme der Linearisierung entfallen. Dies stellt eine Vereinfachung dar, die beim Reglerentwurf berücksichtigt werden muss.
+
+\subsection{Systemanalyse}
+Die Eigenwerte des linearisierten Systems lauten:
+$$\lambda_{1,2,3,4} = 0, \quad \lambda_{5,6} = \pm 0.2570i$$
+Das System besitzt Pole auf der imaginären Achse und im Ursprung, ist also grenzstabil (marginal stabil). Dies deckt sich mit der physikalischen Anschauung eines Helikopters im Schwebeflug ohne Dämpfung.
+
+Die Untersuchung der Steuerbarkeitsmatrix $\mathcal{S}$ und Beobachtbarkeitsmatrix $\mathcal{O}$ zeigt, dass beide den vollen Rang besitzen. Das System ist somit vollständig steuerbar und beobachtbar, was die notwendige Voraussetzung für den Beobachter- und Reglerentwurf darstellt.
+
+\subsection{Mehrkörpersimulation (MKS)}
+Zur Validierung wurde ergänzend eine Mehrkörpersimulation (MKS) in Simscape Multibody erstellt. Diese importiert die Geometrie- und Massendaten direkt aus dem SolidWorks-CAD-Modell und ermöglicht eine visuelle Verifikation des Systemverhaltens sowie eine erste Erprobung der Regelungstrategien an einem physikalisch detaillierten Modell.
+
 
 \section{Reglerentwurf}
 Für den Reglerentwurf wurde das aus Protokoll 2 gewonnene lineare Helikoptermodell genutzt. Wichtig ist hierbei zu beachten,
@@ -209,8 +352,71 @@ genutzt worden sind, um die Vorsteuerung zu implementieren, indem von diesen Ref
 
 \section{Trajektoriengenerierung}
 
+
+
+\subsection{Diskret}
+
+Nach der Modellierung und dem Reglerentwurf erfolgt im Folgenden Kapitel die Trajektoriengenerierung, welche die Führungsgröße für die vorherige gewonnene Reglerstruktur vorgibt. Dabei soll die Trajektorie so gestaltet sein, dass die Bewegung des Helikopters möglichst sanft erfolgt und keine plötzlichen Sprünge in den Sollwerten auftreten.
+Dies ist wichtig, da der Regler aus Erfahrungen des dritten Labortages nur begrenzt in der Lage ist, schnelle Änderungen der Sollwerte zu verfolgen, ohne dass es zu Überschwingern oder Instabilitäten kommt.
+
+Zum erstellen der Trajektorie wird in Matlab die Funktion \texttt{interp1} verwendet. Diese Funktion ermöglicht es durch die Interpolation einer Reihe von manuell bestimmten Stützpunkten, eine Trajektorie zu generieren.
+Hierbei ist zu erwähnen, dass für die Travel und Elevation Trajektorie wie in Abbildung \ref{fig:Travel_Trajektorie} und \ref{fig:Elevation_Trajektorie} zu sehen ist \texttt{pchip} als Interpolationsmethode gewählt wurde. Diese ist eine formbewahrende kubische Interpolation, welche eine langsame Annäherung ohne Überschwingen gewährleistet.
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Travel_Trajektorie.png}
+    \caption{Travel Trajektorie}
+    \label{fig:Travel_Trajektorie}
+\end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Elevation_Trajektorie.png}
+    \caption{Elevation Trajektorie}
+    \label{fig:Elevation_Trajektorie}
+\end{figure}
+
+Es ist ebenfalls wichtig, dass die vorgegebene Trajektorie innerhalb der physikalischen Grenze des Helikopters bleibt.
+Dies fließt in die Wahl der Stützpunkte mit ein, da unter anderem der Gradient der Trajektorie während dem Landeanflug größer sein darf, als während dem Aufstieg.
+In Abbildung \ref{fig:Gradient} ist die resultierende Geschwindigkeit der Elevation- und Travel Trajektorie dargestellt, anhand welcher die Einhaltung der physikalischen Grenzen überprüft werden kann.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Gradient.png}
+    \caption{Gradient der Trajektorien}
+    \label{fig:Gradient}
+\end{figure}
+
+Daran ist zu erkennen, dass der Helikopter sich nie in einem Bereich bewegt, welcher für ihn nicht realisierbar ist.
+Es ist auch möglich die Bewegungen in Travel und Elevation näher aneinander zu Reihen, um die Gesamtdauer der Trajektorie zu verkürzen. Hierbei ist allerdings darauf zu achten, dass die minimale Höhe des Helikopters nicht unterschritten wird.
+Eine Trajektorie für den pitch wurde nicht erstellt, da dieser während des gesamten Fluges nahe null bleiben soll und somit durch eine Konstante dargestellt werden kann.
+Die so erstellten Trajektorien werden im Folgenden in \texttt{.mat} Dateien gespeichert und als LookUp Table in Matlab Simulink eingebunden.
+
+
+\subsection{Optimalsteuerungsproblem (OSP)}
+Die zweite Methode zur Trajektoriengenerierung besteht darin, ein Optimalsteuerungsproblem (OSP) zu formulieren und zu lösen. Hierzu wird die folgende Kostenfunktion definiert:
+\begin{equation}
+    \min_{T_{\mathrm{seg}}, u} \quad J = \sum_{i=1}^{N} T_{\mathrm{seg},i} + 0.1 \sum_{k=1}^{M} u_k^2
+\end{equation}
+Diese Kostenfunktion minimiert sowohl die Gesamtzeit der Trajektorie (erste Summe) als auch die aufgewendete Steuerungsenergie (zweite Summe). Die Gewichtung von 0.1 für die Steuerungsenergie zu 1 für die Zeit stellt einen Kompromiss dar, der die Trajektorie nicht nur schnell, sondern auch mit moderaten Steuerungsaufwand realisierbar macht. ZUsätzlich wird die Steuerung durcch die Nebenbedingen eingeschränkt, was zu einer realistischeren Trajektorie führt. Als Nebenbeding wurde die maximale Kraft der Rotoren von $F_{\mathrm{max}} = 0.7$ N definiert. Dies liegt unterhalb der maximalen Kraft, was einen Regeleingriff ermöglicht, um die Trajektorie einzuhalten. Zustäzlich wurde eine Nebenbedingung für den Nickwinkel $\gamma$ definiert, um zu schnelles und damit unkonrollierbareres Verhalten zu vermeiden. Es wurde eine maximale Nickwinkel von $\gamma_{\mathrm{max}} = 0.6\mathrm{rad}$ definiert. Zur Lösung des OSP wurde casadi mit dem IPOPT-Solver verwendet. Als Diskretisierungsverfahren wurde das explizite Euler-Verfahren gewählt, um die Dynamik zu diskretisieren. Die Trajektorie wurde mit einer freien Endzeit formuliert, um die Gesamtzeit der Trajektorie zu minimieren. Hierzu wurde die Segmentzeit $T_{\mathrm{seg}}$ als Optimierungsvariable definiert, die für alle Segmente gleich ist. Die Anzahl der Segmente wurde auf $N=40$ festgelegt, was eine gute Balance zwischen Flexibilität der Trajektorie und Rechenzeit darstellt. Da die Trajektorie mit der zu überwindenden Referenzproblemstellung nur schwer in einem Schritt gelöst werden kann, wurde die Trajektorie in Segmente unterteilt und iterativ gelöst. Zwischen den Segmenten wurde eine Stoppzeit von 2s definiert, um eventuelle Fehler zu korrigieren und die Trajektorie an die aktuelle Systemantwort anzupassen.
+
+\subsection{Magnetsteuerung}
+Für die beiden vorherigen Methoden der Trajektoriengenerierung, wird die Magnetsteuerung nicht berücksichtigt. Aufgrund dessen wird hier eine weitere Methode verwendet, die durch die Verwendung eines Stateflow Diagramms in Simulink die Steuerung des Magneten ermöglicht. Hierbei ist es möglich, verschiedene Zustände wie "Magnet an" und "Magnet aus" zu definieren und die Übergänge zwischen diesen Zuständen basierend auf bestimmten Bedingungen zu steuern. 
+Der Magnet wird dabei wie in Abb.\ref{fig:Magnet_Stateflow} von Anfang an aktiviert und wird erst am Ende des zweiten Landeanfluges, sobald die Höhe des Helikopters unter einem bestimmten Schwellenwert liegt, deaktiviert.  
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Magnet_Stateflow.png}
+    \caption{Magnet Stateflow Diagram}
+    \label{fig:Magnet_Stateflow}
+\end{figure}
+
+
+
+
 \section{Ergebnisse}
 \label{sec:Ergebnisse}
+
 
 \subsection{Regelung mittels Diskretisierung}
 Zur Erinnerung, hier wurde der LQI ohne Verwendung einer Vorsteuerung genutzt.
@@ -255,6 +461,7 @@ Wie hier nun zu erkennen ist, hat die Nutzung des Optimalsteuerungsproblems als 
         \label{fig:lqi_beta_os}
     \end{center}
 \end{figure}
+
 
 
 
