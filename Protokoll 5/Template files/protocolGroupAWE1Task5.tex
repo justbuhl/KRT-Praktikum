@@ -210,7 +210,12 @@ Zur Validierung wurde ergänzend eine Mehrkörpersimulation (MKS) in Simscape Mu
 \section{Reglerentwurf}
 
 \section{Trajektoriengenerierung}
-
+\subsection{Optimalsteuerungsproblem (OSP)}
+Die zweite Methode zur Trajektoriengenerierung besteht darin, ein Optimalsteuerungsproblem (OSP) zu formulieren und zu lösen. Hierzu wird die folgende Kostenfunktion definiert:
+\begin{equation}
+    \min_{T_{\mathrm{seg}}, u} \quad J = \sum_{i=1}^{N} T_{\mathrm{seg},i} + 0.1 \sum_{k=1}^{M} u_k^2
+\end{equation}
+Diese Kostenfunktion minimiert sowohl die Gesamtzeit der Trajektorie (erste Summe) als auch die aufgewendete Steuerungsenergie (zweite Summe). Die Gewichtung von 0.1 für die Steuerungsenergie zu 1 für die Zeit stellt einen Kompromiss dar, der die Trajektorie nicht nur schnell, sondern auch mit moderaten Steuerungsaufwand realisierbar macht. ZUsätzlich wird die Steuerung durcch die Nebenbedingen eingeschränkt, was zu einer realistischeren Trajektorie führt. Als Nebenbeding wurde die maximale Kraft der Rotoren von $F_{\mathrm{max}} = 0.7$ N definiert. Dies liegt unterhalb der maximalen Kraft, was einen Regeleingriff ermöglicht, um die Trajektorie einzuhalten. Zustäzlich wurde eine Nebenbedingung für den Nickwinkel $\gamma$ definiert, um zu schnelles und damit unkonrollierbareres Verhalten zu vermeiden. Es wurde eine maximale Nickwinkel von $\gamma_{\mathrm{max}} = 0.6\mathrm{rad}$ definiert. Zur Lösung des OSP wurde casadi mit dem IPOPT-Solver verwendet. Als Diskretisierungsverfahren wurde das explizite Euler-Verfahren gewählt, um die Dynamik zu diskretisieren. Die Trajektorie wurde mit einer freien Endzeit formuliert, um die Gesamtzeit der Trajektorie zu minimieren. Hierzu wurde die Segmentzeit $T_{\mathrm{seg}}$ als Optimierungsvariable definiert, die für alle Segmente gleich ist. Die Anzahl der Segmente wurde auf $N=40$ festgelegt, was eine gute Balance zwischen Flexibilität der Trajektorie und Rechenzeit darstellt. Da die Trajektorie mit der zu überwindenden Referenzproblemstellung nur schwer in einem Schritt gelöst werden kann, wurde die Trajektorie in Segmente unterteilt und iterativ gelöst. Zwischen den Segmenten wurde eine Stoppzeit von 2s definiert, um eventuelle Fehler zu korrigieren und die Trajektorie an die aktuelle Systemantwort anzupassen.
 \section{Ergebnisse}
 
 \section{Schlussfolgerungen und Fazit}
