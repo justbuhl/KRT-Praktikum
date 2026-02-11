@@ -72,14 +72,35 @@
 \end{frontmatter}
 
 \section{Einleitung}
+In diesem Protokoll werden die Ergebnisse des Praktikums "Konzepte der Regelungstechnik" am Institut für Systemtheorie und Regelungstechnik der Universität Stuttgart zusammengefasst. Ziel des Praktikums ist es, die Konzepte der Regelungstechnik anhand eines 3DOF Helikopters zu verstehen und anzuwenden. Das Praktikum besteht aus mehreren Laboraufgaben (L1, L2, L3, L4, L5) und Hausaufgaben (H1, H2, H3, H4, H5), die sich mit der Inbetriebnahme, Modellierung, Reglerentwurf und Trajektoriengenerierung beschäftigen. Die Implementierung der Regler und die Trajektoriengenerierung erfolgen mittels MATLAB/Simulink und dem Echtzeitsystem QUARC, welches die Implementierung am Realen System ermöglich. Der für diese Aufgabenstellung verwendete Versuchsstand ist ein 3DOF Helikopter, der entlang seiner Hauptachsen/Gelenkachsen (Schwenkwinkel $\alpha$, Steigwinkel $\beta$, Nickwinkel $\gamma$) bewegt werden kann. Die Bewegung um die Achsen wird von zwei Elektormotoren ermöglicht, welche die beiden Propeller des Helikopters antreiben (vgl. Abbildung \ref{fig:helikopter}). 
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\columnwidth]{Helikopter.pdf}
+    \caption{Versuchsstand: 3DOF-Helikopter. Besteht aus Haupt- und Nebenarm, sowie Gegengewicht 
+    und am Ende des Arms befindlichen Helikopter.}
+    \label{fig:helikopter}
+\end{figure}
+
+Diese können direkt die Steig- und Nickwinkel beeinflussen, während der Schwenkwinkel indirekt durch den Nickwinkel beeinflusst wird. Ziel des Praktikums ist es, ein vorgegebenes Szenario, wie es in Abbildung \ref{fig:mainTask} zu erkennenist, innerhalb einer gewissen Zeit (180s) abzufliegen und dabei die jeweiligen Beschränkungen einzuhalten. Die Höhenbeschränkung von mindestens -7.5° bezieht sich hierbei auf den Steigwinkel, welcher während des Schwenken zwischen Positionen eingehalten werden muss. Außerdem muss während der Landung und dem Aufstieg ein Schwenkwinkel von maximal ±7.5° relativ zu der Landeposition eingehalten werden, um eine Kollision mit Hindernissen zu vermeiden.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\columnwidth]{mainTask.png}
+    \caption{Hauptaufgabe der Lehrveranstaltung: Frachttransport eines Magneten}
+    \label{fig:mainTask}
+\end{figure}
+
+
+
 
 
 \section{Modellierung}
 
-\section{Reglerentwurf}ö
+\section{Reglerentwurf}
 
 \section{Trajektoriengenerierung}
-\subsection{Diskret}
+\subsection{Diskret (D)}
 Nach der Modellierung und dem Reglerentwurf erfolgt im Folgenden Kapitel die Trajektoriengenerierung, welche die Führungsgröße für die vorherige gewonnene Reglerstruktur vorgibt. Dabei soll die Trajektorie so gestaltet sein, dass die Bewegung des Helikopters möglichst sanft erfolgt und keine plötzlichen Sprünge in den Sollwerten auftreten.
 Dies ist wichtig, da der Regler aus Erfahrungen des dritten Labortages nur begrenzt in der Lage ist, schnelle Änderungen der Sollwerte zu verfolgen, ohne dass es zu Überschwingern oder Instabilitäten kommt.
 
@@ -117,9 +138,7 @@ Eine Trajektorie für den pitch wurde nicht erstellt, da dieser während des ges
 Die so erstellten Trajektorien werden im Folgenden in \texttt{.mat} Dateien gespeichert und als LookUp Table in Matlab Simulink eingebunden.
 
 
-
-
-\subsection{Optimalsteuerung}
+\subsection{Optimalsteuerung (OSP)}
 Eine weitere Methode zur Trajektoriengenerierung ist die Optimalsteuerung, welche auf der Lösung eines Optimierungsproblems basiert. Hierbei wird eine Kostenfunktion definiert, welche die Abweichung von der gewünschten Trajektorie sowie die maximal verfügbaren Steuerungsgrößen berücksichtigt. 
 Im Folgenden wird diese mit Hilfe \texttt{CasADi} implementiert.
 
