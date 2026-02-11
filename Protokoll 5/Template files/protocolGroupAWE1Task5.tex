@@ -212,6 +212,7 @@ Die Untersuchung der Steuerbarkeitsmatrix $\mathcal{S}$ und Beobachtbarkeitsmatr
 \subsection{Mehrkörpersimulation (MKS)}
 Zur Validierung wurde ergänzend eine Mehrkörpersimulation (MKS) in Simscape Multibody erstellt. Diese importiert die Geometrie- und Massendaten direkt aus dem SolidWorks-CAD-Modell und ermöglicht eine visuelle Verifikation des Systemverhaltens sowie eine erste Erprobung der Regelungstrategien an einem physikalisch detaillierten Modell.
 
+
 \section{Reglerentwurf}
 Für den Reglerentwurf wurde das aus Protokoll 2 gewonnene lineare Helikoptermodell genutzt. Wichtig ist hierbei zu beachten,
 dass der Reglerentwurf auf dem linearen Modell basiert und somit bei der Implementierung auf das nichtlineare Modell noch der 
@@ -339,9 +340,90 @@ genutzt worden sind, um die Vorsteuerung zu implementieren, indem von diesen Ref
 
 
 \section{Trajektoriengenerierung}
+\subsection{Diskret}
+Nach der Modellierung und dem Reglerentwurf erfolgt im Folgenden Kapitel die Trajektoriengenerierung, welche die Führungsgröße für die vorherige gewonnene Reglerstruktur vorgibt. Dabei soll die Trajektorie so gestaltet sein, dass die Bewegung des Helikopters möglichst sanft erfolgt und keine plötzlichen Sprünge in den Sollwerten auftreten.
+Dies ist wichtig, da der Regler aus Erfahrungen des dritten Labortages nur begrenzt in der Lage ist, schnelle Änderungen der Sollwerte zu verfolgen, ohne dass es zu Überschwingern oder Instabilitäten kommt.
+
+Zum erstellen der Trajektorie wird in Matlab die Funktion \texttt{interp1} verwendet. Diese Funktion ermöglicht es durch die Interpolation einer Reihe von manuell bestimmten Stützpunkten, eine Trajektorie zu generieren.
+Hierbei ist zu erwähnen, dass für die Travel und Elevation Trajektorie wie in Abbildung \ref{fig:Travel_Trajektorie} und \ref{fig:Elevation_Trajektorie} zu sehen ist \texttt{pchip} als Interpolationsmethode gewählt wurde. Diese ist eine formbewahrende kubische Interpolation, welche eine langsame Annäherung ohne Überschwingen gewährleistet.
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Travel_Trajektorie.png}
+    \caption{Travel Trajektorie}
+    \label{fig:Travel_Trajektorie}
+\end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Elevation_Trajektorie.png}
+    \caption{Elevation Trajektorie}
+    \label{fig:Elevation_Trajektorie}
+\end{figure}
+
+Es ist ebenfalls wichtig, dass die vorgegebene Trajektorie innerhalb der physikalischen Grenze des Helikopters bleibt.
+Dies fließt in die Wahl der Stützpunkte mit ein, da unter anderem der Gradient der Trajektorie während dem Landeanflug größer sein darf, als während dem Aufstieg.
+In Abbildung \ref{fig:Gradient} ist die resultierende Geschwindigkeit der Elevation- und Travel Trajektorie dargestellt, anhand welcher die Einhaltung der physikalischen Grenzen überprüft werden kann.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Gradient.png}
+    \caption{Gradient der Trajektorien}
+    \label{fig:Gradient}
+\end{figure}
+
+Daran ist zu erkennen, dass der Helikopter sich nie in einem Bereich bewegt, welcher für ihn nicht realisierbar ist.
+Es ist auch möglich die Bewegungen in Travel und Elevation näher aneinander zu Reihen, um die Gesamtdauer der Trajektorie zu verkürzen. Hierbei ist allerdings darauf zu achten, dass die minimale Höhe des Helikopters nicht unterschritten wird.
+Eine Trajektorie für den pitch wurde nicht erstellt, da dieser während des gesamten Fluges nahe null bleiben soll und somit durch eine Konstante dargestellt werden kann.
+Die so erstellten Trajektorien werden im Folgenden in \texttt{.mat} Dateien gespeichert und als LookUp Table in Matlab Simulink eingebunden.
+
+
+
+
+\subsection{Optimalsteuerung}
+Eine weitere Methode zur Trajektoriengenerierung ist die Optimalsteuerung, welche auf der Lösung eines Optimierungsproblems basiert. Hierbei wird eine Kostenfunktion definiert, welche die Abweichung von der gewünschten Trajektorie sowie die maximal verfügbaren Steuerungsgrößen berücksichtigt. 
+Im Folgenden wird diese mit Hilfe \texttt{CasADi} implementiert.
+
+\subsection{Magnetsteuerung}
+Für die beiden vorherigen Methoden der Trajektoriengenerierung, wird die Magnetsteuerung nicht berücksichtigt. Aufgrund dessen wird hier eine weitere Methode verwendet, die durch die Verwendung eines Stateflow Diagramms in Simulink die Steuerung des Magneten ermöglicht. Hierbei ist es möglich, verschiedene Zustände wie "Magnet an" und "Magnet aus" zu definieren und die Übergänge zwischen diesen Zuständen basierend auf bestimmten Bedingungen zu steuern. 
+Der Magnet wird dabei wie in Abb.\ref{fig:Magnet_Stateflow} von Anfang an aktiviert und wird erst am Ende des zweiten Landeanfluges, sobald die Höhe des Helikopters unter einem bestimmten Schwellenwert liegt, deaktiviert.  
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Magnet_Stateflow.png}
+    \caption{Magnet Stateflow Diagram}
+    \label{fig:Magnet_Stateflow}
+\end{figure}
+
+
+
+
+
 
 \section{Ergebnisse}
 \label{sec:Ergebnisse}
+
+Die Validierung der Trajektorien erfolgt durch einen Vergleich der Soll- und Ist-Werte während der Simulation im Simulink. Hierbei wird überprüft, ob die Trajektorien die gewünschten Eigenschaften aufweisen und die physikalischen Grenzen des Helikopters eingehalten werden.
+Dabei hat sich ergeben, dass der Helikopter der Trajektorie folgt und dabei die aus der Aufgabenstellungen gegebenen Grenzen einhält.
+Es hat sich jedoch heraus gestellt, dass der Helikopter der Trajektorie nur träge folgt. In Abbildung \ref{fig:Referenzwertfolge} ist zu erkennen,
+dass der Helikopter die Referenzwerte der Trajektorie nur verzögert verfolgt. Daher ergab sich die Überlegung für die Entwicklung einer 
+Vorsteuerung.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{referenzwertfolge_verzoegerung.jpg}
+    \caption{Verzögerung der Referenzwertfolge}
+    \label{fig:Referenzwertfolge}
+\end{figure}
+
+Des Weiteren hat sich heraus gestellt, dass noch eine Anpassung der Gewichtungsmatrizen der LQI Reglersynthese vorgenommen werden kann, 
+um ein besseres Führungsverhalten des Helikopters zu erreichen. Nach iterativem Tuning der Gewichtungsmatrizen 
+konnte eine zufriedenstellende Performance der Regelung und Trajektorienfolge erzielt werden, wodurch der Helikopter 
+die Geforderte Aufgabe, mit Magnet, in ungefähr 70 Sekunden absolviert. Dennoch stellt das Hinterherhinken der Trajektorie
+ein Problem dar, das adressiert werden muss, um eine optimale Lösung zu erzielen. 
+
+
+
 
 \section{Schlussfolgerungen und Fazit}
 
