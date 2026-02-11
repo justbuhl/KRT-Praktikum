@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.6.24)  24 JAN 2026 14:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.6.24)  11 FEB 2026 12:12
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"/Users/justinbuhl/Repository/KRT Praktikum/Protokoll 4/Template files/protocolGroupAWE1Task4.tex"
-(/Users/justinbuhl/Repository/KRT Praktikum/Protokoll 4/Template files/protocolGroupAWE1Task4.tex
+**"/Users/justinbuhl/Repository/KRT Praktikum/Protokoll 5/Template files/protocolGroupAWE1Task5.tex"
+(/Users/justinbuhl/Repository/KRT Praktikum/Protokoll 5/Template files/protocolGroupAWE1Task5.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
 (./ifacconf.cls
@@ -453,8 +453,8 @@ LaTeX Info: Redefining \] on input line 2954.
 File: l3backend-pdftex.def 2024-02-20 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count323
 \l__pdf_internal_box=\box70
-) (./protocolGroupAWE1Task4.aux)
-\openout1 = `protocolGroupAWE1Task4.aux'.
+) (./protocolGroupAWE1Task5.aux)
+\openout1 = `protocolGroupAWE1Task5.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 55.
 LaTeX Font Info:    ... okay on input line 55.
@@ -517,80 +517,28 @@ Package pgfplots notification 'compat/show suggested version=true': document has
 
 LaTeX Font Info:    Calculating math sizes for size <14> on input line 59.
 \c@sv@footnote=\count330
-<Travel_Trajektorie.png, id=4, 632.3625pt x 474.27188pt>
-File: Travel_Trajektorie.png Graphic file (type png)
-<use Travel_Trajektorie.png>
-Package pdftex.def Info: Travel_Trajektorie.png  used on input line 93.
-(pdftex.def)             Requested size: 226.62465pt x 169.96341pt.
-<Elevation_Trajektorie.png, id=5, 632.3625pt x 474.27188pt>
-File: Elevation_Trajektorie.png Graphic file (type png)
-<use Elevation_Trajektorie.png>
-Package pdftex.def Info: Elevation_Trajektorie.png  used on input line 100.
-(pdftex.def)             Requested size: 226.62465pt x 169.96341pt.
-<Gradient.png, id=6, 632.3625pt x 474.27188pt>
-File: Gradient.png Graphic file (type png)
-<use Gradient.png>
-Package pdftex.def Info: Gradient.png  used on input line 111.
-(pdftex.def)             Requested size: 226.62465pt x 169.96341pt.
-<magnet_trajektorie.png, id=7, 632.3625pt x 474.27188pt>
-File: magnet_trajektorie.png Graphic file (type png)
-<use magnet_trajektorie.png>
-Package pdftex.def Info: magnet_trajektorie.png  used on input line 127.
-(pdftex.def)             Requested size: 226.62465pt x 169.96341pt.
 [1{/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
- <./Travel_Trajektorie.png (PNG copy)> <./Elevation_Trajektorie.png (PNG copy)>]
-<referenzwertfolge_verzoegerung.jpg, id=21, 2850.65pt x 1417.295pt>
-File: referenzwertfolge_verzoegerung.jpg Graphic file (type jpg)
-<use referenzwertfolge_verzoegerung.jpg>
-Package pdftex.def Info: referenzwertfolge_verzoegerung.jpg  used on input line 144.
-(pdftex.def)             Requested size: 226.62465pt x 112.67224pt.
 
-Overfull \hbox (24.16577pt too wide) in paragraph at lines 162--169
-\OT1/cmr/m/n/10 men-tierung, die Ref-eren-zw-erte nicht in der Zu-s-tandsr^^?uckf^^?uhrung
- []
-
-
-Overfull \hbox (2.99908pt too wide) in paragraph at lines 162--169
-\OT1/cmr/m/n/10 ber^^?ucksichtigt wer-den. Die grunds^^?atzliche Im-ple-men-tierung
- []
-
-
-Overfull \hbox (12.02682pt too wide) in paragraph at lines 186--188
-[]\OT1/cmr/m/n/10 Unsere Ver-mu-tung ist, dass unser beobachtes Tr^^?agerverhalten
- []
-
-
-Overfull \hbox (4.11017pt too wide) in paragraph at lines 186--188
-\OT1/cmr/m/n/10 zun^^?achst auf die En-twick-lung einer Vors-teuerung verzichtet,
- []
-
-<mit_vorsteuerung.png, id=22, 872.058pt x 553.1064pt>
-File: mit_vorsteuerung.png Graphic file (type png)
-<use mit_vorsteuerung.png>
-Package pdftex.def Info: mit_vorsteuerung.png  used on input line 197.
-(pdftex.def)             Requested size: 226.62465pt x 143.73674pt.
-[2 <./Gradient.png (PNG copy)> <./magnet_trajektorie.png (PNG copy)> <./referenzwertfolge_verzoegerung.jpg>] [3
-
- <./mit_vorsteuerung.png (PNG copy)>] (./protocolGroupAWE1Task4.aux)
+] (./protocolGroupAWE1Task5.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 24003 strings out of 474116
- 620496 string characters out of 5743682
- 1939187 words of memory out of 5000000
- 45968 multiletter control sequences out of 15000+600000
- 564165 words of font info for 61 fonts, out of 8000000 for 9000
+ 23938 strings out of 474116
+ 618867 string characters out of 5743682
+ 1929187 words of memory out of 5000000
+ 45905 multiletter control sequences out of 15000+600000
+ 563651 words of font info for 59 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,8n,93p,851b,609s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on protocolGroupAWE1Task4.pdf (3 pages, 566039 bytes).
+</usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb>
+Output written on protocolGroupAWE1Task5.pdf (1 page, 75970 bytes).
 PDF statistics:
- 88 PDF objects out of 1000 (max. 8388607)
- 50 compressed objects within 1 object stream
+ 41 PDF objects out of 1000 (max. 8388607)
+ 25 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 43 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 13 words of extra memory for PDF output out of 10000 (max. 10000000)
 

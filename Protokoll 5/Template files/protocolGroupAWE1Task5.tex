@@ -56,7 +56,7 @@
 
 \begin{frontmatter}
 
-\title{KRT Praktikum: Protokoll 4 - L4 und H4}
+\title{KRT Praktikum: Protokoll 5 - Abschlussprotokoll}
 
 \thanks[footnoteinfo]{Institute for Systems Theory and Automatic Control, University of Stuttgart, Germany. \textit{http://www.ist.uni-stuttgart.de}}
 
@@ -65,145 +65,24 @@
 % \author{}
 
 \begin{abstract}        
-Im folgenden Protokoll werden die Ergebnisse des vierten Labortages sowie der vierten Hausaufgabe im Ramen des Praktikums Konzepte der Regelungstechnik des IST behandelt. 
-Dabei behandelt das Protokoll den Entwurf und die Implementierung einer Trajektorie, welche dem in Protokoll 3 gewonnenen Reglerentwurf die Führungsgröße vorgibt.
+
 % Abstract of not more than 250 words.
 \end{abstract}
 
 \end{frontmatter}
 
-
-\section{Vierter Labortag (L4)}
-
-Da zwischen dem letzten Protokoll und Labortag 4, eine Trajektoriengenerierung vollzogen worden ist, wurde 
-der Labortag 4 auf die Implementierung und Validierung dieser Trajektoriengenerierung fokussiert. 
-Auf die Trajektoriengenerierung soll zunächst im folgenden eingegangen werden.
-
-\subsection{Trajektoriengenerierung}
-Ziel ist es, eine Trajektorie zu entwerfen, 
-welche die Führungsgröße für die in Protokoll 3 gewonnene Reglerstruktur vorgibt. Dabei soll die Trajektorie so gestaltet sein, dass die Bewegung des Helikopters möglichst sanft erfolgt und keine plötzlichen Sprünge in den Sollwerten auftreten.
-Dies ist wichtig, da der Regler aus Erfahrungen des dritten Labortages nur begrenzt in der Lage ist, schnelle Änderungen der Sollwerte zu verfolgen, ohne dass es zu Überschwingern oder Instabilitäten kommt.
-
-Zum erstellen der Trajektorie wird in Matlab die Funktion \texttt{interp1} verwendet. Diese Funktion ermöglicht es durch die Interpolation einer Reihe von manuell bestimmten Stützpunkten, eine Trajektorie zu generieren.
-Dabei ist es wichtig, die Stützpunkte so zu wählen, dass die resultierende Trajektorie den Anforderungen an Sanftheit und Realisierbarkeit entspricht. 
-Hierbei ist zu erwähnen, dass für die Travel und Elevation Trajektorie wie in Abbildung \ref{fig:Travel_Trajektorie} und \ref{fig:Elevation_Trajektorie} zu sehen ist \texttt{pchip} als Interpolationsmethode gewählt wurde. Diese ist eine formbewahrende kubische Interpolation, welche eine langsame Annäherung ohne Überschwingen gewährleistet.
-
-\begin{figure}[htpb]
-    \centering
-    \includegraphics[width=0.9\columnwidth]{Travel_Trajektorie.png}
-    \caption{Travel Trajektorie}
-    \label{fig:Travel_Trajektorie}
-\end{figure}
-
-\begin{figure}[htpb]
-    \centering
-    \includegraphics[width=0.9\columnwidth]{Elevation_Trajektorie.png}
-    \caption{Elevation Trajektorie}
-    \label{fig:Elevation_Trajektorie}
-\end{figure}
-
-Es ist ebenfalls wichtig, dass die vorgegebene Trajektorie innerhalb der physikalischen Grenze des Helikopters bleibt.
-Dies fließt in die Wahl der Stützpunkte mit ein, da unter anderem der Gradient der Trajektorie während dem Landeanflug größer sein darf, als während dem Aufstieg.
-In Abbildung \ref{fig:Gradient} ist die resultierende Geschwindigkeit der Elevation- und Travel Trajektorie dargestellt, anhand welcher die Einhaltung der physikalischen Grenzen überprüft werden kann.
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\columnwidth]{Gradient.png}
-    \caption{Gradient der Trajektorien}
-    \label{fig:Gradient}
-\end{figure}
-
-Daran ist zu erkennen, dass der Helikopter sich nie in einem Bereich bewegt, welcher für ihn nicht realisierbar ist.
-Es ist ebenfalls Verbesserungspotiential erkennbar, da zwischen den Manövern die Geschwindigkeit null ist und somit die Bewegung des Helikopters unnötig verlängert wird.
-Es ist auch möglich die Bewegungen in in Travel und Elevation zu überlappen, um die Gesamtdauer der Trajektorie zu verkürzen. Hierbei ist allerdings darauf zu achten, dass 
-die minimale Höhe des Helikopters nicht unterschritten wird.
-Eine Trajektorie für den pitch wurde nicht erstellt, da dieser während des gesamten Fluges auf null bleiben soll und somit durch eine Konstante dargestellt werden kann.
-
-Für die Magnet Trajektorie wurde \texttt{linear} als Interpolationsmethode gewählt, da hier nur das Ein- und Ausschalten des Magneten erfolgt.
-In Abbildung \ref{fig:Magnet_Trajektorie} ist das resultierende Verhalten des Magneten dargestellt.
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\columnwidth]{magnet_trajektorie.png}
-    \caption{Magnet Trajektorie}
-    \label{fig:Magnet_Trajektorie}
-\end{figure}
-
-Die so erstellten Trajektorien werden im Folgenden in \texttt{.mat} Dateien gespeichert und als LookUp Table in Matlab Simulink eingebunden.
-
-\subsection{Validierung}
-
-Die Validierung der Trajektorien erfolgt durch einen Vergleich der Soll- und Ist-Werte während der Simulation im Simulink. Hierbei wird überprüft, ob die Trajektorien die gewünschten Eigenschaften aufweisen und die physikalischen Grenzen des Helikopters eingehalten werden.
-Dabei hat sich ergeben, dass der Helikopter der Trajektorie folgt und dabei die aus der Aufgabenstellungen gegebenen Grenzen einhält.
-Es hat sich jedoch heraus gestellt, dass der Helikopter der Trajektorie nur träge folgt. In Abbildung \ref{fig:Referenzwertfolge} ist zu erkennen,
-dass der Helikopter die Referenzwerte der Trajektorie nur verzögert verfolgt. Daher ergab sich die Überlegung für die Entwicklung einer 
-Vorsteuerung.
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\columnwidth]{referenzwertfolge_verzoegerung.jpg}
-    \caption{Verzögerung der Referenzwertfolge}
-    \label{fig:Referenzwertfolge}
-\end{figure}
-
-Des Weiteren hat sich heraus gestellt, dass noch eine Anpassung der Gewichtungsmatrizen der LQI Reglersynthese vorgenommen werden kann, 
-um ein besseres Führungsverhalten des Helikopters zu erreichen. Nach iterativem Tuning der Gewichtungsmatrizen 
-konnte eine zufriedenstellende Performance der Regelung und Trajektorienfolge erzielt werden, wodurch der Helikopter 
-die Geforderte Aufgabe, mit Magnet, in ungefähr 70 Sekunden absolviert. Dennoch stellt das Hinterherhinken der Trajektorie
-ein Problem dar, das adressiert werden muss, um eine optimale Lösung zu erzielen. 
+\section{Einleitung}
 
 
-\section{Zweite Hausaufgabe (H4)}
+\section{Modellierung}
 
-Um oben genanntes Problem zu adressieren, folgen nun Überlegungen zur Implementierung einer Vorsteuerung.
+\section{Reglerentwurf}
 
-\subsection{Vorsteuerung}
+\section{Trajektoriengenerierung}
 
-Die Entwicklung einer Vorsteuerung zielt darauf ab, die Verzögerung der Referenzwertfolge zu kompensieren und 
-eine schnellere Reaktion des Helikopters auf die Sollwerte zu ermöglichen.
-Da bereits eine Trajektoriengenerierung stattgefunden hat, bietet sich die Möglichkeit an, den bestehenden 
-Regelkreis auf eine 2-DOF-Struktur zu erweitern. Der Vorteil einer 2-DOF-Regelstruktur ergibt sich darin, dass die Regelung lediglich die Stabilisierung, sowie 
-Störgrößenkompensation übernimmt, wobei die aufgeschaltete Vorsteuerung die Trajektorienfolge leistet. 
-Bei der theoretischen Überlegung des Vorgehens ist jedoch aufgefallen, dass in der aktuellen Implementierung, die Referenzwerte
-nicht in der Zustandsrückführung berücksichtigt werden. Die grundsätzliche Implementierung ist in \ref{eq:vorsteuerung} dargestellt.
+\section{Ergebnisse}
 
-\begin{equation}
-    u = -k_i\,e - k_x\,x
-    \label{eq:vorsteuerung}
-\end{equation}
-
-wobei $e = \int (\alpha - \alpha_{\mathrm{ref}})\,\mathrm{d}t$ ist.
-
-Da die Regelung versucht, alle Zustände zu null zu regeln, die Trajektorie jedoch nur in den Integratorzuständen eingeht,
-arbeiten Integratoren und Zustände gegeneinander. Daher müssen die Referenzen ebenfalls auf die nicht Integralzustände verrechnet werden, wodurch sich folgender 
-Zusammenhang ergibt: 
-
-\begin{equation}
-    u = -k_i\,e - k_x\,(x-x_{\mathrm{ref}})
-    \label{eq:vorsteuerung_erweitert}
-\end{equation}
-
-Unsere Vermutung ist, dass unser beobachtes Trägerverhalten seinen Ursprung in diesem Umstand hat. Daher
-wird zunächst auf die Entwicklung einer Vorsteuerung verzichtet, da wir davon ausgehen, dass eine Anpassung der Regelung ausreicht, um das Verhalten zu verbessern.
-
-
-\subsubsection{Validierung an der Simulation}
-Das neue Konzept der Referenzwertverrechnung wurde an der Simulation validiert. 
-Dabei hat sich gezeigt, dass die Anpassung der Referenzwertverrechnung zu einer deutlichen Verbesserung der Trajektorienfolge führt.
-In Abbildung \ref{fig:mit_vorsteuerung} ist das verbesserte Verhalten dargestellt. 
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\columnwidth]{mit_vorsteuerung.png}
-    \caption{Verbesserte Referenzwertfolge mit angepasster Regelung. Vergleich Soll- und Ist-Werte von $\alpha$ (gelb soll, pink ist) und $\beta$ (blau soll, gelb ist)}
-    \label{fig:mit_vorsteuerung}
-\end{figure}
-
-Es ist zu erkennen, dass die Verzögerung der Referenzwertfolge deutlich reduziert werden konnte. Jedoch führt das neue Konzept bei gleicher Reglerauslegung zu einem leichten Überschwingen der Sollwerte. Daher ist noch weiteres Tuning der Reglerparameter notwendig, um eine optimale Performance zu erzielen. Dies wird aufgrund von Zeitmangel erst bis zum nächsten Labortag erfolgen.
-
-\section{Kommentare und Ausblick auf L5}
-Insgesamt konnte durch die Implementierung der Trajektoriengenerierung und die Anpassung der Referenzwertverrechnung eine deutliche Verbesserung der Performance des Helikopters erzielt werden.
-Dennoch sind noch weitere Anpassungen und Optimierungen notwendig, um eine optimale Lösung zu erreichen. Diese Optimierungen werden bis zum sowie während des nächsten Labortages durchgeführt werden.
+\section{Schlussfolgerungen und Fazit}
 
 
 \end{document}
