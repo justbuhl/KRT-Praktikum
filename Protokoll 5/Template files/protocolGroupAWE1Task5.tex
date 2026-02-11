@@ -52,6 +52,10 @@
 \protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-0.75mm}
 }}
 
+\usepackage[T1]{fontenc}
+
+\hyphenation{Mas-sen-träg-heits-mo-men-te}
+
 \begin{document}
 
 \begin{frontmatter}
@@ -65,18 +69,275 @@
 % \author{}
 
 \begin{abstract}        
-
+Dieses Protokoll dokumentiert die Ergebnisse und Erkenntnisse des KRT Praktikums am IST. Im Rahmen des Praktikums wurden verschiedene Methoden zur Regelung und Trajektoriengenerierung für ein Modell eines Quadrokopters untersucht und implementiert.
+Dabei wird auf das mit Hilfe von CAD erstellte Modell des Quadrokopters eingegangen, sowie die anschließende Systemanalyse und Reglerentwurf betrachtet. Dabei
+wurde zunächst ein LQR Reglerentwurf durchgeführt, wobei dieses zu einem LQI mit anschließender Vorsteuerung erweitert worden ist. 
+Die abschließende Aufgabe wurde mit Hilfe einer Trajektoriengenerierung umgesetzt, wobei zwei Ansätze präsentiert werden: 
+Diskretisierung und Lösung eines Optimalsteuerungsproblems.
 % Abstract of not more than 250 words.
 \end{abstract}
+
 
 \end{frontmatter}
 
 \section{Einleitung}
+In diesem Protokoll werden die Ergebnisse des Praktikums "Konzepte der Regelungstechnik" am Institut für Systemtheorie und Regelungstechnik der Universität Stuttgart zusammengefasst. Ziel des Praktikums ist es, die Konzepte der Regelungstechnik anhand eines 3DOF Helikopters zu verstehen und anzuwenden. Das Praktikum besteht aus mehreren Laboraufgaben (L1, L2, L3, L4, L5) und Hausaufgaben (H1, H2, H3, H4, H5), die sich mit der Inbetriebnahme, Modellierung, Reglerentwurf und Trajektoriengenerierung beschäftigen. Der für diese Aufgabenstellung verwendete Versuchsstand ist ein 3DOF Helikopter, der entlang seiner Hauptachsen/Gelenkachsen (Schwenkwinkel, Steigwinkel, Nickwinkel) bewegt werden kann. Die Bewegung um die Achsen wird von zwei Elektormotoren ermöglicht, welche die beiden Propeller des Helikopters antreiben (vgl. Abbildung \ref{fig:helikopter}). Diese können direkt die Steig- und Nickwinkel beeinflussen, während der Schwenkwinkel indirekt durch den Nickwinkel beeinflusst wird. Ziel des Praktikums ist es, eine vorgegebenes Szenario innerhalb einer gewissen Zeit (180s) abzufliegen und dabei die jeweiligen Beschränkungen einzuhalten. 
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\columnwidth]{Helikopter.pdf} % Pfad/Dateiname anpassen
+    \caption{Versuchsstand: 3DOF-Helikopter. Besteht aus Haupt- und Nebenarm, sowie Gegengewicht 
+    und am Ende des Arms befindlichen Helikopter.}
+    \label{fig:helikopter}
+\end{figure}
 
 
 \section{Modellierung}
+Das Ziel der Modellierung ist die Herleitung eines mathematischen Modells, das das Verhalten des 3DOF-Helikopters hinreichend genau beschreibt, um darauf basierend einen Reglerentwurf durchzuführen.
 
-\section{Reglerentwurf}ö
+\subsection{Mathematische Modellierung}
+Für die physikalische Modellbildung werden die drei Rotationsachsen des Helikopters zunächst entkoppelt betrachtet. Dabei bezeichnen $\alpha$ den Schwenkwinkel, $\beta$ den Steigwinkel und $\gamma$ den Nickwinkel. Die Dynamik ergibt sich aus dem Momentengleichgewicht gemäß dem Drallsatz $M = I \dot{\omega}$. Dabei sind $I$ das jeweilige Trägheitsmoment und $\dot{\omega}$ die Winkelbeschleunigung.
+
+Unter der Annahme, dass Luftwiderstand und Reibung vernachlässigbar sind und der Schwerpunkt im Drehpunkt liegt (für die Nickachse), ergeben sich die folgenden nichtlinearen Bewegungsgleichungen:
+
+\begin{equation}
+    \ddot{\alpha} = \frac{-(F_{\mathrm{vorne}} + F_{\mathrm{hinten}}) l_{\mathrm{heli}} \sin(\gamma)}{I_{\alpha}}
+    \label{eq:alpha}
+\end{equation}
+
+\begin{equation}
+    \ddot{\beta} = \frac{(F_{\mathrm{vorne}} + F_{\mathrm{hinten}}) l_{\mathrm{heli}} \cos(\gamma) - F_{\mathrm{g}} l_{mmp} \cos(\beta)}{I_{\beta}}
+    \label{eq:beta}
+\end{equation}
+
+\begin{equation}
+    \ddot{\gamma} = \frac{(F_{\mathrm{vorne}} - F_{\mathrm{hinten}}) l_{\mathrm{rotor}}}{I_{\gamma}}
+    \label{eq:gamma}
+\end{equation}
+
+Hierbei beschreiben $F_{\mathrm{vorne/hinten}}$ die Motorkräfte, $F_g$ die Gewichtskraft und $l$ die entsprechenden Hebelarme.
+
+\subsection{Modellidentifikation}
+Zur Bestimmung der Modellparameter wurde sowohl auf CAD-Daten als auch auf experimentelle Messungen zurückgegriffen:
+\begin{enumerate}
+    \item \textbf{Geometrie- und Trägheitsparameter:} Die Massenträgheitsmomente $I_{\alpha}, I_{\beta}, I_{\gamma}$ sowie die Schwerpunktslagen wurden direkt aus dem CAD-Modell (SolidWorks) gewonnen. Das CAD-Modell wurde anhand der beigelegten technischen Zeichungen enthält und mit den entsprechenden Massen versehen. Die Berechung der Trägheitsmomente erfolgte über das SolidWorks-Tool zur Massenanalyse, welches die Trägheitsmomente um die Hauptachsen liefert. Die relevanten Parameter sind in Tabelle \ref{tab:modelparams} zusammengefasst.
+    \item \textbf{Aktuatorik:} Der Zusammenhang zwischen der angelegten Spannung $U$ und der erzeugten Kraft $F$ der Rotoren wurde experimentell ermittelt. Dazu wurden Kraftmessungen bei verschiedenen Spannungsstufen durchgeführt und eine Kennlinie $U_{\mathrm{Rotor}}(F)$ mittels Polynomapproximation bestimmt (siehe Abb. \ref{fig:Motorkennlinie}). Die Kraftmessungen erfolgte mithilfe einer Küchenwaage. Das Polynom ergibt sich zu: 
+    \begin{equation}
+        \begin{split}
+            U_{\mathrm{Rotor}}(F) &= 24.047576 F^3 - 45.530359 F^2 \\
+            &\quad + 34.5412 F + 1.0596
+        \end{split}
+    \end{equation}
+\end{enumerate}
+
+\begin{table}[htbp]
+\centering
+\caption{Modellparameter aus CAD}
+\label{tab:modelparams}
+\begin{tabular}{|c|c|l|}
+\hline
+Parameter & Wert & Beschreibung \\ \hline
+$I_{\alpha}$ & 1.131 [kg/m$^2$] & Trägheit Schwenkachse \\ 
+$I_{\beta}$  & 1.125 [kg/m$^2$] & Trägheit Steigachse \\ 
+$I_{\gamma}$ & 0.040 [kg/m$^2$] & Trägheit Nickachse \\ 
+$m_{\mathrm{mmp}}$ & 3.960 [kg] & Gesamtmasse \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\columnwidth]{Motorkennlinie_2.jpg}
+    \caption{Experimentell ermittelte Motorkennlinie (Spannung zu Kraft).}
+    \label{fig:Motorkennlinie}
+\end{figure}
+
+\subsection{Linearisierung}
+Für den Entwurf linearer Regelungsverfahren (wie LQR) ist ein lineares Zustandsraummodell der Form $\Delta\dot{x} = A \Delta x + B \Delta u$ erforderlich. Die nichtlinearen Gleichungen \eqref{eq:alpha}-\eqref{eq:gamma} wurden dazu um einen Arbeitspunkt (Ruhelage) linearisiert. Der Zustandsvektor ist definiert als $x = [\alpha, \beta, \gamma, \dot{\alpha}, \dot{\beta}, \dot{\gamma}]^T$. Die Systemmatrizen $A$ und $B$ ergeben sich aus den Jacobi-Matrizen der Systemdynamik an diesem Arbeitspunkt.
+
+Damit sind alle Voraussetzungen für die Implementierung und den Reglerentwurf geschaffen.
+
+
+
+Für die Zustandsraumdarstellung werden folgende Vektoren definiert:
+\begin{equation}
+    x = \begin{bmatrix} \alpha & \beta & \gamma & \dot{\alpha} & \dot{\beta} & \dot{\gamma} \end{bmatrix}^T, \quad
+    u = \begin{bmatrix} U_{\mathrm{vorne}} & U_{\mathrm{hinten}} \end{bmatrix}^T, \quad
+    y = \begin{bmatrix} \alpha & \beta & \gamma \end{bmatrix}^T
+\end{equation}
+
+Als Arbeitspunkt wurde $x_0 = \begin{bmatrix} 0 & -11^\circ & 0 & 0 & 0 & 0 \end{bmatrix}^T$ gewählt, was dem Mittelpunkt des Arbeitsbereiches entspricht. Der zugehörige Eingangsvektor für den stationären Schwebeflug beträgt $u_0 \approx \begin{bmatrix} 0.3& 0.3 \end{bmatrix}^T$. Diese wurden über die Gleichgewichtsgleichung \ref{eq:beta} der Dynamik bestimmt, indem die Beschleunigung auf Null gesetzt und nach $F$ aufgelöst wurde. $F_\mathrm{vorne}$ und $F_\mathrm{hinten}$ wurde als gleich angenommen. 
+
+Die Linearisierung liefert das folgende lineare Systemmodell:
+\begin{equation}
+    \Delta\dot{x} = A \Delta x + B \Delta u, \quad \Delta y = C \Delta x + D \Delta u
+\end{equation}
+
+Die Systemmatrizen ergeben sich zu:
+\begin{equation}
+A = 
+\begin{bmatrix}
+0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 0 & 0 & 1 \\
+0 & 0 & -0.579 & 0 & 0 & 0 \\
+0 & -0.066 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0
+\end{bmatrix}, \quad
+B = 
+\begin{bmatrix}
+0 & 0 \\
+0 & 0 \\
+0 & 0 \\
+0 & 0 \\
+0.582 & 0.582 \\
+4.412 & -4.412
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+    C = I_{3\times 6}, \quad
+    D = 0_{3\times 2}
+\end{equation}
+
+Es ist zu beachten, dass durch die Wahl von $\gamma = 0$ im Arbeitspunkt einige Terme der Linearisierung entfallen. Dies stellt eine Vereinfachung dar, die beim Reglerentwurf berücksichtigt werden muss.
+
+\subsection{Systemanalyse}
+Die Eigenwerte des linearisierten Systems lauten:
+$$\lambda_{1,2,3,4} = 0, \quad \lambda_{5,6} = \pm 0.2570i$$
+Das System besitzt Pole auf der imaginären Achse und im Ursprung, ist also grenzstabil (marginal stabil). Dies deckt sich mit der physikalischen Anschauung eines Helikopters im Schwebeflug ohne Dämpfung.
+
+Die Untersuchung der Steuerbarkeitsmatrix $\mathcal{S}$ und Beobachtbarkeitsmatrix $\mathcal{O}$ zeigt, dass beide den vollen Rang besitzen. Das System ist somit vollständig steuerbar und beobachtbar, was die notwendige Voraussetzung für den Beobachter- und Reglerentwurf darstellt.
+
+\subsection{Mehrkörpersimulation (MKS)}
+Zur Validierung wurde ergänzend eine Mehrkörpersimulation (MKS) in Simscape Multibody erstellt. Diese importiert die Geometrie- und Massendaten direkt aus dem SolidWorks-CAD-Modell und ermöglicht eine visuelle Verifikation des Systemverhaltens sowie eine erste Erprobung der Regelungstrategien an einem physikalisch detaillierten Modell.
+
+
+\section{Reglerentwurf}
+Für den Reglerentwurf wurde das aus Protokoll 2 gewonnene lineare Helikoptermodell genutzt. Wichtig ist hierbei zu beachten,
+dass der Reglerentwurf auf dem linearen Modell basiert und somit bei der Implementierung auf das nichtlineare Modell noch der 
+Arbeitspunkt bzw. Linearisierungspunkt entsprechend verrechnet werden muss. 
+Die Zustände sind zur Erinnerung wie folgt definiert:
+\begin{equation}
+    x = \begin{bmatrix} \alpha & \beta & \gamma & \dot{\alpha} & \dot{\beta} & \dot{\gamma} \end{bmatrix}^T
+\end{equation}
+\begin{equation}
+    u = \begin{bmatrix} U_{\mathrm{vorne}} & U_{\mathrm{hinten}} \end{bmatrix}^T
+\end{equation}
+\begin{equation}
+    y = \begin{bmatrix} \alpha & \beta & \gamma \end{bmatrix}^T
+\end{equation}
+
+Der geschlossene Regelkreis mit Zustandsrückführung ergibt sich unter Berücksichtigung der Linearisierung um den Arbeitspunkt $(x_0, u_0)$ zu:
+\begin{equation}
+\Delta u = -K\,\Delta x,\qquad \Delta x = x - x_0,\qquad \Delta u = u - u_0.
+\end{equation}
+Hierbei bezeichnet $K$ die Reglermatrix, während $x_0$ und $u_0$ den stationären Arbeitspunkt des Systems charakterisieren. 
+
+Zur Implementierung und Erprobung unseres Regelungsentwurfs wurde nun das CAD-Modell, das bereits zur Modellierung verwendet wurde, in 
+Matlab Simulink als ein Simscape Modell exportiert.
+An diesem Modell wurden dann die Regelungsalgorithmen implementiert und getestet, bevor es an den realen Versuchsstand ging.
+
+\subsection{Reglerentwurf}
+
+Da das System mehrere Input und Outputs verfügt und somit ein MIMO System vorliegt, wurde sich dazu entschieden, einen LQ-Regler zu entwerfen. Die Vorteile dieses Verfahrens wurden bereits in Protokoll 2 erläutert.
+
+Da es sich bei einem LQ-Regler um einen Zustandsregler handelt wird für die Regelung sowohl die\\ Winkelgeschwindigkeiten $\dot{\alpha}$, $\dot{\beta}$ und $\dot{\gamma}$ als auch die  Winkel $\alpha$, $\beta$ und $\gamma$ benötigt. Da die Encoder nur die Winkel messen, wurde ein Luenberger-Beobachter implementiert, damit die Geschwindigkeiten geschätzt werden können. 
+
+\begin{equation}
+\Delta\dot{\hat{x}} = A\,\Delta\hat{x} + B\,\Delta\hat{u} + L\big(\Delta y - \Delta\hat{y}\big),
+\end{equation}
+mit
+\begin{equation}
+\Delta\hat{y} = C\,\Delta\hat{x},
+\end{equation}
+und der Schätzfehler $\hat{e}=\Delta x-\Delta\hat{x}$ erfüllt
+\begin{equation}
+\dot{\hat{e}}=(A-LC)\,\hat{e}.
+\end{equation}
+
+Zur Stabilität und schnellen Konvergenz wurden die Beobachterpole (Eigenwerte von $A-LC$) deutlich schneller als die Reglerpole (z.\,B. Faktor 5–10) gewählt. Die Beobachtermatrix $L$ wurde in MATLAB durch Polvorgabe bestimmt.
+
+
+\subsubsection{LQR-Entwurf}
+Der Vorteil des LQR in der vergleichsweise einfachen Implementierung sowie den guten Regelungseigenschaften hat sich im Praktikumsversuch bestätigt. Obwohl die Robustheitseigenschaften durch die Nutzung eines Beobachters nicht mehr gegeben sind, 
+hat der Versuchsstand ein zufriedenstellendes Verhalten gezeigt. 
+Des Weiteren wurde überlegt, eine Vorsteuerung einzubauen, indem bei der Zustandsrückführung die Referenzwerte für die Zustände aus der Trajektoriengenerierung vorgegeben werden. Das heist, in den LQI Regler werden letztendlich nicht die Zustände geführt, sonder der Regelfehler bezüglich der vorgegebenen Referenz. Dies wies sich jedoch als verschlechternd heraus, wodurch dieses Konzept der Vorsteuerung wieder verworfen worden ist. 
+
+Dennoch hat sich herausgestellt, dass die bleibende 
+Regelabweichung durch die fehlenden Integratorterme ein Problem darstellt, da sich die Abweichung in den Zuständen als zu
+groß darstellt, um die geforderten Anforderungen zu erfüllen. Daher wurde der LQR auf zwei Integratorzustände erweitert.
+
+\subsubsection{LQI-Entwurf}
+Wie bereits erwähnt, stellt der LQI-Regler eine Erweiterung des LQR-Reglers dar. Die Erweiterung geschieht hierbei durch 
+Hinzunahme von sogenannten Integratorzuständen für diejenigen Größen, für die die bleibende Regelabweichung eliminiert werden soll. Zu beachten ist jedoch,
+dass durch die Nutzung von Integratoren auf jeden Fall darauf geachtet werden muss, ein Aufschwingen des Integrators zu vermeiden wodurch ein Anti-Windup implementiert worden ist.
+Dadurch ergab sich ein erweiterter Zustandsraum, der wie folgt aussieht:
+\begin{equation}
+    x = \begin{bmatrix} \alpha & \beta & \gamma & \dot{\alpha} & \dot{\beta} & \dot{\gamma} & \xi_1 & \xi_2 \end{bmatrix}^T
+\end{equation}
+
+wobei $\xi_1$ und $\xi_2$ die Integratorzustände für die Winkel $\alpha$ und $\beta$ darstellen und folgendermaßen im Zustandsraum gebildet werden:
+
+\begin{equation}
+    \xi_1 = \xi_{1,\mathrm{ref}} - \int (\alpha_{\mathrm{ref}} - \alpha)\,\mathrm{d}t
+\end{equation}
+\begin{equation}
+    \xi_2 = \xi_{2,\mathrm{ref}} - \int (\beta_{\mathrm{ref}} - \beta)\,\mathrm{d}t
+\end{equation}
+
+wobei $\xi_{1,\mathrm{ref}} = 0$ und $\xi_{2,\mathrm{ref}} = 0$.
+
+Für den Winkel $\gamma$ wird kein Integratorzustand hinzugefügt, da dieser Winkel lediglich zum Verändern des $\beta$-Winkels genutzt wird und keine genaue Regelung des $\gamma$-Winkels erforderlich ist.
+
+Für die Wahl der Gewichtungsmatrizen $Q$ und $R$ hat sich folgende Wahl als zufriedenstellend ergeben, mit der auch die Ergebnisse in Abschnitt~\ref{sec:Ergebnisse} erzielt worden sind. Dabei ist noch zu erwähnen, dass für die Nutzung des Optimalsteuerungsproblems (OSP) als 
+Trajektoriengenerierung die Gewichtungsmatrizen leicht angepasst worden sind. Dabei steht D für Diskretisierung (Trajektoriengenerierung).
+
+\begin{equation}
+\begin{split}
+Q_{D} = \operatorname{diag}\big(&5,\;2,\;1,\;0,001,\\
+ &0,001,\;7,\;30,\;10\big)
+\end{split}
+\end{equation}
+\begin{equation}
+R_{D} = \operatorname{diag}\big(2,\;2\big)
+\end{equation} 
+
+Dabei wurde für die Nutzung des OSP als Trajektorie lediglich der erste Integratoreintrag der Q Gewichtungsmatrix von 30 auf 100 erhöht. Alle anderen Werte, sowie die R Gewichtungsmatrix blieben unverändert.
+Hierbei wurden die Gewichtungen für die Winkel $\alpha$ und $\beta$ sowie für die Integratorzustände $\xi_1$ und $\xi_2$ deutlich höher gewählt als für die Winkelgeschwindigkeiten und den Winkel $\gamma$. Dies hat den Hintergund, dass eine genaue Regelung der Winkel $\alpha$ und $\beta$ sowie die Eliminierung der bleibenden Regelabweichung für diese Winkel von hoher Wichtigkeit sind. Die Winkelgeschwindigkeiten und der Winkel $\gamma$ sind weniger wichtig für die Regelungsaufgabe, weshalb diese mit geringeren Gewichtungen versehen wurden. Zusätzlich sorgt eine gute Regelung von $\alpha$ und $\beta$ auch für eine gute Regelung von $\gamma$, da dieser Winkel nur zur Unterstützung der Regelung von $\beta$ dient. Die Wahl der Gewichtungsmatrizen wurde dabei am realen versuchsstand iterativ bestimmt. Es hat sich nämlich herausgestellt, dass es durchaus Abweichungen zur Simulation gibt, wodurch die Reglerparameter angepasst werden mussten. Mit der Wahl dieser Gewichtungsmatrizen ergeben sich folgende Regler und Beobachtungspole:
+
+\begin{equation}
+\mathrm{Reglerpole}_{\mathrm{LQI}} =
+\begin{bmatrix}
+ -0.3729 + 0.8393\mathrm{i} \\
+  -0.3729 - 0.8393\mathrm{i} \\
+  -0.6647 + 1.0791\mathrm{i} \\
+  -0.6647 - 1.0791\mathrm{i} \\
+  -0.8632 + 0.3290\mathrm{i} \\
+  -0.8632 - 0.3290\mathrm{i} \\
+  -1.1460 + 0.0000\mathrm{i} \\  
+ -11.6676 + 0.0000\mathrm{i} \\
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+\text{Beobachterpole} =
+\begin{bmatrix}
+-6 + 0.0000\mathrm{i}\\
+-6.1 + 0.0000\mathrm{i}\\
+-6.2 + 0.0000\mathrm{i}\\
+-6.3 + 0.0000\mathrm{i}\\
+-6.4 + 0.0000\mathrm{i}\\
+-6.5 + 0.0000\mathrm{i}
+\end{bmatrix}
+\end{equation}
+
+\subsection{Regler mit Optimalsteuerungsproblem}
+Da zur Trajektoriengenerierung ebenfalls ein Optimalsteuerungsproblem gelöst worden ist, konnte die Reglerstruktur zu einer 
+2-DOF-Struktur erweitert werden. Dies bedeutet, dass die aus dem Optimalsteuerungsproblem berechnete Stellgröße 
+$u_{OSP}$ auf der Reglerausgang $u_{LQI}$ addiert worden ist. Des Weiteren berechnete das OSP noch die Referenzzustände, die 
+genutzt worden sind, um die Vorsteuerung zu implementieren, indem von diesen Referenzzuständen noch die gemessenen Zustände abgezogen worden sind und diese Regelabweichung in den LQI Regler geführt worden ist. 
+
 
 \section{Trajektoriengenerierung}
 \subsection{Diskret}
@@ -140,6 +401,7 @@ Der Magnet wird dabei wie in Abb.\ref{fig:Magnet_Stateflow} von Anfang an aktivi
 
 
 \section{Ergebnisse}
+\label{sec:Ergebnisse}
 
 Die Validierung der Trajektorien erfolgt durch einen Vergleich der Soll- und Ist-Werte während der Simulation im Simulink. Hierbei wird überprüft, ob die Trajektorien die gewünschten Eigenschaften aufweisen und die physikalischen Grenzen des Helikopters eingehalten werden.
 Dabei hat sich ergeben, dass der Helikopter der Trajektorie folgt und dabei die aus der Aufgabenstellungen gegebenen Grenzen einhält.
