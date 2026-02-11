@@ -94,15 +94,24 @@ F_{\mathrm{g}} = m_{\mathrm{mmp}}g
 \label{eq:F_g}
 \end{equation}
 
-Wie bereits in Protkoll 1 beschrieben, fehlen nun nurnoch wenige Werte zur vollständigen Systemidentifikation. Hier macht sich nun der große Vorteil der CAD Modelle zu Nutzen,
-da keinerleich Trägheitstensoren oder Gesamtmassen bestimmt werden müssen. Diese können direkt aus dem CAD Modell entnommen werden. Dies ist äußerst hilfreich, da die experimentelle 
-Bestimmung der Trägheitstensoren sowohl aufwändig als auch fehleranfällig ist. Daher wird davon ausgegangen, dass das Modell auch in seiner bereits Vereinfachten Form bereits
-eine gute Systembeschreibung des realen Systems darstellt. 
+Wie bereits in Protkoll 1 beschrieben, fehlen nur wenigeWerte zur vollständigen Systemidentifikation. Hier macht sich nun der große Vorteil der CAD Modelle zu Nutzen,
+da keinerleich Trägheitstensoren oder Gesamtmassen bestimmt werden müssen. Diese können direkt aus dem CAD Modell entnommen werden. Dies ist äußerst hilfreich, da die experimentelle Bestimmung der Trägheitstensoren sowohl aufwändig als auch fehleranfällig ist. Die Trägheitstensoren
+wurden hierbei um den gewählten Linearisierungspunkt bestimmt. Dabei ist ebenfalls anzumerken, dass sich die Trägheitstensoren mit anderen Winkeln leicht ändern
+können, aber aufgrund des geringen Einflusses im Folgenden als konstant angenommen werden. Ebenfalls wird davon ausgegangen, dass das Modell auch in seiner bereits
+Vereinfachten Form bereits eine gute Systembeschreibung des realen Systems darstellt.
 
 Die einzigen zu bestimmenden Systemparameter sind somit die Spannung-Kraft Kennlinien $F_{\mathrm{vorne}}$ und $F_{\mathrm{hinten}}$ der Rotoren. 
 Dafür wurde der reale Helikopter auf \(\beta = 0\) fixiert. Die einzelnen Rotoren wurden nun einzeln geprüft, da davon auszugehen ist, dass die Rotoren unterschiedliche Kennlinien liefern könnten. 
 Die Rotor-Einheit wurde nun von unten auf eine Waage gelegt und von oben mit einem Gewicht beschwert. Nun wurden verschiedene Spannungslevel angelegt und die jeweilige Differenz der Waage abgelesen.
 Mit dieser Methode konnte demnach über die Differenz der Gewichtskraft ein Rückschluss auf die durch den Rotor erzeugte Auftriebskraft gezogen werden.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Heli_skizze.png}
+    \caption{Motorkennlinie invertiert}
+    \label{fig:heliSkizze}
+\end{figure}
+
 \begin{equation}
 F = m g
 \end{equation}
@@ -162,7 +171,7 @@ Zunächst wurden nun die nichtlinearen Systemgleichungen \eqref{eq:alpha}--\eqre
 
 Die Bewegungsgleichungen wurden hierbei in einem Matlab Function Block implementiert. Dieser Block erhält dabei die beiden Eingangskräfte der Rotoren
 $F_{\mathrm{vorne}}$ und $F_{\mathrm{hinten}}$ sowie die aktuellen Winkel $\beta$ und $\gamma$ als Eingangsgrößen. Durch Doppelintegratoren, werden die berechneten Winkelbeschleunigungen in ihre jeweiligen Positionen 
-umgewandelt, welche ebenfalls teilweise zurückgeführt werden.
+umgewandelt, welche zur erneuten Berechnung der Winkelbeschleunigungen benötigt werden.
 
 Um das Modell zu validieren, wurden Testszenarien erstellt, in welchen die Eingangsgrößen, als auch die Anfangsbedingungen der Integratoren variiert wurden.
 Die so erhaltenen Simulationsergebnisse wurden anschließend durch anliegende Scopes an den Ausgängen Analysiert und auf ihre physikalische Korrektheit überprüft.
@@ -179,16 +188,16 @@ Des Weiteren wurden nun die Gleichungen linearisiert, und direkt in Zustandsraum
 \end{equation}
 Mit diesen Definitionen ergeben sich die folgenden Zustandsraumdarstellungen:
 \begin{equation}
-    \dot{x} = A x + B u
+    \Delta\dot{x} = A \Delta x + B \Delta u
 \end{equation}
 \begin{equation}
-    y = C x + D u
+    \Delta y = C \Delta x + D \Delta u
 \end{equation}
 Mit den Matritzen ergeben sich aus der Linearisierung der Systemgleichungen \eqref{eq:alpha} \eqref{eq:beta} \eqref{eq:gamma}:
 \begin{equation}\label{eq_alpha_x}
     \frac{\partial \ddot{\alpha}}{\partial x} = 
     \begin{bmatrix}
-    0 & 0 & -C_1 cos(\gamma) P & 0 & 0 & 0
+    0 & 0 & -C_1 \cos(\gamma) P & 0 & 0 & 0
     \end{bmatrix}
 \end{equation}
 \begin{equation}\label{eq_beta_x}
@@ -207,7 +216,7 @@ mit
 \begin{equation}
 P = \frac{131 F_{\mathrm{hinten}}}{200} + \frac{131 F_{\mathrm{vorne}}}{200}
 \end{equation}
-und $$C_1 = \frac{1125899906842624}{1273375906140405}$$ $$C_2 = \frac{7018456143648095}{20268269978995824}$$ $$C_3 = \frac{1125899906842624}{1266766873687239}$$\\
+und $$C_1 =  0.884185$$ $$C_2 = 0.346278$$ $$C_3 = 0.888798$$\\
 sowie:
 \begin{equation}\label{eq_alpha_u}
     \frac{\partial \ddot{\alpha}}{\partial u} = 
@@ -227,9 +236,15 @@ sowie:
     C_6 & -C_6
     \end{bmatrix}
 \end{equation}
-und $$C_4 = \frac{18436610974547968}{31834397653510125}$$ $$C_5 = \frac{18436610974547968}{31669171842180975}$$ $$C_6 = \frac{319755573543305216}{72470123763795075}$$\\
+und $$C_4 = 0.579141$$ $$C_5 = 0.582163$$ $$C_6 = 4.41224$$\\
 
-Für die Zustandsraumdarstellung und den Arbeitspunt $x_0 = \begin{bmatrix} 0 & -11^\circ & 0 & 0 & 0 & 0 \end{bmatrix}^T$ und $u_0 = \begin{bmatrix} 0.5 & 0.5 \end{bmatrix}^T$ folgt:
+Für die Zustandsraumdarstellung und den Arbeitspunt $x_0 = \begin{bmatrix} 0 & -11^\circ & 0 & 0 & 0 & 0 \end{bmatrix}^T$ und $u_0 = \begin{bmatrix} 0.5 & 0.5 \end{bmatrix}^T$ folgen die
+Matritzen A, B, C und D. Wobei hier die physikalischen
+Gegebenheiten schnell zu erkennen sind. Unter anderem
+ist zu erkennen, dass in C die Positionen direkt messbar
+sind, während für die Geschwindigkeiten keine Sensoren
+vorhanden sind. Ebenfalls ist in D zu erkennen, dass kein
+direkter Durchgriff durch die Eingangsgrößen möglich ist.
 \begin{equation}
 A = 
 \begin{bmatrix}
@@ -270,21 +285,23 @@ C_{10} & -C_{10}
 \end{equation}
 wobei
 \begin{equation}
-C_7 = \frac{18436610974547968}{31834397653510125}
+C_7 = 0.579141
 \end{equation}
 \begin{equation}
-C_8 = \frac{7018456143648095}{20268269978995824}
+C_8 = 0.346278
 \end{equation}
 \begin{equation}
-C_9 = \frac{18436610974547968}{31669171842180975}
+C_9 = 0.582163
 \end{equation}
 \begin{equation}
-C_{10} = \frac{319755573543305216}{72470123763795075}
+C_{10} = 4.41224
 \end{equation}
 
 
 
-Als Arbeitspunkt wurde wie oben beschrieben $x_0 = \begin{bmatrix} 0 & -11^\circ & 0 & 0 & 0 & 0 \end{bmatrix}^T$ und $u_0 = \begin{bmatrix} 0.5 & 0.5 \end{bmatrix}^T$ gewählt, da dies dem stationären Flugzustand des Helikopters entspricht. Es ist wichtig zu beachten, dass lediglich die Winkel $\beta$ und $\gamma$ in die Linearisierung eingehen. Eine Änderung des Winkels $\alpha$ sowie der Winkelgeschwindigkeiten $\dot{\alpha}$, $\dot{\beta}$ und $\dot{\gamma}$ hat keinen Einfluss auf die Linearisierung, da diese auch in den nichtlinearen Gleichungen \eqref{eq:alpha} \eqref{eq:beta} \eqref{eq:gamma} nicht vorkommen.\\
+Als Arbeitspunkt wurde wie oben beschrieben $x_0 = \begin{bmatrix} 0 & -11^\circ & 0 & 0 & 0 & 0 \end{bmatrix}^T$  gewählt, da dies den Mittelpunkt unseres Arbeitsbereiches entspricht.
+Um einen stationären Flugzustand des Helikopters zu erreichen, wurden mit Hilfe der Bewegungsgleichungen unter der Vorgabe des Arbeitspunktes der Input $u_0 = \begin{bmatrix} 0.5 & 0.5 \end{bmatrix}^T$ bestimmt.
+Es ist wichtig zu beachten, dass lediglich die Winkel $\beta$ und $\gamma$ in die Linearisierung eingehen. Eine Änderung des Winkels $\alpha$ sowie der Winkelgeschwindigkeiten $\dot{\alpha}$, $\dot{\beta}$ und $\dot{\gamma}$ hat keinen Einfluss auf die Linearisierung, da diese auch in den nichtlinearen Gleichungen \eqref{eq:alpha} \eqref{eq:beta} \eqref{eq:gamma} nicht vorkommen.\\
 Die Wahl gewählten Arbeitspunktes birgt jedoch auch risiken. Durch die Wahl von $\gamma = 0$ 
 fallen viele Terme der Linearisierung, in welchen $\gamma$ als $\sin(\gamma)$ eingeht, weg (vgl. Gleichungen \eqref{eq_beta_x} und \eqref{eq_alpha_u}).
 Dies kann dazu führen, dass das linearisierte System andere Eigenschaften aufweist als das nichtlineare System. 
@@ -296,8 +313,15 @@ Die Systempole des linearen Systems liegen bei:
 $$\lambda_{1,2,3,4} = 0, \quad \lambda_{5,6} = \pm 0.2570i$$\\
 Dies zeigt, dass das System rein marginal stabil ist. Jedoch wurde auch hier eine Ruhelage gewählt, wobei bei kleinen änderungen der Eingangsgröße $u$ das System instabil werden kann.
 Dies ist auch physikalisch nachvollziehbar, da der Helikopter ohne Regler in der Ruhelage ebenfalls marginal stabil ist. Kleine Störungen führen dazu, dass der Helikopter aus seiner Ruhelage ausweicht und nicht von alleine wieder in die Ruhelage zurückkehrt.
-Systemtheoretisch ist das System sowohl vollständig steuer- als auch beobachtbar, was die Grundlage für den späteren Reglerentwurf darstellt.
-
+Da das für dieses System sowohl die Steuerbarkeitsmatrix
+\begin{equation}
+\mathcal{S} = \begin{bmatrix} B & AB & A^2B & ... & A^{n-1}B \end{bmatrix}
+\end{equation}
+als auch die Beobachtbarkeitsmatrix
+\begin{equation}
+\mathcal{O} = \begin{bmatrix} C \\ CA \\ CA^2 \\ ... \\ CA^{n-1} \end{bmatrix}
+\end{equation}
+den vollen Rang besitzen, ist das System sowohl vollständig steuer- als auch beobachtbar. Dies bildet die Grundlage für den späteren Reglerentwurf
 
 \section{Kommentare und Ausblick auf L3}
 Obwohl aufgrund von ungenauen Messwerkzeugen nur eine grobe Abschätzung der Motorkennlinie möglich war, konnte dennoch eine plausible Kennlinie bestimmt werden. 
