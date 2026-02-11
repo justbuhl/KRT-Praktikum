@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.1.8)  11 FEB 2026 12:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.1.8)  11 FEB 2026 14:57
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -449,26 +449,28 @@ LaTeX Info: Redefining \] on input line 2951.
 )
 \mlLegendThickness=\skip62
 \mlLegendHeight=\skip63
- (C:\Users\kimon\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
+ (C:\Users\kimon\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
+Package: fontenc 2025/07/18 v2.1d Standard LaTeX package
+) (C:\Users\kimon\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count344
 ) (protocolGroupAWE1Task5.aux)
 \openout1 = `protocolGroupAWE1Task5.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
  (C:\Users\kimon\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count345
@@ -514,83 +516,54 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
 Package pgfplots notification 'compat/show suggested version=true': document has been generated with the most recent feature set (\pgfplotsset{compat=1.18}).
 
-LaTeX Font Info:    Calculating math sizes for size <14> on input line 59.
+LaTeX Font Info:    Calculating math sizes for size <14> on input line 63.
 \c@sv@footnote=\count351
 <Helikopter.pdf, id=4, 845.04686pt x 597.50786pt>
 File: Helikopter.pdf Graphic file (type pdf)
 <use Helikopter.pdf>
-Package pdftex.def Info: Helikopter.pdf  used on input line 80.
+Package pdftex.def Info: Helikopter.pdf  used on input line 84.
 (pdftex.def)             Requested size: 201.44627pt x 142.43839pt.
-<heli.png, id=5, 1041.8925pt x 443.6575pt>
-File: heli.png Graphic file (type png)
-<use heli.png>
-Package pdftex.def Info: heli.png  used on input line 117.
-(pdftex.def)             Requested size: 226.62465pt x 96.5015pt.
-<arm_heli.png, id=6, 963.6pt x 434.62375pt>
-File: arm_heli.png Graphic file (type png)
-<use arm_heli.png>
-Package pdftex.def Info: arm_heli.png  used on input line 124.
-(pdftex.def)             Requested size: 226.62465pt x 102.21617pt.
-<arm_heli_staender.png, id=7, 1478.52374pt x 768.8725pt>
-File: arm_heli_staender.png Graphic file (type png)
-<use arm_heli_staender.png>
-Package pdftex.def Info: arm_heli_staender.png  used on input line 131.
-(pdftex.def)             Requested size: 226.62465pt x 117.84828pt.
 
-Overfull \hbox (12.94354pt too wide) in paragraph at lines 139--140
-[]\OT1/cmr/m/n/10 Reibungen sowie Luftwiderst^^?ande wer-den ver-nachl^^?assigt. 
+Overfull \hbox (6.57446pt too wide) in paragraph at lines 92--93
+\T1/cmr/m/n/10 ma-tis-chen Mod-ells, das das Ver-hal-ten des 3DOF-Helikopters
  []
 
-
-Underfull \vbox (badness 4036) has occurred while \output is active []
-
- [1{C:/Users/kimon/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}
+[1{C:/Users/kimon/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}
 
  <./Helikopter.pdf, page is rotated 90 degrees>]
-Underfull \hbox (badness 10000) in paragraph at lines 158--158
-[]\OT1/cmr/m/n/8 Tr^^?agheitsmoment um die
+<Motorkennlinie_2.jpg, id=25, 843.15pt x 632.3625pt>
+File: Motorkennlinie_2.jpg Graphic file (type jpg)
+<use Motorkennlinie_2.jpg>
+Package pdftex.def Info: Motorkennlinie_2.jpg  used on input line 145.
+(pdftex.def)             Requested size: 201.44627pt x 151.085pt.
+
+Overfull \hbox (18.21196pt too wide) detected at line 162
+[]\OML/cmm/m/it/10 x \OT1/cmr/m/n/10 = [][] \OML/cmm/m/it/10 ;  u \OT1/cmr/m/n/10 = [][] \OML/cmm/m/it/10 ;  y \OT1/cmr/m/n/10 = [][]
  []
 
 
-Overfull \hbox (6.82762pt too wide) in paragraph at lines 154--162
- [][] 
+Overfull \hbox (9.07547pt too wide) in paragraph at lines 205--206
+[]\T1/cmr/m/n/10 Die Un-ter-suchung der Steuer-barkeits-ma-trix $\OMS/cmsy/m/n/10 S$ \T1/cmr/m/n/10 und Beobacht-
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 173--173
-[]\OT1/cmr/m/n/8 L^^?ange von Aufh^^?angepunkt zum
- []
-
-
-Overfull \hbox (3.9011pt too wide) in paragraph at lines 168--175
- [][] 
- []
-
-
-Overfull \hbox (1.44725pt too wide) in paragraph at lines 198--200
-\OT1/cmr/m/n/10 wobei $\OML/cmm/m/it/10 m[]$ \OT1/cmr/m/n/10 die Gesamt-masse des be-tra-chteten Starrk^^?orpers
- []
-
-[2 <./heli.png (PNG copy)> <./arm_heli.png (PNG copy)> <./arm_heli_staender.png (PNG copy)>] [3
-
-] (protocolGroupAWE1Task5.aux)
+[2 <./Motorkennlinie_2.jpg>] (protocolGroupAWE1Task5.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 24028 strings out of 467871
- 624022 string characters out of 5418377
- 1150531 words of memory out of 5000000
- 52511 multiletter control sequences out of 15000+600000
- 633984 words of font info for 65 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 84i,11n,104p,1378b,609s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <C:\Users\kimon\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti8.pfb>
-Output written on protocolGroupAWE1Task5.pdf (3 pages, 928857 bytes).
+ 24233 strings out of 467871
+ 625673 string characters out of 5418377
+ 1154531 words of memory out of 5000000
+ 52710 multiletter control sequences out of 15000+600000
+ 637554 words of font info for 67 fonts, out of 8000000 for 9000
+ 1142 hyphenation exceptions out of 8191
+ 84i,16n,104p,1309b,609s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\kimon\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1000.pk> <C:\Users\kimon\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti0800.pk> <C:\Users\kimon\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0800.pk> <C:\Users\kimon\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\kimon\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1000.pk> <C:\Users\kimon\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1440.pk><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/kimon/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
+Output written on protocolGroupAWE1Task5.pdf (2 pages, 690837 bytes).
 PDF statistics:
- 93 PDF objects out of 1000 (max. 8388607)
+ 314 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 33 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 23 words of extra memory for PDF output out of 10000 (max. 10000000)
 
