@@ -52,6 +52,10 @@
 \protect\rule[\mlLegendHeight]{0.4mm}{\mlLegendThickness}\hspace*{-0.75mm}
 }}
 
+\usepackage[T1]{fontenc}
+
+\hyphenation{Mas-sen-träg-heits-mo-men-te}
+
 \begin{document}
 
 \begin{frontmatter}
@@ -77,9 +81,136 @@ Diskretisierung und Lösung eines Optimalsteuerungsproblems.
 \end{frontmatter}
 
 \section{Einleitung}
+In diesem Protokoll werden die Ergebnisse des Praktikums "Konzepte der Regelungstechnik" am Institut für Systemtheorie und Regelungstechnik der Universität Stuttgart zusammengefasst. Ziel des Praktikums ist es, die Konzepte der Regelungstechnik anhand eines 3DOF Helikopters zu verstehen und anzuwenden. Das Praktikum besteht aus mehreren Laboraufgaben (L1, L2, L3, L4, L5) und Hausaufgaben (H1, H2, H3, H4, H5), die sich mit der Inbetriebnahme, Modellierung, Reglerentwurf und Trajektoriengenerierung beschäftigen. Der für diese Aufgabenstellung verwendete Versuchsstand ist ein 3DOF Helikopter, der entlang seiner Hauptachsen/Gelenkachsen (Schwenkwinkel, Steigwinkel, Nickwinkel) bewegt werden kann. Die Bewegung um die Achsen wird von zwei Elektormotoren ermöglicht, welche die beiden Propeller des Helikopters antreiben (vgl. Abbildung \ref{fig:helikopter}). Diese können direkt die Steig- und Nickwinkel beeinflussen, während der Schwenkwinkel indirekt durch den Nickwinkel beeinflusst wird. Ziel des Praktikums ist es, eine vorgegebenes Szenario innerhalb einer gewissen Zeit (180s) abzufliegen und dabei die jeweiligen Beschränkungen einzuhalten. 
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\columnwidth]{Helikopter.pdf} % Pfad/Dateiname anpassen
+    \caption{Versuchsstand: 3DOF-Helikopter. Besteht aus Haupt- und Nebenarm, sowie Gegengewicht 
+    und am Ende des Arms befindlichen Helikopter.}
+    \label{fig:helikopter}
+\end{figure}
 
 
 \section{Modellierung}
+Das Ziel der Modellierung ist die Herleitung eines mathematischen Modells, das das Verhalten des 3DOF-Helikopters hinreichend genau beschreibt, um darauf basierend einen Reglerentwurf durchzuführen.
+
+\subsection{Mathematische Modellierung}
+Für die physikalische Modellbildung werden die drei Rotationsachsen des Helikopters zunächst entkoppelt betrachtet. Dabei bezeichnen $\alpha$ den Schwenkwinkel, $\beta$ den Steigwinkel und $\gamma$ den Nickwinkel. Die Dynamik ergibt sich aus dem Momentengleichgewicht gemäß dem Drallsatz $M = I \dot{\omega}$. Dabei sind $I$ das jeweilige Trägheitsmoment und $\dot{\omega}$ die Winkelbeschleunigung.
+
+Unter der Annahme, dass Luftwiderstand und Reibung vernachlässigbar sind und der Schwerpunkt im Drehpunkt liegt (für die Nickachse), ergeben sich die folgenden nichtlinearen Bewegungsgleichungen:
+
+\begin{equation}
+    \ddot{\alpha} = \frac{-(F_{\mathrm{vorne}} + F_{\mathrm{hinten}}) l_{\mathrm{heli}} \sin(\gamma)}{I_{\alpha}}
+    \label{eq:alpha}
+\end{equation}
+
+\begin{equation}
+    \ddot{\beta} = \frac{(F_{\mathrm{vorne}} + F_{\mathrm{hinten}}) l_{\mathrm{heli}} \cos(\gamma) - F_{\mathrm{g}} l_{mmp} \cos(\beta)}{I_{\beta}}
+    \label{eq:beta}
+\end{equation}
+
+\begin{equation}
+    \ddot{\gamma} = \frac{(F_{\mathrm{vorne}} - F_{\mathrm{hinten}}) l_{\mathrm{rotor}}}{I_{\gamma}}
+    \label{eq:gamma}
+\end{equation}
+
+Hierbei beschreiben $F_{\mathrm{vorne/hinten}}$ die Motorkräfte, $F_g$ die Gewichtskraft und $l$ die entsprechenden Hebelarme.
+
+\subsection{Modellidentifikation}
+Zur Bestimmung der Modellparameter wurde sowohl auf CAD-Daten als auch auf experimentelle Messungen zurückgegriffen:
+\begin{enumerate}
+    \item \textbf{Geometrie- und Trägheitsparameter:} Die Massenträgheitsmomente $I_{\alpha}, I_{\beta}, I_{\gamma}$ sowie die Schwerpunktslagen wurden direkt aus dem CAD-Modell (SolidWorks) gewonnen. Das CAD-Modell wurde anhand der beigelegten technischen Zeichungen enthält und mit den entsprechenden Massen versehen. Die Berechung der Trägheitsmomente erfolgte über das SolidWorks-Tool zur Massenanalyse, welches die Trägheitsmomente um die Hauptachsen liefert. Die relevanten Parameter sind in Tabelle \ref{tab:modelparams} zusammengefasst.
+    \item \textbf{Aktuatorik:} Der Zusammenhang zwischen der angelegten Spannung $U$ und der erzeugten Kraft $F$ der Rotoren wurde experimentell ermittelt. Dazu wurden Kraftmessungen bei verschiedenen Spannungsstufen durchgeführt und eine Kennlinie $U_{\mathrm{Rotor}}(F)$ mittels Polynomapproximation bestimmt (siehe Abb. \ref{fig:Motorkennlinie}). Die Kraftmessungen erfolgte mithilfe einer Küchenwaage. Das Polynom ergibt sich zu: 
+    \begin{equation}
+        \begin{split}
+            U_{\mathrm{Rotor}}(F) &= 24.047576 F^3 - 45.530359 F^2 \\
+            &\quad + 34.5412 F + 1.0596
+        \end{split}
+    \end{equation}
+\end{enumerate}
+
+\begin{table}[htbp]
+\centering
+\caption{Modellparameter aus CAD}
+\label{tab:modelparams}
+\begin{tabular}{|c|c|l|}
+\hline
+Parameter & Wert & Beschreibung \\ \hline
+$I_{\alpha}$ & 1.131 [kg/m$^2$] & Trägheit Schwenkachse \\ 
+$I_{\beta}$  & 1.125 [kg/m$^2$] & Trägheit Steigachse \\ 
+$I_{\gamma}$ & 0.040 [kg/m$^2$] & Trägheit Nickachse \\ 
+$m_{\mathrm{mmp}}$ & 3.960 [kg] & Gesamtmasse \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\columnwidth]{Motorkennlinie_2.jpg}
+    \caption{Experimentell ermittelte Motorkennlinie (Spannung zu Kraft).}
+    \label{fig:Motorkennlinie}
+\end{figure}
+
+\subsection{Linearisierung}
+Für den Entwurf linearer Regelungsverfahren (wie LQR) ist ein lineares Zustandsraummodell der Form $\Delta\dot{x} = A \Delta x + B \Delta u$ erforderlich. Die nichtlinearen Gleichungen \eqref{eq:alpha}-\eqref{eq:gamma} wurden dazu um einen Arbeitspunkt (Ruhelage) linearisiert. Der Zustandsvektor ist definiert als $x = [\alpha, \beta, \gamma, \dot{\alpha}, \dot{\beta}, \dot{\gamma}]^T$. Die Systemmatrizen $A$ und $B$ ergeben sich aus den Jacobi-Matrizen der Systemdynamik an diesem Arbeitspunkt.
+
+Damit sind alle Voraussetzungen für die Implementierung und den Reglerentwurf geschaffen.
+
+
+
+Für die Zustandsraumdarstellung werden folgende Vektoren definiert:
+\begin{equation}
+    x = \begin{bmatrix} \alpha & \beta & \gamma & \dot{\alpha} & \dot{\beta} & \dot{\gamma} \end{bmatrix}^T, \quad
+    u = \begin{bmatrix} U_{\mathrm{vorne}} & U_{\mathrm{hinten}} \end{bmatrix}^T, \quad
+    y = \begin{bmatrix} \alpha & \beta & \gamma \end{bmatrix}^T
+\end{equation}
+
+Als Arbeitspunkt wurde $x_0 = \begin{bmatrix} 0 & -11^\circ & 0 & 0 & 0 & 0 \end{bmatrix}^T$ gewählt, was dem Mittelpunkt des Arbeitsbereiches entspricht. Der zugehörige Eingangsvektor für den stationären Schwebeflug beträgt $u_0 \approx \begin{bmatrix} 0.3& 0.3 \end{bmatrix}^T$. Diese wurden über die Gleichgewichtsgleichung \ref{eq:beta} der Dynamik bestimmt, indem die Beschleunigung auf Null gesetzt und nach $F$ aufgelöst wurde. $F_\mathrm{vorne}$ und $F_\mathrm{hinten}$ wurde als gleich angenommen. 
+
+Die Linearisierung liefert das folgende lineare Systemmodell:
+\begin{equation}
+    \Delta\dot{x} = A \Delta x + B \Delta u, \quad \Delta y = C \Delta x + D \Delta u
+\end{equation}
+
+Die Systemmatrizen ergeben sich zu:
+\begin{equation}
+A = 
+\begin{bmatrix}
+0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 0 & 0 & 1 \\
+0 & 0 & -0.579 & 0 & 0 & 0 \\
+0 & -0.066 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 0 & 0
+\end{bmatrix}, \quad
+B = 
+\begin{bmatrix}
+0 & 0 \\
+0 & 0 \\
+0 & 0 \\
+0 & 0 \\
+0.582 & 0.582 \\
+4.412 & -4.412
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+    C = I_{3\times 6}, \quad
+    D = 0_{3\times 2}
+\end{equation}
+
+Es ist zu beachten, dass durch die Wahl von $\gamma = 0$ im Arbeitspunkt einige Terme der Linearisierung entfallen. Dies stellt eine Vereinfachung dar, die beim Reglerentwurf berücksichtigt werden muss.
+
+\subsection{Systemanalyse}
+Die Eigenwerte des linearisierten Systems lauten:
+$$\lambda_{1,2,3,4} = 0, \quad \lambda_{5,6} = \pm 0.2570i$$
+Das System besitzt Pole auf der imaginären Achse und im Ursprung, ist also grenzstabil (marginal stabil). Dies deckt sich mit der physikalischen Anschauung eines Helikopters im Schwebeflug ohne Dämpfung.
+
+Die Untersuchung der Steuerbarkeitsmatrix $\mathcal{S}$ und Beobachtbarkeitsmatrix $\mathcal{O}$ zeigt, dass beide den vollen Rang besitzen. Das System ist somit vollständig steuerbar und beobachtbar, was die notwendige Voraussetzung für den Beobachter- und Reglerentwurf darstellt.
+
+\subsection{Mehrkörpersimulation (MKS)}
+Zur Validierung wurde ergänzend eine Mehrkörpersimulation (MKS) in Simscape Multibody erstellt. Diese importiert die Geometrie- und Massendaten direkt aus dem SolidWorks-CAD-Modell und ermöglicht eine visuelle Verifikation des Systemverhaltens sowie eine erste Erprobung der Regelungstrategien an einem physikalisch detaillierten Modell.
 
 \section{Reglerentwurf}
 Für den Reglerentwurf wurde das aus Protokoll 2 gewonnene lineare Helikoptermodell genutzt. Wichtig ist hierbei zu beachten,
