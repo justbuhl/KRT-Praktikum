@@ -85,8 +85,7 @@ In diesem Protokoll werden die Ergebnisse des Praktikums "Konzepte der Regelungs
 
 
 \section{Modellierung}
-\subsection{Mathematische Modellierung}
-Für die mathematische Modellierung des 3DOF Helikopters wurde versucht eine möglichst einfache Modellannahme zu treffen, 
+Für die Modellierung des 3DOF Helikopters wurde versucht eine möglichst einfache Modellannahme zu treffen, 
 um die Komplexität des Modells gering zu halten und mit einem möglichst überschaubaren Zeitaufwand 
 eine möglichst gute Abbildung des Systemverhaltens zu extrahieren. Zunächst wurde versucht,
 den Versuchsstand in SolidWorks zu modellieren und mit anschließenden Matlab tools die Systemgleichungen 
@@ -200,11 +199,6 @@ wobei $m_{\mathrm{ges}}$ die Gesamtmasse des betrachteten Starrkörpers und $g\a
 
 In Gleichung \ref{eq:alpha} wird auf die Berücksichtigung des Steigwinkels $\beta$ verzichtet, da angenommen wird, dass dieser Winkel nur geringe Auslenkungen erfährt und somit der Einfluss auf die Travel Achse vernachlässigbar ist ($\beta$ geht im Cosinus in die Gleichung ein). Falls sich herrausstellen sollte, dass diese Annahme nicht haltbar ist, kann dies jdeoch noch angepasst werden.
 
-\subsection{Linearisierung des Modells}
-Die oben beschriebenen Differentialgleichungen sind nichtlinear, was ein 
-
-\subsection{Mehrkörpersimulation (MKS)}
-Zusätzlich zur mathematischen Modellierung wurde eine Mehrkörpersimulation (MKS) des 3DOF Helikopters erstellt. Diese Simulation basiert auf den gleichen Annahmen wie die mathematische Modellierung, ermöglicht jedoch eine visuelle Darstellung des Systemverhaltens und kann zur Validierung der mathematischen Modellierung genutzt werden. Für das MKS wurde das CAD Modell des Helikopters aus SolidWorks genutzt und in Matlab importiert. Hierzu wird Simscape Multibody genutzt, um die Dynamik des Systems zu simulieren. Die MKS ermöglicht es, die Bewegung des Helikopters unter verschiedenen Bedingungen zu beobachten und zu analysieren, was insbesondere für die Entwicklung von Regelungsstrategien von Vorteil ist. Ein Import des Modell ist über eine entsprechendes Matlabtool möglich, welches die Geometrie des Modells sowie die Massenträgheiten extrahiert und in Simscape Multibody importiert. Hierdurch wird die Dynamik des Systems automatisch generiert, was die Erstellung der MKS erheblich vereinfacht. Das MKS wurde zur erprobung von Regelungsstrategien genutzt, um die Auswirkungen von verschiedenen Regelungsansätzen auf das Systemverhalten zu beobachten und zu analysieren ohne den realen Versuchsstand zu nutzen.
 
 \section{Reglerentwurf}
 
