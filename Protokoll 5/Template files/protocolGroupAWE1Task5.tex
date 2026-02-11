@@ -69,9 +69,14 @@
 % \author{}
 
 \begin{abstract}        
-
+Dieses Protokoll dokumentiert die Ergebnisse und Erkenntnisse des KRT Praktikums am IST. Im Rahmen des Praktikums wurden verschiedene Methoden zur Regelung und Trajektoriengenerierung für ein Modell eines Quadrokopters untersucht und implementiert.
+Dabei wird auf das mit Hilfe von CAD erstellte Modell des Quadrokopters eingegangen, sowie die anschließende Systemanalyse und Reglerentwurf betrachtet. Dabei
+wurde zunächst ein LQR Reglerentwurf durchgeführt, wobei dieses zu einem LQI mit anschließender Vorsteuerung erweitert worden ist. 
+Die abschließende Aufgabe wurde mit Hilfe einer Trajektoriengenerierung umgesetzt, wobei zwei Ansätze präsentiert werden: 
+Diskretisierung und Lösung eines Optimalsteuerungsproblems.
 % Abstract of not more than 250 words.
 \end{abstract}
+
 
 \end{frontmatter}
 
@@ -207,16 +212,224 @@ Die Untersuchung der Steuerbarkeitsmatrix $\mathcal{S}$ und Beobachtbarkeitsmatr
 \subsection{Mehrkörpersimulation (MKS)}
 Zur Validierung wurde ergänzend eine Mehrkörpersimulation (MKS) in Simscape Multibody erstellt. Diese importiert die Geometrie- und Massendaten direkt aus dem SolidWorks-CAD-Modell und ermöglicht eine visuelle Verifikation des Systemverhaltens sowie eine erste Erprobung der Regelungstrategien an einem physikalisch detaillierten Modell.
 
+
 \section{Reglerentwurf}
+Für den Reglerentwurf wurde das aus Protokoll 2 gewonnene lineare Helikoptermodell genutzt. Wichtig ist hierbei zu beachten,
+dass der Reglerentwurf auf dem linearen Modell basiert und somit bei der Implementierung auf das nichtlineare Modell noch der 
+Arbeitspunkt bzw. Linearisierungspunkt entsprechend verrechnet werden muss. 
+Die Zustände sind zur Erinnerung wie folgt definiert:
+\begin{equation}
+    x = \begin{bmatrix} \alpha & \beta & \gamma & \dot{\alpha} & \dot{\beta} & \dot{\gamma} \end{bmatrix}^T
+\end{equation}
+\begin{equation}
+    u = \begin{bmatrix} U_{\mathrm{vorne}} & U_{\mathrm{hinten}} \end{bmatrix}^T
+\end{equation}
+\begin{equation}
+    y = \begin{bmatrix} \alpha & \beta & \gamma \end{bmatrix}^T
+\end{equation}
+
+Der geschlossene Regelkreis mit Zustandsrückführung ergibt sich unter Berücksichtigung der Linearisierung um den Arbeitspunkt $(x_0, u_0)$ zu:
+\begin{equation}
+\Delta u = -K\,\Delta x,\qquad \Delta x = x - x_0,\qquad \Delta u = u - u_0.
+\end{equation}
+Hierbei bezeichnet $K$ die Reglermatrix, während $x_0$ und $u_0$ den stationären Arbeitspunkt des Systems charakterisieren. 
+
+Zur Implementierung und Erprobung unseres Regelungsentwurfs wurde nun das CAD-Modell, das bereits zur Modellierung verwendet wurde, in 
+Matlab Simulink als ein Simscape Modell exportiert.
+An diesem Modell wurden dann die Regelungsalgorithmen implementiert und getestet, bevor es an den realen Versuchsstand ging.
+
+\subsection{Reglerentwurf}
+
+Da das System mehrere Input und Outputs verfügt und somit ein MIMO System vorliegt, wurde sich dazu entschieden, einen LQ-Regler zu entwerfen. Die Vorteile dieses Verfahrens wurden bereits in Protokoll 2 erläutert.
+
+Da es sich bei einem LQ-Regler um einen Zustandsregler handelt wird für die Regelung sowohl die\\ Winkelgeschwindigkeiten $\dot{\alpha}$, $\dot{\beta}$ und $\dot{\gamma}$ als auch die  Winkel $\alpha$, $\beta$ und $\gamma$ benötigt. Da die Encoder nur die Winkel messen, wurde ein Luenberger-Beobachter implementiert, damit die Geschwindigkeiten geschätzt werden können. 
+
+\begin{equation}
+\Delta\dot{\hat{x}} = A\,\Delta\hat{x} + B\,\Delta\hat{u} + L\big(\Delta y - \Delta\hat{y}\big),
+\end{equation}
+mit
+\begin{equation}
+\Delta\hat{y} = C\,\Delta\hat{x},
+\end{equation}
+und der Schätzfehler $\hat{e}=\Delta x-\Delta\hat{x}$ erfüllt
+\begin{equation}
+\dot{\hat{e}}=(A-LC)\,\hat{e}.
+\end{equation}
+
+Zur Stabilität und schnellen Konvergenz wurden die Beobachterpole (Eigenwerte von $A-LC$) deutlich schneller als die Reglerpole (z.\,B. Faktor 5–10) gewählt. Die Beobachtermatrix $L$ wurde in MATLAB durch Polvorgabe bestimmt.
+
+
+\subsubsection{LQR-Entwurf}
+Der Vorteil des LQR in der vergleichsweise einfachen Implementierung sowie den guten Regelungseigenschaften hat sich im Praktikumsversuch bestätigt. Obwohl die Robustheitseigenschaften durch die Nutzung eines Beobachters nicht mehr gegeben sind, 
+hat der Versuchsstand ein zufriedenstellendes Verhalten gezeigt. 
+Des Weiteren wurde überlegt, eine Vorsteuerung einzubauen, indem bei der Zustandsrückführung die Referenzwerte für die Zustände aus der Trajektoriengenerierung vorgegeben werden. Das heist, in den LQI Regler werden letztendlich nicht die Zustände geführt, sonder der Regelfehler bezüglich der vorgegebenen Referenz. Dies wies sich jedoch als verschlechternd heraus, wodurch dieses Konzept der Vorsteuerung wieder verworfen worden ist. 
+
+Dennoch hat sich herausgestellt, dass die bleibende 
+Regelabweichung durch die fehlenden Integratorterme ein Problem darstellt, da sich die Abweichung in den Zuständen als zu
+groß darstellt, um die geforderten Anforderungen zu erfüllen. Daher wurde der LQR auf zwei Integratorzustände erweitert.
+
+\subsubsection{LQI-Entwurf}
+Wie bereits erwähnt, stellt der LQI-Regler eine Erweiterung des LQR-Reglers dar. Die Erweiterung geschieht hierbei durch 
+Hinzunahme von sogenannten Integratorzuständen für diejenigen Größen, für die die bleibende Regelabweichung eliminiert werden soll. Zu beachten ist jedoch,
+dass durch die Nutzung von Integratoren auf jeden Fall darauf geachtet werden muss, ein Aufschwingen des Integrators zu vermeiden wodurch ein Anti-Windup implementiert worden ist.
+Dadurch ergab sich ein erweiterter Zustandsraum, der wie folgt aussieht:
+\begin{equation}
+    x = \begin{bmatrix} \alpha & \beta & \gamma & \dot{\alpha} & \dot{\beta} & \dot{\gamma} & \xi_1 & \xi_2 \end{bmatrix}^T
+\end{equation}
+
+wobei $\xi_1$ und $\xi_2$ die Integratorzustände für die Winkel $\alpha$ und $\beta$ darstellen und folgendermaßen im Zustandsraum gebildet werden:
+
+\begin{equation}
+    \xi_1 = \xi_{1,\mathrm{ref}} - \int (\alpha_{\mathrm{ref}} - \alpha)\,\mathrm{d}t
+\end{equation}
+\begin{equation}
+    \xi_2 = \xi_{2,\mathrm{ref}} - \int (\beta_{\mathrm{ref}} - \beta)\,\mathrm{d}t
+\end{equation}
+
+wobei $\xi_{1,\mathrm{ref}} = 0$ und $\xi_{2,\mathrm{ref}} = 0$.
+
+Für den Winkel $\gamma$ wird kein Integratorzustand hinzugefügt, da dieser Winkel lediglich zum Verändern des $\beta$-Winkels genutzt wird und keine genaue Regelung des $\gamma$-Winkels erforderlich ist.
+
+Für die Wahl der Gewichtungsmatrizen $Q$ und $R$ hat sich folgende Wahl als zufriedenstellend ergeben, mit der auch die Ergebnisse in Abschnitt~\ref{sec:Ergebnisse} erzielt worden sind. Dabei ist noch zu erwähnen, dass für die Nutzung des Optimalsteuerungsproblems (OSP) als 
+Trajektoriengenerierung die Gewichtungsmatrizen leicht angepasst worden sind. Dabei steht D für Diskretisierung (Trajektoriengenerierung).
+
+\begin{equation}
+\begin{split}
+Q_{D} = \operatorname{diag}\big(&5,\;2,\;1,\;0,001,\\
+ &0,001,\;7,\;30,\;10\big)
+\end{split}
+\end{equation}
+\begin{equation}
+R_{D} = \operatorname{diag}\big(2,\;2\big)
+\end{equation} 
+
+Dabei wurde für die Nutzung des OSP als Trajektorie lediglich der erste Integratoreintrag der Q Gewichtungsmatrix von 30 auf 100 erhöht. Alle anderen Werte, sowie die R Gewichtungsmatrix blieben unverändert.
+Hierbei wurden die Gewichtungen für die Winkel $\alpha$ und $\beta$ sowie für die Integratorzustände $\xi_1$ und $\xi_2$ deutlich höher gewählt als für die Winkelgeschwindigkeiten und den Winkel $\gamma$. Dies hat den Hintergund, dass eine genaue Regelung der Winkel $\alpha$ und $\beta$ sowie die Eliminierung der bleibenden Regelabweichung für diese Winkel von hoher Wichtigkeit sind. Die Winkelgeschwindigkeiten und der Winkel $\gamma$ sind weniger wichtig für die Regelungsaufgabe, weshalb diese mit geringeren Gewichtungen versehen wurden. Zusätzlich sorgt eine gute Regelung von $\alpha$ und $\beta$ auch für eine gute Regelung von $\gamma$, da dieser Winkel nur zur Unterstützung der Regelung von $\beta$ dient. Die Wahl der Gewichtungsmatrizen wurde dabei am realen versuchsstand iterativ bestimmt. Es hat sich nämlich herausgestellt, dass es durchaus Abweichungen zur Simulation gibt, wodurch die Reglerparameter angepasst werden mussten. Mit der Wahl dieser Gewichtungsmatrizen ergeben sich folgende Regler und Beobachtungspole:
+
+\begin{equation}
+\mathrm{Reglerpole}_{\mathrm{LQI}} =
+\begin{bmatrix}
+ -0.3729 + 0.8393\mathrm{i} \\
+  -0.3729 - 0.8393\mathrm{i} \\
+  -0.6647 + 1.0791\mathrm{i} \\
+  -0.6647 - 1.0791\mathrm{i} \\
+  -0.8632 + 0.3290\mathrm{i} \\
+  -0.8632 - 0.3290\mathrm{i} \\
+  -1.1460 + 0.0000\mathrm{i} \\  
+ -11.6676 + 0.0000\mathrm{i} \\
+\end{bmatrix}
+\end{equation}
+
+\begin{equation}
+\text{Beobachterpole} =
+\begin{bmatrix}
+-6 + 0.0000\mathrm{i}\\
+-6.1 + 0.0000\mathrm{i}\\
+-6.2 + 0.0000\mathrm{i}\\
+-6.3 + 0.0000\mathrm{i}\\
+-6.4 + 0.0000\mathrm{i}\\
+-6.5 + 0.0000\mathrm{i}
+\end{bmatrix}
+\end{equation}
+
+\subsection{Regler mit Optimalsteuerungsproblem}
+Da zur Trajektoriengenerierung ebenfalls ein Optimalsteuerungsproblem gelöst worden ist, konnte die Reglerstruktur zu einer 
+2-DOF-Struktur erweitert werden. Dies bedeutet, dass die aus dem Optimalsteuerungsproblem berechnete Stellgröße 
+$u_{OSP}$ auf der Reglerausgang $u_{LQI}$ addiert worden ist. Des Weiteren berechnete das OSP noch die Referenzzustände, die 
+genutzt worden sind, um die Vorsteuerung zu implementieren, indem von diesen Referenzzuständen noch die gemessenen Zustände abgezogen worden sind und diese Regelabweichung in den LQI Regler geführt worden ist. 
+
 
 \section{Trajektoriengenerierung}
+
 \subsection{Optimalsteuerungsproblem (OSP)}
 Die zweite Methode zur Trajektoriengenerierung besteht darin, ein Optimalsteuerungsproblem (OSP) zu formulieren und zu lösen. Hierzu wird die folgende Kostenfunktion definiert:
 \begin{equation}
     \min_{T_{\mathrm{seg}}, u} \quad J = \sum_{i=1}^{N} T_{\mathrm{seg},i} + 0.1 \sum_{k=1}^{M} u_k^2
 \end{equation}
 Diese Kostenfunktion minimiert sowohl die Gesamtzeit der Trajektorie (erste Summe) als auch die aufgewendete Steuerungsenergie (zweite Summe). Die Gewichtung von 0.1 für die Steuerungsenergie zu 1 für die Zeit stellt einen Kompromiss dar, der die Trajektorie nicht nur schnell, sondern auch mit moderaten Steuerungsaufwand realisierbar macht. ZUsätzlich wird die Steuerung durcch die Nebenbedingen eingeschränkt, was zu einer realistischeren Trajektorie führt. Als Nebenbeding wurde die maximale Kraft der Rotoren von $F_{\mathrm{max}} = 0.7$ N definiert. Dies liegt unterhalb der maximalen Kraft, was einen Regeleingriff ermöglicht, um die Trajektorie einzuhalten. Zustäzlich wurde eine Nebenbedingung für den Nickwinkel $\gamma$ definiert, um zu schnelles und damit unkonrollierbareres Verhalten zu vermeiden. Es wurde eine maximale Nickwinkel von $\gamma_{\mathrm{max}} = 0.6\mathrm{rad}$ definiert. Zur Lösung des OSP wurde casadi mit dem IPOPT-Solver verwendet. Als Diskretisierungsverfahren wurde das explizite Euler-Verfahren gewählt, um die Dynamik zu diskretisieren. Die Trajektorie wurde mit einer freien Endzeit formuliert, um die Gesamtzeit der Trajektorie zu minimieren. Hierzu wurde die Segmentzeit $T_{\mathrm{seg}}$ als Optimierungsvariable definiert, die für alle Segmente gleich ist. Die Anzahl der Segmente wurde auf $N=40$ festgelegt, was eine gute Balance zwischen Flexibilität der Trajektorie und Rechenzeit darstellt. Da die Trajektorie mit der zu überwindenden Referenzproblemstellung nur schwer in einem Schritt gelöst werden kann, wurde die Trajektorie in Segmente unterteilt und iterativ gelöst. Zwischen den Segmenten wurde eine Stoppzeit von 2s definiert, um eventuelle Fehler zu korrigieren und die Trajektorie an die aktuelle Systemantwort anzupassen.
+
+\subsection{Diskret}
+Nach der Modellierung und dem Reglerentwurf erfolgt im Folgenden Kapitel die Trajektoriengenerierung, welche die Führungsgröße für die vorherige gewonnene Reglerstruktur vorgibt. Dabei soll die Trajektorie so gestaltet sein, dass die Bewegung des Helikopters möglichst sanft erfolgt und keine plötzlichen Sprünge in den Sollwerten auftreten.
+Dies ist wichtig, da der Regler aus Erfahrungen des dritten Labortages nur begrenzt in der Lage ist, schnelle Änderungen der Sollwerte zu verfolgen, ohne dass es zu Überschwingern oder Instabilitäten kommt.
+
+Zum erstellen der Trajektorie wird in Matlab die Funktion \texttt{interp1} verwendet. Diese Funktion ermöglicht es durch die Interpolation einer Reihe von manuell bestimmten Stützpunkten, eine Trajektorie zu generieren.
+Hierbei ist zu erwähnen, dass für die Travel und Elevation Trajektorie wie in Abbildung \ref{fig:Travel_Trajektorie} und \ref{fig:Elevation_Trajektorie} zu sehen ist \texttt{pchip} als Interpolationsmethode gewählt wurde. Diese ist eine formbewahrende kubische Interpolation, welche eine langsame Annäherung ohne Überschwingen gewährleistet.
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Travel_Trajektorie.png}
+    \caption{Travel Trajektorie}
+    \label{fig:Travel_Trajektorie}
+\end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Elevation_Trajektorie.png}
+    \caption{Elevation Trajektorie}
+    \label{fig:Elevation_Trajektorie}
+\end{figure}
+
+Es ist ebenfalls wichtig, dass die vorgegebene Trajektorie innerhalb der physikalischen Grenze des Helikopters bleibt.
+Dies fließt in die Wahl der Stützpunkte mit ein, da unter anderem der Gradient der Trajektorie während dem Landeanflug größer sein darf, als während dem Aufstieg.
+In Abbildung \ref{fig:Gradient} ist die resultierende Geschwindigkeit der Elevation- und Travel Trajektorie dargestellt, anhand welcher die Einhaltung der physikalischen Grenzen überprüft werden kann.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Gradient.png}
+    \caption{Gradient der Trajektorien}
+    \label{fig:Gradient}
+\end{figure}
+
+Daran ist zu erkennen, dass der Helikopter sich nie in einem Bereich bewegt, welcher für ihn nicht realisierbar ist.
+Es ist auch möglich die Bewegungen in Travel und Elevation näher aneinander zu Reihen, um die Gesamtdauer der Trajektorie zu verkürzen. Hierbei ist allerdings darauf zu achten, dass die minimale Höhe des Helikopters nicht unterschritten wird.
+Eine Trajektorie für den pitch wurde nicht erstellt, da dieser während des gesamten Fluges nahe null bleiben soll und somit durch eine Konstante dargestellt werden kann.
+Die so erstellten Trajektorien werden im Folgenden in \texttt{.mat} Dateien gespeichert und als LookUp Table in Matlab Simulink eingebunden.
+
+
+
+
+\subsection{Optimalsteuerung}
+Eine weitere Methode zur Trajektoriengenerierung ist die Optimalsteuerung, welche auf der Lösung eines Optimierungsproblems basiert. Hierbei wird eine Kostenfunktion definiert, welche die Abweichung von der gewünschten Trajektorie sowie die maximal verfügbaren Steuerungsgrößen berücksichtigt. 
+Im Folgenden wird diese mit Hilfe \texttt{CasADi} implementiert.
+
+\subsection{Magnetsteuerung}
+Für die beiden vorherigen Methoden der Trajektoriengenerierung, wird die Magnetsteuerung nicht berücksichtigt. Aufgrund dessen wird hier eine weitere Methode verwendet, die durch die Verwendung eines Stateflow Diagramms in Simulink die Steuerung des Magneten ermöglicht. Hierbei ist es möglich, verschiedene Zustände wie "Magnet an" und "Magnet aus" zu definieren und die Übergänge zwischen diesen Zuständen basierend auf bestimmten Bedingungen zu steuern. 
+Der Magnet wird dabei wie in Abb.\ref{fig:Magnet_Stateflow} von Anfang an aktiviert und wird erst am Ende des zweiten Landeanfluges, sobald die Höhe des Helikopters unter einem bestimmten Schwellenwert liegt, deaktiviert.  
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{Magnet_Stateflow.png}
+    \caption{Magnet Stateflow Diagram}
+    \label{fig:Magnet_Stateflow}
+\end{figure}
+
+
+
+
 \section{Ergebnisse}
+\label{sec:Ergebnisse}
+
+Die Validierung der Trajektorien erfolgt durch einen Vergleich der Soll- und Ist-Werte während der Simulation im Simulink. Hierbei wird überprüft, ob die Trajektorien die gewünschten Eigenschaften aufweisen und die physikalischen Grenzen des Helikopters eingehalten werden.
+Dabei hat sich ergeben, dass der Helikopter der Trajektorie folgt und dabei die aus der Aufgabenstellungen gegebenen Grenzen einhält.
+Es hat sich jedoch heraus gestellt, dass der Helikopter der Trajektorie nur träge folgt. In Abbildung \ref{fig:Referenzwertfolge} ist zu erkennen,
+dass der Helikopter die Referenzwerte der Trajektorie nur verzögert verfolgt. Daher ergab sich die Überlegung für die Entwicklung einer 
+Vorsteuerung.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\columnwidth]{referenzwertfolge_verzoegerung.jpg}
+    \caption{Verzögerung der Referenzwertfolge}
+    \label{fig:Referenzwertfolge}
+\end{figure}
+
+Des Weiteren hat sich heraus gestellt, dass noch eine Anpassung der Gewichtungsmatrizen der LQI Reglersynthese vorgenommen werden kann, 
+um ein besseres Führungsverhalten des Helikopters zu erreichen. Nach iterativem Tuning der Gewichtungsmatrizen 
+konnte eine zufriedenstellende Performance der Regelung und Trajektorienfolge erzielt werden, wodurch der Helikopter 
+die Geforderte Aufgabe, mit Magnet, in ungefähr 70 Sekunden absolviert. Dennoch stellt das Hinterherhinken der Trajektorie
+ein Problem dar, das adressiert werden muss, um eine optimale Lösung zu erzielen. 
+
+
+
 
 \section{Schlussfolgerungen und Fazit}
 
