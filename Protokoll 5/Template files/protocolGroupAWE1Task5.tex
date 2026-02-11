@@ -482,15 +482,12 @@ mehr linearisierungspunkte für genauere Regelung
 
 \subsection{Trajektoriengenerierung}
 \subsubsection{Diskretisierung}
-zu schnell, die traj, zustände zu schnell, nicht realisitsich,
-simpel zu sertellen
-aber keine beschränkungen berücksichtigbar
-sollzustände eben nicht realisitsich, probleme mit vorsteuerungsterm
+Mit Hilfe der Diskretisierung konnten vergleichsweise leicht Trajektorien generiert und implementiert werden. Jedoch haben wir auch direkt die Nachteile dieser Methode erfahren können. Zum einen können keine Beschränkungen durch die Trajektorie explizit berücksichtigt werden. Zum anderen können die resultierenden Referenzwerte unrealistische bzw. nicht physikalisch Sinnvoll sein. Dies gilt dann besonders für Geschwindigkeiten und resultierende Beschleunigungen. Unsere Vermutung ist nämlich, dass unsere vorgegebene Zeit zu schnell zum realisieren war, wodurch vor allem die Implementierung der Vorsteuerung zu schlechtem Führungsverhalten geführt hat.
+Wir hätten zumal längere Zeiten vorgeben sollen, zum anderen die Trajektorie stückeln, d.h die Positionwechsel zum abfliegen mit mehreren einzelnen Trajektorien, implementieren sollen.
 
 \subsubsection{Optimalsteuerungsproblem}
-mehr tuning,
-cad modell verbessern, detailgenauigkeit erhöhen
-mehr berücksichtigung von beschränkungen
+Beim der Optimalsteuerung handelt es sich nicht um eine Standardlösung, sondern um ein aufwändiges und komplexes Verfahren.
+Dennoch konnten direkt die Vorteile dieser Methode beobachtet werden. Die Flugzeit hat sich deutlich verringert, das Führungsverhalten an die Referenz war sehr genau. Dies kommt einmal aus der berechnteten Vorsteuerung, zum anderen an den physikalisch korrekten Referenzzuständen die ebenfalls aus der Optimalsteuerung extrahiert werden. Dennoch könnte das Ergebnis verbessert werden, indem mehr Zeit für Tuning eingeplant wird. Zudem könnte das CAD-Modell verbessert und die Detailgenauigkeit erhöht werden.
 
 \subsection{Fazit}
 Die Aufgabe konnte mit beiden Methoden der Trajektoriengenerierung erfolgreich gelöst werden. Es hat sich jedoch gezeigt, dass die Nutzung eines Optimalsteuerungsproblems zu einer deutlich besseren Trajektorienfolge und damit zu einer schnelleren und zuverlässigeren Erfüllung der Aufgabe geführt hat. Die Nutzung des LQI hat sich auch als sinnvoll erwiesen. 
